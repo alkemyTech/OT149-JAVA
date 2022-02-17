@@ -19,8 +19,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "roles")
-@SQLDelete(sql = "UPDATE roles SET is_active = false WHERE id = ? ")
-@Where(clause = "is_active = true")
 public class Role {
 
     @Id
@@ -43,6 +41,5 @@ public class Role {
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate modifiedDate;
 
-    @Column(name = "is_active")
-    private Boolean isActive = Boolean.TRUE;
+
 }
