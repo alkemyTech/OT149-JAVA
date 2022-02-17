@@ -1,12 +1,9 @@
 package com.alkemy.ong.dto;
 
-import com.alkemy.ong.entity.Categories;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class NewsDTO {
@@ -20,7 +17,4 @@ public class NewsDTO {
     private LocalDate createdDate;
     private LocalDate modifiedDate;
     private boolean isActive = Boolean.TRUE;
-    /*
-    private List<Categories> categoryId = new ArrayList<>();
-     */
 }
