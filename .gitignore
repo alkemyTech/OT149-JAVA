@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Maven ###
+pom.xml
+
+### Spring ###
+src/main/resources/application.properties
