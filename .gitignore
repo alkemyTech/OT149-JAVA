@@ -3,6 +3,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+src/main/resources/application.properties
+pom.xml
+.gitignore
 
 ### STS ###
 .apt_generated
@@ -31,7 +34,5 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/application.properties
-pom.xml
 ong.iml
-src/main/resources/application.properties
+
