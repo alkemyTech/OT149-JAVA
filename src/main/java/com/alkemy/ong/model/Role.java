@@ -3,14 +3,21 @@ package com.alkemy.ong.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
@@ -31,15 +38,15 @@ public class Role {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "created_date", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private LocalDate createdDate;
+    private LocalDate createdAt;
 
-    @Column(name = "modified_date")
+    @Column(name = "updated_at")
     @LastModifiedDate
     @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private LocalDate modifiedDate;
+    private LocalDate updatedAt;
 
 
 }
