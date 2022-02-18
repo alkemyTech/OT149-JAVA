@@ -18,12 +18,14 @@ public class EmailService {
     @Value("${app.sendgrid.key}")
     private String apikey;
 
-    public void sendEmail(String email) throws IOException {
+    @Value("${from.email}")
+    private String fromEmail;
 
-        Email from = new Email("lautaroyanzon13@gmail.com");
-        String subject = "Welcome message";
+    public void sendEmail(String email, String subject, String contentValue) throws IOException {
+
+        Email from = new Email(fromEmail);
         Email to = new Email(email);
-        Content content = new Content("text/plain", "generic message");
+        Content content = new Content("text/plain", contentValue);
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid(apikey);
@@ -33,11 +35,8 @@ public class EmailService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
         } catch (IOException ex) {
-            throw ex;
+            throw new RuntimeException("Error sending email");
         }
     }
 }
