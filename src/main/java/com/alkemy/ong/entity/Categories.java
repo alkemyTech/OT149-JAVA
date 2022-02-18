@@ -5,14 +5,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.security.Timestamp;
-import java.time.LocalDate;
 
 @Entity
 @Data
@@ -32,12 +29,12 @@ public class Categories {
 
     private String image;
 
-    @Column(name = "created_date", updatable = false, nullable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @Column(name = "modified_date")
+    @Column(name = "updated_at", nullable = false)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     @UpdateTimestamp
     private Timestamp updatedAt;
