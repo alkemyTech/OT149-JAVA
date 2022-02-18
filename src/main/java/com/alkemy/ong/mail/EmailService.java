@@ -7,7 +7,6 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,6 @@ public class EmailService {
     private String apikey;
 
     public void sendEmail(String email) throws IOException {
-
-        System.out.println(System.getenv("SENDGRID_API_KEY"));
 
         Email from = new Email("lautaroyanzon13@gmail.com");
         String subject = "Welcome message";
