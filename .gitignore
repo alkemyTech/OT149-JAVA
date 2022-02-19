@@ -3,9 +3,6 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-src/main/resources/application.properties
-pom.xml
-.gitignore
 
 ### STS ###
 .apt_generated
@@ -15,6 +12,7 @@ pom.xml
 .settings
 .springBeans
 .sts4-cache
+/src/main/resources/application.yml
 
 ### IntelliJ IDEA ###
 .idea
@@ -34,5 +32,3 @@ build/
 
 ### VS Code ###
 .vscode/
-ong.iml
-

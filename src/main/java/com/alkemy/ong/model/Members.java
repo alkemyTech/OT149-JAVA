@@ -40,10 +40,9 @@ public class Members {
 	@CreatedDate
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate createdAt;
-
 	@LastModifiedDate
+	@Column(nullable = false)
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate updatedAt;
-
 	private boolean isActive = true;
 }
