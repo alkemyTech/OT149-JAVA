@@ -8,12 +8,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
 import lombok.Data;
@@ -21,50 +24,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name="organizations")
-@SQLDelete(sql = "UPDATE organizations SET is_active=true WHERE id = ?")
-@Where(clause="isActive=false")
+@SQLDelete(sql = "UPDATE organizations SET is_active=false WHERE id = ?")
+@Where(clause="isActive=true")
 public class Organizations {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private long id;
-	
-	@NotNull(message ="Name can't be null")
+	private long id;	
 	private String name;
-	@NotNull
 	private String images;
 	private String addres;
 	private int phone;
-	@NotNull(message ="Email can't be null")
 	private String email;
-	@NotNull
 	private  String welcomeText;
 	private String aboutUsText;
-	@Column( name ="modified_date")
-	@UpdateTimestamp
-	private LocalDate modifiedDate;
-	@Column(name= "created_date")
-	@CreationTimestamp
-	private LocalDate createdDate;
-	@Column(name= "removed_date")
-	private LocalDate removedDate;
 	
+	
+	@Column( name ="updated_at", nullable = false)
+	@LastModifiedDate
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	private LocalDate updatedAt;
+	
+	@Column(name= "created_at", updatable= false ,nullable=false)
+	@CreatedDate
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	private LocalDate createdAt;	
+
 	@Column(name ="is_active")
 	private boolean isActive = Boolean.TRUE;
-	
-	
-	public Organizations(String name, String images, String addres, int phone) {
-		super();
-		this.name = name;
-		this.images = images;
-		this.addres = addres;
-		this.phone = phone;
-	}
 
 }
