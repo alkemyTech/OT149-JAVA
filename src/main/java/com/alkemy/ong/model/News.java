@@ -1,4 +1,4 @@
-package com.alkemy.ong.entity;
+package com.alkemy.ong.model;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
