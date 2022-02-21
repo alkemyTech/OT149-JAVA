@@ -22,7 +22,7 @@ import java.time.LocalDate;
 @Where(clause = "is_active = true")
 @SQLDelete(sql = "UPDATE users_table SET is_active=false WHERE id = ?")
 @NoArgsConstructor
-public class Members {
+public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
