@@ -9,10 +9,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 @Entity
@@ -51,6 +55,6 @@ public class Users {
     private boolean isActive = Boolean.TRUE;
 
 
-    /*@ManyToMany(fetch=FetchType.EAGER)
-	private Collection<Role> roleId =new ArrayList<>();*/
+    @ManyToMany(fetch= FetchType.EAGER)
+	private Collection<Role> roleId = new ArrayList<>();
 }
