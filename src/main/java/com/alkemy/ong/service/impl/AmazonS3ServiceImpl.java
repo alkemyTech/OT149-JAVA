@@ -36,7 +36,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     private String ACCESS_KEY;
     @Value("${amazonProperties.secretKey}")
     private String SECRET_KEY;
-    @Value("${amazonProperties.region}")
+    @Value("${amazonProperties.regionEnum}")
     private String REGION_ENUM;
 
     /**
