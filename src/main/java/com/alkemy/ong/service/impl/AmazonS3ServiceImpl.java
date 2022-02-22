@@ -1,6 +1,8 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.exception.FileDeleteException;
 import com.alkemy.ong.exception.FileUploadException;
+import com.alkemy.ong.exception.InvalidValueException;
 import com.alkemy.ong.service.AmazonS3Service;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -76,7 +78,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     @Override
     public File convertMultiPartToFile(MultipartFile file) throws IOException {
         if (file.getOriginalFilename() == null) {
-            throw new FileUploadException("The file name must not be null");
+            throw new InvalidValueException("The file name must not be null");
         }
         File convFile = new File(file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);
@@ -94,7 +96,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     @Override
     public String generateFileName(MultipartFile multiPart) {
         if (multiPart.getOriginalFilename() == null) {
-            throw new FileUploadException("The file name must not be null");
+            throw new InvalidValueException("The file name must not be null");
         }
         return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
     }
@@ -148,7 +150,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     public Boolean deleteFileFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
         if (!s3client.doesObjectExist(this.BUCKET_NAME, fileName)) {
-            throw new FileUploadException("This file does not exist");
+            throw new FileDeleteException("This file does not exist");
         }
         s3client.deleteObject(new DeleteObjectRequest(this.BUCKET_NAME, fileName));
         return !s3client.doesObjectExist(this.BUCKET_NAME, fileName);
