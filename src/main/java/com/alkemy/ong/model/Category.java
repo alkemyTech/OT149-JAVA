@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 @SQLDelete(sql = "UPDATE categories SET isActive = false WHERE id=?")
 @Where(clause = "isActive=true")
 @Table(name = "categories")
-public class Categories {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
