@@ -14,15 +14,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
 @SQLDelete(sql = "UPDATE news SET isActive = false WHERE id=?")
 @Where(clause = "isActive=true")
 @Table(name = "news")
-public class News {
+public class New {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
