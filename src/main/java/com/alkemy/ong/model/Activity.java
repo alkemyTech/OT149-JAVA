@@ -17,8 +17,8 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE activities SET isActive = false WHERE id=?")
-@Where(clause = "isActive=true")
+@SQLDelete(sql = "UPDATE activities SET is_active = false WHERE id=?")
+@Where(clause = "is_active=true")
 @Table(name = "activities")
 public class Activity {
 
