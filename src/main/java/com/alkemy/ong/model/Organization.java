@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE organizations SET is_active=false WHERE id = ?")
-@Where(clause="isActive=true")
+@Where(clause="is_active=true")
 public class Organization {
 	
 	@Id
@@ -27,7 +27,7 @@ public class Organization {
 	private long id;	
 	private String name;
 	private String images;
-	private String addres;
+	private String address;
 	private int phone;
 	private String email;
 	private  String welcomeText;
