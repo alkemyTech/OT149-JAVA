@@ -17,18 +17,28 @@ public class UserServiceImpl implements UserService {
     UsersRepository usersRepository;
     @Autowired
     UserMapper userMapper;
-    @Override
-    public UserPatchDTO userPatch(Long id, UserPatchDTO patchDto) {
 
-        User user = usersRepository.findById(id).orElse(null);
-        if (user==null){
-            throw new  UserNotFoundException("No existe un usuario con id "+id);
-        }
-        user.setFirstName(patchDto.getFirstName());
-        user.setLastName(patchDto.getLastName());
-        user.setPhoto(patchDto.getPhoto());
-        user=usersRepository.save(user);
-        UserPatchDTO response = userMapper.toUserPatchDTO(user);
-        return response;
+    /**
+     * Este método guarda los cambio en la base de datos.
+     * @param id Id del User a patchear.
+     * @param patchDto Dto del User modificado.
+     */
+
+    @Override
+    public void userPatch(Long id, UserPatchDTO patchDto) {
+        usersRepository.findById(id).map(user -> {
+
+            user.setFirstName(patchDto.getFirstName());
+            user.setLastName(patchDto.getLastName());
+            user.setPhoto(patchDto.getPhoto());
+
+            return usersRepository.save(user);
+
+
+        }).orElseThrow(() -> {
+
+            throw new UserNotFoundException();
+
+        });
     }
 }

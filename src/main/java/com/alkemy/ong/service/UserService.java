@@ -4,5 +4,5 @@ import com.alkemy.ong.dto.UserPatchDTO;
 
 public interface UserService {
 
-    UserPatchDTO userPatch(Long id, UserPatchDTO patchDto);
+    void userPatch(Long id, UserPatchDTO patchDto);
 }
