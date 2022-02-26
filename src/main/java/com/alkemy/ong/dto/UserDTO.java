@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDTO {
 
     @NotEmpty(message = "The name field cannot be empty")
     private String firstName;
