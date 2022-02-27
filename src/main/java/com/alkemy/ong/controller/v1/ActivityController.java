@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import static com.alkemy.ong.controller.ControllerConstants.REQ_MAPP_ACTIVITIES;
-import static com.alkemy.ong.controller.ControllerConstants.REQ_MAPP_CREATE;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class ActivityController {
     @Autowired
     private ActivityServiceImp activityServiceImp;
 
-    @PostMapping(REQ_MAPP_CREATE)
+    @PostMapping()
     public ResponseEntity<ActivityDto> save(@Valid @RequestBody ActivityDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(activityServiceImp.save(dto));
     }
