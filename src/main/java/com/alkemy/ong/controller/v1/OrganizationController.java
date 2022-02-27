@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 
-import static com.alkemy.ong.controller.ControllerConstants.REQ_MAPP_PUBLIC;
+
+
 import static com.alkemy.ong.controller.ControllerConstants.V_1_ORG;
 
 @RestController
@@ -22,7 +22,7 @@ public class OrganizationController {
 
     private final OrganizationService service;
 
-    @GetMapping(REQ_MAPP_PUBLIC)
+    @GetMapping("/public/{id}")
     public  ResponseEntity<OrganizationResponseDto> getOrganization (@PathVariable(value="id") Long id){
         return ResponseEntity.ok().body(service.getOrganization(id));
     }
