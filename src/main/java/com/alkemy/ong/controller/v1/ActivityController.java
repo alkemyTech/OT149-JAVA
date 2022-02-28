@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -24,8 +26,13 @@ public class ActivityController {
     private ActivityServiceImp activityServiceImp;
 
     @PostMapping()
-    public ResponseEntity<ActivityDto> save(@Valid @RequestBody ActivityDto dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(activityServiceImp.save(dto));
+    public ResponseEntity<Void> addActivity(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody ActivityDto dto) {
+
+        final long activityId = activityServiceImp.saveActivity(dto);
+
+        UriComponents uriComponents = uriComponentsBuilder.path("/{id}").buildAndExpand(activityId);
+
+        return ResponseEntity.created(uriComponents.toUri()).build();
     }
 
 }

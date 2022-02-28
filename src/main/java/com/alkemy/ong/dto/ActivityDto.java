@@ -16,10 +16,10 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ActivityDto implements Serializable {
 
-    @NotBlank
+    @NotBlank(message = "The name field can not be empty")
     private String name;
-    @NotBlank
+    @NotBlank(message = "The text field can not be empty")
     private String text;
-    @NotBlank
+    @NotBlank(message = "The image field can not be empty")
     private String image;
 }

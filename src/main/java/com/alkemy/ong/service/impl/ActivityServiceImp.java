@@ -21,13 +21,13 @@ public class ActivityServiceImp implements ActivityService {
 
     @Transactional
     @Override
-    public ActivityDto save(ActivityDto dto) {
+    public Long saveActivity(ActivityDto dto) {
 
         Activity activity = activityMapper.toActivity(dto);
 
-        ActivityDto activityDto = activityMapper.toDto(activitiesRepository.save(activity));
+        activitiesRepository.save(activity);
 
-        return activityDto;
+        return activity.getId();
     }
 
 }
