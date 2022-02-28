@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
-
+  
     /**
      * Este metodo se encarga de la captura del error USER_NOT_FOUND
      * @return Devuelve la excepcion que estoy capturando y el dto
@@ -43,5 +43,5 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
-
+  
 }

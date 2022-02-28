@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void userPatch(Long id, UserPatchDTO patchDto) {
+      
         userRepository.findById(id).map(user -> {
 
             user.setFirstName(patchDto.getFirstName());
@@ -47,7 +48,6 @@ public class UserServiceImpl implements UserService {
             user.setPhoto(patchDto.getPhoto());
 
             return userRepository.save(user);
-
 
         }).orElseThrow(() -> {
 
