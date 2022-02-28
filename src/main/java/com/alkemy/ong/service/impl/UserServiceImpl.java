@@ -8,22 +8,23 @@ import com.alkemy.ong.repository.UsersRepository;
 import com.alkemy.ong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
-    UsersRepository usersRepository;
+    private UsersRepository usersRepository;
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     /**
      * Este método guarda los cambio en la base de datos.
      * @param id Id del User a patchear.
      * @param patchDto Dto del User modificado.
      */
-
     @Override
     public void userPatch(Long id, UserPatchDTO patchDto) {
         usersRepository.findById(id).map(user -> {
@@ -40,5 +41,13 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException();
 
         });
-    }
+   }
+
+	@Override
+	@Transactional
+	public void deleteUser(Long userId){
+		User user = usersRepository.getById(userId);
+		usersRepository.delete(user);
+	}
+
 }
