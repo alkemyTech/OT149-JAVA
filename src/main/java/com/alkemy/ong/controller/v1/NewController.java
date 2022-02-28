@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.alkemy.ong.controller.ControllerConstants.V_1_GETNEW;
 import static com.alkemy.ong.controller.ControllerConstants.V_1_NEWS;
 
 @RestController
@@ -18,7 +17,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_NEWS;
 public class NewController {
     private final NewService service;
 
-    @GetMapping(V_1_GETNEW)
+    @GetMapping("/{id}")
     public ResponseEntity<NewDetailDto>getNewById(@PathVariable Long id){
         NewDetailDto detailNew = service.getNewById(id);
         return ResponseEntity.ok().body(detailNew);

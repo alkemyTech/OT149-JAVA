@@ -1,6 +1,7 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.NewDetailDto;
+import com.alkemy.ong.exception.NewNotFoundException;
 import com.alkemy.ong.mapper.NewMapper;
 import com.alkemy.ong.model.New;
 import com.alkemy.ong.repository.NewsRepository;
@@ -14,8 +15,10 @@ public class NewServiceImpl implements NewService {
     private NewMapper mapper;
 
     public NewDetailDto getNewById (Long id){
-        New newModel = repository.getById(id);
-        NewDetailDto result = mapper.toNewDetailDto(newModel);
-        return result;
+        return repository.findById(id).map(newModel ->{
+            return mapper.toNewDetailDto(newModel);
+        }).orElseThrow(()->{
+            throw new NewNotFoundException();
+        });
     }
 }
