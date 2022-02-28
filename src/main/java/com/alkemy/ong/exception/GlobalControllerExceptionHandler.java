@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 public class GlobalControllerExceptionHandler {
 
 
-    @ExceptionHandler
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exc){
 
         ErrorResponse error = new ErrorResponse();
