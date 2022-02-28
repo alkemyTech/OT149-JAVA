@@ -1,24 +1,37 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserPatchDTO;
+import com.alkemy.ong.dto.UserResponseDto;
 import com.alkemy.ong.exception.UserNotFoundException;
 import com.alkemy.ong.mapper.UserMapper;
+import com.alkemy.ong.mapper.UserResponseMapper;
 import com.alkemy.ong.model.User;
-import com.alkemy.ong.repository.UsersRepository;
+import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+  
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
+    private final UserResponseMapper userResponseMapper;
 
-    @Autowired
-    private UsersRepository usersRepository;
-    @Autowired
-    private UserMapper userMapper;
+    @Override
+    public UserResponseDto saveUser(UserDto userDTO) {
+
+        User newUser = userMapper.toUser(userDTO);
+
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+        return userResponseMapper.toUserResponse(userRepository.save(newUser));
+    }
 
     /**
      * Este método guarda los cambio en la base de datos.
@@ -27,14 +40,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void userPatch(Long id, UserPatchDTO patchDto) {
-        usersRepository.findById(id).map(user -> {
+      
+        userRepository.findById(id).map(user -> {
 
             user.setFirstName(patchDto.getFirstName());
             user.setLastName(patchDto.getLastName());
             user.setPhoto(patchDto.getPhoto());
 
-            return usersRepository.save(user);
-
+            return userRepository.save(user);
 
         }).orElseThrow(() -> {
 
@@ -46,8 +59,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void deleteUser(Long userId){
-		User user = usersRepository.getById(userId);
-		usersRepository.delete(user);
+		User user = userRepository.getById(userId);
+		userRepository.delete(user);
 	}
 
 }
