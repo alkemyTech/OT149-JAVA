@@ -14,7 +14,7 @@ SELECT 2,
        NULL WHERE NOT EXISTS (SELECT * FROM roles WHERE name='ROLE_USER');
 
 -- It inserts the organization data
-INSERT INTO organization (id, about_us_text, address, created_at, email, images, is_active, name, phone, updated_at,
+INSERT INTO organizations (id, about_us_text, address, created_at, email, images, is_active, name, phone, updated_at,
                           welcome_text)
 SELECT 1,
        '<h3>Nosotros</h3>
@@ -49,4 +49,4 @@ SELECT 1,
        'Somos Más',
        1160112988,
        NULL,
-       '¡Bienvenido a ONG Somos Más! Trabajamos para transformar la vida de los más necesitados' WHERE NOT EXISTS (SELECT * FROM organization WHERE id=1);
+       '¡Bienvenido a ONG Somos Más! Trabajamos para transformar la vida de los más necesitados' WHERE NOT EXISTS (SELECT * FROM organizations WHERE id=1);
