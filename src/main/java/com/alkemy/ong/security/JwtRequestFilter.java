@@ -3,6 +3,7 @@ package com.alkemy.ong.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,34 +30,36 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Value("${jwt.header}")
-    private String HEADER;
-
     @Value("${jwt.tokenPrefix}")
     private String TOKEN_PREFIX;
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        final String authorizationHeader = request.getHeader(this.HEADER);
+        final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         String username = null;
         String jwt = null;
-
-        if (authorizationHeader != null && authorizationHeader.startsWith(this.TOKEN_PREFIX)) {
-            jwt = authorizationHeader.replaceAll(this.TOKEN_PREFIX,"");
-            username = jwtUtils.extractUsername(jwt);
-        }
-
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userSecurityService.loadUserByUsername(username);
-            if (jwtUtils.validateToken(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
-                Authentication auth = authenticationManager.authenticate(authReq);
-                //Set auth in context
-                SecurityContextHolder.getContext().setAuthentication(auth);
+        try{
+            if (authorizationHeader != null && authorizationHeader.startsWith(this.TOKEN_PREFIX)) {
+                jwt = authorizationHeader.replaceAll(this.TOKEN_PREFIX,"");
+                username = jwtUtils.extractUsername(jwt);
             }
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userSecurityService.loadUserByUsername(username);
+                if (jwtUtils.validateToken(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
+                    Authentication auth = authenticationManager.authenticate(authReq);
+                    //Set auth in context
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
+            }
+        }catch (Exception e){
+            logger.warn("Invalid jwt token exception due " + e);
         }
+
+
         chain.doFilter(request, response);
     }
 }
