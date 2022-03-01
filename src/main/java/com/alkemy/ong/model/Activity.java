@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -36,12 +37,12 @@ public class Activity {
     @Column(name = "created_at", updatable = false, nullable = false)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     @CreationTimestamp
-    private Timestamp createdAt;
+    private LocalDate createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     @UpdateTimestamp
-    private Timestamp updatedAt;
+    private LocalDate updatedAt;
 
     @Column(name = "is_active")
     private boolean isActive = Boolean.TRUE;
