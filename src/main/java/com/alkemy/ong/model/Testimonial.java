@@ -3,7 +3,9 @@ package com.alkemy.ong.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
@@ -31,13 +34,16 @@ public class Testimonial {
 	private String name;
 	private String image;
 	private String content;
-	@Column(nullable = false, updatable = false)
-	@CreatedDate
+
+	@Column(updatable = false, nullable = false)
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate createdAt;
-	@LastModifiedDate
+	@CreationTimestamp
+	private java.sql.Timestamp createdAt;
+
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate updatedAt;
+	@UpdateTimestamp
+	private Timestamp updatedAt;
+
 	private boolean isActive = true;
 }
