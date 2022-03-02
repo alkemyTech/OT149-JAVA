@@ -1,6 +1,6 @@
 package com.alkemy.ong.controller.v1;
 
-import com.alkemy.ong.service.ImageUploadService;
+import com.alkemy.ong.service.AmazonS3Service;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_IMAGES_UPLOAD;
 @RequiredArgsConstructor
 public class ImageUploadController {
 
-	private final ImageUploadService service;
+	private final AmazonS3Service service;
 
-	@PostMapping("/upload-image")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public String uploadFile(@RequestPart(value = "file") MultipartFile file) throws FileUploadException {
 		return service.uploadImage(file);
