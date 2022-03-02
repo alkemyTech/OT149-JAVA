@@ -123,6 +123,106 @@ SELECT 3,
         y adolescentes al área educativa.</li>',
         NULL WHERE NOT EXISTS (SELECT * FROM activities WHERE id=3);
 
+-- It inserts the members data
+INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+SELECT 1,
+        CURDATE(),
+        'Presidenta María estudió economía y se especializó en economía para el
+        desarrollo. Comenzó como voluntaria en la fundación y fue quien promovió el
+        crecimiento y la organización de la institución acompañando la transformación
+        de un simple comedor barrial al centro comunitario de atención integral que es
+        hoy en día',
+        'https://www.facebook.com/MariaIrola',
+        NULL,
+        'https://www.instagram.com/Maria_Irola',
+        TRUE,
+        'https://www.linkedin.com/in/MariaIrola',
+        'María Irola',
+        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=1);
 
-        
-       
+INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+SELECT 2,
+       CURDATE(),
+       'Fundadora Marita estudió la carrera de nutrición y se especializó en nutrición
+        infantil. Toda la vida fue voluntaria en distintos espacios en el barrio hasta que
+        decidió abrir un comedor propio. Comenzó trabajando con 5 familias y culminó
+        su trabajo transformando Somos Más en la organización que es hoy.',
+       'https://www.facebook.com/MaritaGomez',
+       NULL,
+       'https://www.instagram.com/Maria_Gomez',
+       TRUE,
+       'https://www.linkedin.com/in/MaritaGomez',
+       'Marita Gomez',
+       NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=2);
+
+INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+SELECT 3,
+       CURDATE(),
+       'Terapista Ocupacional',
+       'https://www.facebook.com/MiriamRodriguez',
+       NULL,
+       'https://www.instagram.com/Miriam_Rodriguez',
+       TRUE,
+       'https://www.linkedin.com/in/MiriamRodriguez',
+       'Miriam Rodriguez',
+       NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=3);
+
+INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+SELECT 4,
+       CURDATE(),
+       'Psicopedagoga',
+       'https://www.facebook.com/CeciliaMendez',
+       NULL,
+       'https://www.instagram.com/Cecilia_Mendez',
+       TRUE,
+       'https://www.linkedin.com/in/CeciliaMendez',
+       'Cecilia Mendez',
+       NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=4);
+
+INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+SELECT 5,
+       CURDATE(),
+       'Psicólogo',
+       'https://www.facebook.com/MarioFuentes',
+       NULL,
+       'https://www.instagram.com/Mario_Fuentes',
+       TRUE,
+       'https://www.linkedin.com/in/MarioFuentes',
+       'Mario Fuentes',
+       NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=5);
+
+INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+SELECT 6,
+       CURDATE(),
+       'Contador',
+       'https://www.facebook.com/RodrigoFuente',
+       NULL,
+       'https://www.instagram.com/Rodrigo_Fuente',
+       TRUE,
+       'https://www.linkedin.com/in/RodrigoFuente',
+       'Rodrigo Fuente',
+       NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=6);
+
+INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+SELECT 7,
+       CURDATE(),
+       'Profesora de Artes Dramáticas',
+       'https://www.facebook.com/MariaGarcia',
+       NULL,
+       'https://www.instagram.com/Maria_Garcia',
+       TRUE,
+       'https://www.linkedin.com/in/MariaGarcia',
+       'Maria Garcia',
+       NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=7);
+
+INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+SELECT 8,
+       CURDATE(),
+       'Profesor de Educación Física',
+       'https://www.facebook.com/MarcoFernandez',
+       NULL,
+       'https://www.instagram.com/Marco_Fernandez',
+       TRUE,
+       'https://www.linkedin.com/in/MarcoFernandez',
+       'Marco Fernandez',
+       NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=8);
