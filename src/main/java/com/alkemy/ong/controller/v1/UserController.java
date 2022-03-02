@@ -26,7 +26,7 @@ public class UserController {
     private final UserService service;
 
     /**
-     * Este método modifica los campos firstName, lastName y photo de User.
+     * Este metodo modifica los campos firstName, lastName y photo de User.
      * @param id Id del User a patchear.
      * @param patchDto Dto con los cambios a realizar.
      */
