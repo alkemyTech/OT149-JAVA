@@ -27,7 +27,7 @@ public class Organization {
 	private long id;	
 	private String name;
 	private String images;
-	private String addres;
+	private String address;
 	private int phone;
 	private String email;
 	private  String welcomeText;
