@@ -24,9 +24,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final UserResponseMapper userResponseMapper;
-
-    @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
 
     @Override
     public UserResponseDto saveUser(UserDto userDTO) {
