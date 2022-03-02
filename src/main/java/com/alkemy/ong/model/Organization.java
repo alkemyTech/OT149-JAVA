@@ -13,13 +13,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Data
 @Entity
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE organizations SET is_active=false WHERE id = ?")
-@Where(clause="isActive=true")
+@Where(clause="is_active=true")
+@Table(name = "organizations")
 public class Organization {
 	
 	@Id
