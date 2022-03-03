@@ -31,17 +31,17 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
-  
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exc){
+
+    @ExceptionHandler(value = {TestimonialNotFoundException.class})
+    protected ResponseEntity<ErrorResponse> handleTestimonialNotFoundException(TestimonialNotFoundException exc){
 
         ErrorResponse error = new ErrorResponse();
 
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
-        error.setMessage(exc.getFieldError().getDefaultMessage());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage("Testimonial not found");
         error.setTimeStamp(ZonedDateTime.now());
 
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
   
 }
