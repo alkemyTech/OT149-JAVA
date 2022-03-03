@@ -4,6 +4,8 @@ import com.alkemy.ong.dto.OrganizationPutDto;
 import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +24,10 @@ public class OrganizationController {
     private final OrganizationService service;
 
     @PutMapping("/public/{id}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateOrganization(@PathVariable Long id, @Valid @RequestBody OrganizationPutDto organization){
+    public ResponseEntity<?> updateOrganization(@PathVariable Long id, @Valid @RequestBody OrganizationPutDto organization, BindingResult result){
+        if (result.hasErrors())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(service.validationError(result));
         service.updateOrganization(id, organization);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

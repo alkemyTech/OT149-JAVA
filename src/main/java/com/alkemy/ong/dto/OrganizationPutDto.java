@@ -3,10 +3,14 @@ package com.alkemy.ong.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +22,6 @@ public class OrganizationPutDto {
     @NotBlank(message = "The field cannot be empty.")
     private String images;
     private String address;
-    @Digits(message = "Phone must be of type numeric.", integer = 1, fraction = 0)
     private int phone;
     @NotBlank(message = "Email cannot be empty.")
     @Email(message = "The field must be a Email.")
