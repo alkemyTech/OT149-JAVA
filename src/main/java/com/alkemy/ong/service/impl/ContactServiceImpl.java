@@ -17,12 +17,22 @@ public class ContactServiceImpl implements ContactService {
     private final ContactsRepository contactsRepository;
     private final ContactMapper contactMapper;
 
+    /**
+     * This method saves a new contact into database.
+     * @param dto The new contact to be saved as ContactDto
+     * @return The contact saved as ContactDto
+     */
     @Override
     public ContactDto saveContact(ContactDto dto) {
         Contact entity = this.contactMapper.toContact(dto);
         Contact entitySaved = this.contactsRepository.save(entity);
         return this.contactMapper.toContactDto(entitySaved);
     }
+
+    /**
+     * This method gets all the active contacts saved into database
+     * @return The list of contacts as List ContactDto
+     */
 
     @Override
     public List<ContactDto> getAll() {
