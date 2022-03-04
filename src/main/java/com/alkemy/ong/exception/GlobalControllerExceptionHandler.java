@@ -4,7 +4,6 @@ import com.alkemy.ong.dto.UserNotFoundErrorDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -20,6 +19,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
      * Este metodo se encarga de la captura del error USER_NOT_FOUND
      * @return Devuelve la excepcion que estoy capturando y el dto
      */
+
     @ExceptionHandler(value = {UserNotFoundException.class})
     protected ResponseEntity<Object> handleUserNotFound(RuntimeException ex, WebRequest request){
 
@@ -31,17 +31,17 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
-
-    @ExceptionHandler(value = {TestimonialNotFoundException.class})
-    protected ResponseEntity<ErrorResponse> handleTestimonialNotFoundException(TestimonialNotFoundException exc){
-
+  
+/*@ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exc){
+    
         ErrorResponse error = new ErrorResponse();
-
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setMessage("Testimonial not found");
+        
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(exc.getFieldError().getDefaultMessage());
         error.setTimeStamp(ZonedDateTime.now());
-
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
+        
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }*/
   
 }
