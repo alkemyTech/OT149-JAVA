@@ -6,4 +6,5 @@ public interface ControllerConstants {
     String V_1_AUTH = "/v1/auth";
     String V_1_TESTIMONIAL = "/v1/testimonials";
     String REQ_MAPP_ACTIVITIES = "/v1/activities";
+    String V_1_CATEGORIES = "/v1/categories";
 }
