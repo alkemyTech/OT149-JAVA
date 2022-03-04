@@ -26,8 +26,8 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE contacts SET deleted_at=CURDATE() WHERE id = ?")
-@Where(clause = "deleted_at=NULL")
+@SQLDelete(sql = "UPDATE contacts SET deleted_at=CURDATE() , is_active=false WHERE id = ?")
+@Where(clause = "is_active=true")
 @Table(name = "contacts")
 public class Contact {
     @Id
@@ -46,6 +46,9 @@ public class Contact {
     @Lob
     @Column(name = "message")
     private String message;
+
+    @Column(name="is_active")
+    private Boolean isActive=Boolean.TRUE;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
