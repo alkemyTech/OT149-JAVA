@@ -22,6 +22,12 @@ public class ContactController {
 
     private final ContactService contactService;
 
+    /**
+     * This endpoint creates a new contact to save to the database. Input fields are validated.
+     * @param dto The new contact to save as ContactDto
+     * @return The contact saved as ContactDto
+     */
+
     @PostMapping
     public ResponseEntity<ContactDto> saveContact(@Valid @RequestBody ContactDto dto) {
         ContactDto result = this.contactService.saveContact(dto);
