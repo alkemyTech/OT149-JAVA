@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper
+
 public interface ContactMapper {
     List<ContactDto> toContactDtoList(List<Contact> contacts);
 }
