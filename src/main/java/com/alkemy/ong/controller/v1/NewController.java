@@ -1,7 +1,6 @@
 package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.dto.NewDto;
-import com.alkemy.ong.dto.NewResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,9 +28,9 @@ public class NewController {
     }
   
   @PutMapping("/{id}")
-	public ResponseEntity<NewResponseDto> saveOrUpdateNews(@RequestBody NewDto news, @PathVariable(value="id") Long id ){
+	public ResponseEntity<NewDetailDto> saveOrUpdateNews(@RequestBody NewDto news, @PathVariable(value="id") Long id ){
 
-		return new ResponseEntity<NewResponseDto>(service.addNews(news,id),HttpStatus.CREATED);
+		return new ResponseEntity<NewDetailDto>(service.addNews(news,id),HttpStatus.CREATED);
 	}
 
 }

@@ -7,15 +7,17 @@ import com.alkemy.ong.mapper.NewMapper;
 import com.alkemy.ong.model.New;
 import com.alkemy.ong.repository.NewsRepository;
 import com.alkemy.ong.service.NewService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.alkemy.ong.dto.NewDto;
 import com.alkemy.ong.exception.NotFoundException;
 
 @Service
+@RequiredArgsConstructor
 public class NewServiceImpl implements NewService {
 
-    private NewsRepository repository;
-    private NewMapper mapper;
+    private final NewsRepository repository;
+    private final NewMapper mapper;
 
     public NewDetailDto getNewById (Long id){
         return repository.findById(id).map(newModel ->{
@@ -27,9 +29,9 @@ public class NewServiceImpl implements NewService {
   
   
   @Override
-    public NewResponseDto addNews(NewDto newDto, Long id) {
+    public NewDetailDto addNews(NewDto newDto, Long id) {
 
-        return newsRepository.findById(id)
+        return repository.findById(id)
                 .map(tempNew -> {
 
                     tempNew.setId(id);
