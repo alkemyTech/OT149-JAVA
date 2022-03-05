@@ -6,7 +6,7 @@ import com.alkemy.ong.exception.UserNotFoundException;
 import com.alkemy.ong.mail.EmailService;
 import com.alkemy.ong.mapper.UserMapper;
 import com.alkemy.ong.model.User;
-import com.alkemy.ong.payload.request.RegisterRequest;
+import com.alkemy.ong.dto.RegisterRequest;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.JwtUtils;
 import com.alkemy.ong.service.UserService;
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
-        //emailService.sendWelcomeEmail(newUser.getEmail());
+        emailService.sendWelcomeEmail(newUser.getEmail());
 
         return registerResponse(userRepository.save(newUser), getToken(newUser));
     }
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }

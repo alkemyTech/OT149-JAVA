@@ -1,4 +1,4 @@
-package com.alkemy.ong.payload.request;
+package com.alkemy.ong.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

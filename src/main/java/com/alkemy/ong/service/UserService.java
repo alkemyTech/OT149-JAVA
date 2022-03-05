@@ -3,7 +3,7 @@ package com.alkemy.ong.service;
 import com.alkemy.ong.dto.UserResponseDto;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.model.User;
-import com.alkemy.ong.payload.request.RegisterRequest;
+import com.alkemy.ong.dto.RegisterRequest;
 
 import java.util.Optional;
 
