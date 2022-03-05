@@ -44,4 +44,16 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }*/
   
+  @ExceptionHandler(value = {NotFoundException.class})
+    protected ResponseEntity<Object> handleOrganizationNotFound(RuntimeException ex, WebRequest request){
+
+        ErrorResponse error = new ErrorResponse();
+
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(ex.getMessage());
+        error.setTimeStamp(ZonedDateTime.now());
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
 }
+
