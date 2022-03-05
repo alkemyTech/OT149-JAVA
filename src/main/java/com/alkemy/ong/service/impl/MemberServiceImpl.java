@@ -22,8 +22,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional(readOnly = true)
     @Override
-    public ArrayList<MemberDto> getAll() {
-        return (ArrayList<MemberDto>) membersRepository.findAll().stream().map(memberMapper::toDto).collect(Collectors.toList());
+    public List<MemberDto> getAll() {
+        return membersRepository.findAll().stream().map(memberMapper::toDto).collect(Collectors.toList());
     }
 
 }
