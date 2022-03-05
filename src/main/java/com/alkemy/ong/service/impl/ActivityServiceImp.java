@@ -1,6 +1,7 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.ActivityDto;
+import com.alkemy.ong.exception.ActivityNotFoundException;
 import com.alkemy.ong.mapper.ActivityMapper;
 import com.alkemy.ong.model.Activity;
 import com.alkemy.ong.repository.ActivitiesRepository;
@@ -28,6 +29,23 @@ public class ActivityServiceImp implements ActivityService {
         activitiesRepository.save(activity);
 
         return activity.getId();
+    }
+
+    @Override
+    public ActivityDto updateActivity(Long id, ActivityDto dto) {
+
+        ActivityDto responseDto = activitiesRepository.findById(id).map(activity -> {
+
+            activity.setName(dto.getName());
+            activity.setText(dto.getText());
+            activity.setImage(dto.getImage());
+
+            return activityMapper.toDto(activitiesRepository.save(activity));
+        }).orElseThrow(() -> {
+            throw new ActivityNotFoundException();
+        });
+
+        return responseDto;
     }
 
 }
