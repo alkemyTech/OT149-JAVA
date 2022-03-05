@@ -7,6 +7,7 @@ import com.alkemy.ong.repository.ContactsRepository;
 import com.alkemy.ong.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class ContactServiceImpl implements ContactService {
      * @param dto The new contact to be saved as ContactDto
      * @return The contact saved as ContactDto
      */
+    @Transactional
     @Override
     public ContactDto saveContact(ContactDto dto) {
         Contact entity = this.contactMapper.toContact(dto);
@@ -33,7 +35,7 @@ public class ContactServiceImpl implements ContactService {
      * This method gets all the active contacts saved into database
      * @return The list of contacts as List ContactDto
      */
-
+    @Transactional(readOnly = true)
     @Override
     public List<ContactDto> getAll() {
         List<Contact> contacts = this.contactsRepository.findAll();
