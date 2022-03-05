@@ -5,6 +5,7 @@ import com.alkemy.ong.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class ContactController {
      * This endpoint gets all the active contacts saved in the database. Only can be used by Admin
      * @return The contacts list as List<ContactDto>
      */
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<ContactDto>> getAll(){
         List<ContactDto> dtoList= this.contactService.getAll();
