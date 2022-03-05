@@ -4,5 +4,7 @@ import com.alkemy.ong.dto.ActivityDto;
 
 public interface ActivityService {
 
-    public Long saveActivity(ActivityDto dto);
+    Long saveActivity(ActivityDto dto);
+
+    ActivityDto updateActivity(Long id, ActivityDto dto);
 }

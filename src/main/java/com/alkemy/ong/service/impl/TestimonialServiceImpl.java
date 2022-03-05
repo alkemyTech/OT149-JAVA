@@ -13,8 +13,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TestimonialServiceImpl implements TestimonialService {
 
-	private final TestimonialsRepository testimonialsRepository;
 	private final TestimonialMapper testimonialMapper;
+	private final TestimonialsRepository testimonialsRepository;
+
+	@Override
+	public void saveTestimonial(TestimonialDto dto){
+
+		Testimonial testimonial = testimonialMapper.toTestimonial(dto);
+		testimonialsRepository.save(testimonial);
+	}
 
 	@Override
 	public TestimonialDto testimonialPut(Long id, TestimonialDto dto){

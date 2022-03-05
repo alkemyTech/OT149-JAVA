@@ -9,5 +9,4 @@ public interface TestimonialMapper {
 
 	TestimonialDto toDto(Testimonial testimonial);
 	Testimonial toTestimonial(TestimonialDto dto);
-
 }
