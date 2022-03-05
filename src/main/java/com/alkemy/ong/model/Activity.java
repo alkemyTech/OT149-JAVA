@@ -13,12 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE activities SET isActive = false WHERE id=?")
-@Where(clause = "isActive=true")
+@SQLDelete(sql = "UPDATE activities SET is_active = false WHERE id=?")
+@Where(clause = "is_active=true")
 @Table(name = "activities")
 public class Activity {
 
@@ -36,12 +36,12 @@ public class Activity {
     @Column(name = "created_at", updatable = false, nullable = false)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     @CreationTimestamp
-    private Timestamp createdAt;
+    private LocalDate createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     @UpdateTimestamp
-    private Timestamp updatedAt;
+    private LocalDate updatedAt;
 
     @Column(name = "is_active")
     private boolean isActive = Boolean.TRUE;
