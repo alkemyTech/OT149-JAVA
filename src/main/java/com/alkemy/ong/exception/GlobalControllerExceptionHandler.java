@@ -4,7 +4,6 @@ import com.alkemy.ong.dto.UserNotFoundErrorDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -20,6 +19,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
      * Este metodo se encarga de la captura del error USER_NOT_FOUND
      * @return Devuelve la excepcion que estoy capturando y el dto
      */
+
     @ExceptionHandler(value = {UserNotFoundException.class})
     protected ResponseEntity<Object> handleUserNotFound(RuntimeException ex, WebRequest request){
 
@@ -44,4 +44,16 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }*/
   
+  @ExceptionHandler(value = {NotFoundException.class})
+    protected ResponseEntity<Object> handleOrganizationNotFound(RuntimeException ex, WebRequest request){
+
+        ErrorResponse error = new ErrorResponse();
+
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(ex.getMessage());
+        error.setTimeStamp(ZonedDateTime.now());
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
 }
+

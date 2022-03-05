@@ -7,4 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface NewMapper {
     NewDetailDto toNewDetailDto(New newModel);
+    New toNew(NewDetailDto dto);
 }

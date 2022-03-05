@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +35,11 @@ public class ActivityController {
         UriComponents uriComponents = uriComponentsBuilder.path("/{id}").buildAndExpand(activityId);
 
         return ResponseEntity.created(uriComponents.toUri()).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ActivityDto> updateActivity(@PathVariable Long id, @Valid @RequestBody ActivityDto dto) {
+        return ResponseEntity.accepted().body(activityServiceImp.updateActivity(id, dto));
     }
 
 }

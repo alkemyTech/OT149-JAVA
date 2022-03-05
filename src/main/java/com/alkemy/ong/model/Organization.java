@@ -13,7 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+
 import java.time.LocalDate;
 
 @Data
@@ -22,6 +24,7 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE organizations SET is_active=false WHERE id = ?")
 @Where(clause="is_active=true")
 @Table(name = "organizations")
+
 public class Organization {
 	
 	@Id
@@ -29,14 +32,15 @@ public class Organization {
 	private long id;	
 	private String name;
 	private String images;
-	private String addres;
+	private String address;
 	private int phone;
 	private String email;
 	private  String welcomeText;
+	@Lob
 	private String aboutUsText;
 	
 	
-	@Column( name ="updated_at", nullable = false)
+	@Column( name ="updated_at")
 	@LastModifiedDate
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate updatedAt;
