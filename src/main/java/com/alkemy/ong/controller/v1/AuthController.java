@@ -3,9 +3,7 @@ package com.alkemy.ong.controller.v1;
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserResponseDto;
 import com.alkemy.ong.exception.UserNotFoundException;
-import com.alkemy.ong.model.User;
 import com.alkemy.ong.service.AuthService;
-import com.alkemy.ong.service.UserService;
 import com.alkemy.ong.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +37,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> userLogged()throws UserNotFoundException {
+    public ResponseEntity<UserDto> userLogged(){
         return new ResponseEntity<>(authService.getUserLogged(), HttpStatus.OK);
     }
 
