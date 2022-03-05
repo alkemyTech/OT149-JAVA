@@ -52,9 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return (UserDetailsService) email -> {
-            return userService.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
-        };
+        return (UserDetailsService) email -> userService.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
