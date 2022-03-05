@@ -4,4 +4,5 @@ import com.alkemy.ong.dto.CategoryDetailDto;
 
 public interface CategoryService {
     CategoryDetailDto getCategoryById(Long id);
+    void deleteCategory(Long id);
 }

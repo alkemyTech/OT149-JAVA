@@ -1,20 +1,22 @@
 package com.alkemy.ong.service.impl;
 
-import com.alkemy.ong.dto.CategoryDetailDto;
 import com.alkemy.ong.exception.CategoryNotFoundException;
-import com.alkemy.ong.mapper.CategoryMapper;
+import com.alkemy.ong.model.Category;
 import com.alkemy.ong.repository.CategoriesRepository;
 import com.alkemy.ong.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-
     @Autowired
-    CategoriesRepository repository;
+    private final CategoriesRepository repository;
     @Autowired
-    CategoryMapper mapper;
+    private final CategoryMapper mapper;
 
     public CategoryDetailDto getCategoryById(Long id){
         return repository.findById(id).map(category -> {
@@ -22,6 +24,16 @@ public class CategoryServiceImpl implements CategoryService {
         }).orElseThrow(()->{
             throw new CategoryNotFoundException();
         });
+    }
 
+
+
+    @Override
+    @Transactional
+    public void deleteCategory(Long id){
+        if (repository.findById(id).isEmpty()){
+            throw new CategoryNotFoundException();
+        }
+        repository.deleteById(id);
     }
 }
