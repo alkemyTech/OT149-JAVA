@@ -1,24 +1,28 @@
 package com.alkemy.ong.service.impl;
 
-import com.alkemy.ong.dto.OrganizationPutDto;
-import com.alkemy.ong.dto.OrganizationValidationErrorDto;
-import com.alkemy.ong.mapper.OrganizationMapper;
-import com.alkemy.ong.model.Organization;
+import com.alkemy.ong.dto.OrganizationResponseDto;
+import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.mapper.OrganizationResponseMapper;
 import com.alkemy.ong.repository.OrganizationsRepository;
 import com.alkemy.ong.service.OrganizationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrganizationServiceImpl implements OrganizationService {
-    @Autowired
-    private OrganizationsRepository repository;
-    @Autowired
-    private OrganizationMapper mapper;
+
+    private final OrganizationsRepository organizationsRepository;
+    private final OrganizationResponseMapper organizationResponseMapper;
+
+
+    @Override
+    public OrganizationResponseDto getOrganization(Long id) {
+        return organizationsRepository.findById(id)
+                .map(organizationResponseMapper::toOrganizationResponseDto)
+                .orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
+    }
+
     @Override
     public void updateOrganization(Long id, OrganizationPutDto dto){
         Organization organization = repository.getById(id);
@@ -42,4 +46,5 @@ public class OrganizationServiceImpl implements OrganizationService {
                     .build();
         }).collect(Collectors.toList());
     }
+
 }
