@@ -24,6 +24,7 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE organizations SET is_active=false WHERE id = ?")
 @Where(clause="is_active=true")
 @Table(name = "organizations")
+
 public class Organization {
 	
 	@Id
