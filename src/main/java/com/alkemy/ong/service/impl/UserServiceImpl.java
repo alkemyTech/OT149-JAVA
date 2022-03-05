@@ -1,20 +1,21 @@
 package com.alkemy.ong.service.impl;
 
-import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.dto.UserResponseDto;
 import com.alkemy.ong.exception.UserNotFoundException;
 import com.alkemy.ong.mail.EmailService;
 import com.alkemy.ong.mapper.UserMapper;
-import com.alkemy.ong.mapper.UserResponseMapper;
 import com.alkemy.ong.model.User;
+import com.alkemy.ong.payload.request.RegisterRequest;
 import com.alkemy.ong.repository.UserRepository;
+import com.alkemy.ong.security.JwtUtils;
 import com.alkemy.ong.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,19 +24,34 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    private final UserResponseMapper userResponseMapper;
     private final EmailService emailService;
+    private final JwtUtils jwtUtils;
+
+    private String getToken(User user) {
+        return jwtUtils.generateToken(user);
+    }
+
+    private UserResponseDto registerResponse(User user, String jwt) {
+        return new UserResponseDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPhoto(),
+                user.getCreatedDate(),
+                jwt);
+    }
 
     @Override
-    public UserResponseDto saveUser(UserDto userDTO) {
+    public UserResponseDto saveUser(RegisterRequest registerRequest) {
 
-        User newUser = userMapper.toUser(userDTO);
+        User newUser = userMapper.toUser(registerRequest);
 
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
-        emailService.sendWelcomeEmail(newUser.getEmail());
+        //emailService.sendWelcomeEmail(newUser.getEmail());
 
-        return userResponseMapper.toUserResponse(userRepository.save(newUser));
+        return registerResponse(userRepository.save(newUser), getToken(newUser));
     }
 
     /**
@@ -69,4 +85,9 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
+    @Override
+    @Transactional
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
 }

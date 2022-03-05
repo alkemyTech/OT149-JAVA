@@ -1,8 +1,7 @@
 package com.alkemy.ong.controller.v1;
 
-import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserResponseDto;
-import com.alkemy.ong.service.UserService;
+import com.alkemy.ong.payload.request.RegisterRequest;
 import com.alkemy.ong.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +25,8 @@ public class AuthController {
     private UserServiceImpl userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDto> saveUser(@Valid @RequestBody UserDto user) {
-
+    public ResponseEntity<UserResponseDto> saveUser(@Valid @RequestBody RegisterRequest user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
-
     }
-
 
 }

@@ -32,7 +32,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
   
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    /*@ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exc){
 
         ErrorResponse error = new ErrorResponse();
@@ -42,6 +42,6 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         error.setTimeStamp(ZonedDateTime.now());
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+    }*/
   
 }

@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface UserResponseMapper {
 
-   UserResponseDto toUserResponse(User user);
+   UserResponseDto toUserResponse(User user, String token);
     User toUser(UserResponseDto userResponse);
 
 }
