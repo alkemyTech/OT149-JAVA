@@ -35,11 +35,9 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
 
     }
-
+  
     @GetMapping("/me")
     public ResponseEntity<UserDto> userLogged(){
         return new ResponseEntity<>(authService.getUserLogged(), HttpStatus.OK);
     }
-
-
 }
