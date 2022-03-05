@@ -29,7 +29,7 @@ public class TestimonialController {
 	@PutMapping("/{id}")
 	public TestimonialDto update(
 			@PathVariable Long id,
-			@Valid @RequestBody TestimonialDto dto) throws TestimonialNotFoundException {
+			@Valid @RequestBody TestimonialDto dto){
 		return service.testimonialPut(id, dto);
 	}
 
