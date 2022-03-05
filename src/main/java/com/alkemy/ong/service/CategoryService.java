@@ -1,7 +1,6 @@
 package com.alkemy.ong.service;
 
-import com.alkemy.ong.dto.CategoryPutDto;
-
-public interface CategoryService {
+public interface CategoryService  {
+    void deleteCategory(Long id);
     void updateCategory(Long id, CategoryPutDto putDto);
 }
