@@ -1,6 +1,8 @@
 package com.alkemy.ong.mapper;
 
+
 import com.alkemy.ong.dto.UserDto;
+import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.model.User;
 import org.mapstruct.Mapper;
 
@@ -9,4 +11,6 @@ public interface UserMapper {
     User toUser(UserDto dto);
 
     UserDto toDto(User user);
+
+    UserPatchDTO toUserPatchDTO(User user);
 }

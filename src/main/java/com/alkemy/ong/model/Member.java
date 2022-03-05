@@ -14,13 +14,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
 import java.time.LocalDate;
 
 @Entity
 @Data
 @Where(clause = "is_active = true")
-@SQLDelete(sql = "UPDATE users_table SET is_active=false WHERE id = ?")
+@SQLDelete(sql = "UPDATE members SET is_active=false WHERE id = ?")
+@Table(name = "members")
 @NoArgsConstructor
 public class Member {
 
@@ -32,13 +35,14 @@ public class Member {
 	private String instagramUrl;
 	private String linkedinUrl;
 	private String image;
+	@Lob
 	private String description;
-	@Column(nullable = false, updatable = false)
+	@Column(name="created_at",nullable = false, updatable = false)
 	@CreatedDate
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate createdAt;
 	@LastModifiedDate
-	@Column(nullable = false)
+	@Column(name="updated_at")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate updatedAt;
 	private boolean isActive = true;
