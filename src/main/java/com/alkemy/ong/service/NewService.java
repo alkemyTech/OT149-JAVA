@@ -6,4 +6,6 @@ package com.alkemy.ong.service;
 public interface NewService {
     NewDetailDto getNewById(Long id);
     NewDetailDto addNews(NewDto news, Long id);
+    void createNew (NewDto news);
+
 }
