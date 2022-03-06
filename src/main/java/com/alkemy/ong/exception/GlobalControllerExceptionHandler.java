@@ -1,26 +1,16 @@
 package com.alkemy.ong.exception;
 
-import com.alkemy.ong.dto.UserNotFoundErrorDTO;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.time.ZonedDateTime;
-import java.util.Arrays;
 
 @ControllerAdvice
-public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
-  
+public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
+
     /**
      * Este metodo se encarga de la captura del error USER_NOT_FOUND
      * @return Devuelve la excepcion que estoy capturando y el dto
      */
 
-    @ExceptionHandler(value = {UserNotFoundException.class})
+    /*@ExceptionHandler(value = {UserNotFoundException.class})
     protected ResponseEntity<Object> handleUserNotFound(RuntimeException ex, WebRequest request){
 
         UserNotFoundErrorDTO errorDTO = new UserNotFoundErrorDTO(
@@ -30,7 +20,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         );
 
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
+    }*/
   
     /*@ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exc){
@@ -44,7 +34,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }*/
   
-  @ExceptionHandler(value = {NotFoundException.class})
+  /*@ExceptionHandler(value = {NotFoundException.class})
     protected ResponseEntity<Object> handleOrganizationNotFound(RuntimeException ex, WebRequest request){
 
         ErrorResponse error = new ErrorResponse();
@@ -54,6 +44,6 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         error.setTimeStamp(ZonedDateTime.now());
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
+    }*/
 }
 
