@@ -1,6 +1,8 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.exception.CategoryNotFoundException;
+import com.alkemy.ong.mapper.CategoryMapper;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.repository.CategoriesRepository;
 import com.alkemy.ong.service.CategoryService;
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private final CategoriesRepository repository;
+    @Autowired
+    private final CategoryMapper mapper;
 
 
     @Override
@@ -24,5 +28,10 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNotFoundException();
         }
         repository.deleteById(id);
+    }
+
+    public void createCategory(CategoryDto dto){
+        Category category = mapper.toCategory(dto);
+        repository.save(category);
     }
 }
