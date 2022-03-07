@@ -8,4 +8,6 @@ import java.util.List;
 public interface MemberService {
 
     List<MemberDto> getAll();
+
+    void deleteMember(Integer id);
 }
