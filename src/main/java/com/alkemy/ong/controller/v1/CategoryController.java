@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 import static com.alkemy.ong.controller.ControllerConstants.V_1_CATEGORIES;
 
 @RestController
@@ -33,5 +35,11 @@ public class CategoryController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable("id")Long id){
         service.deleteCategory(id);
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateCategory (@PathVariable("id") Long id, @Valid @RequestBody CategoryPutDto putDto){
+        service.updateCategory(id, putDto);
     }
 }

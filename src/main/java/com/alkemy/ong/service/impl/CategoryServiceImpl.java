@@ -36,4 +36,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
         repository.deleteById(id);
     }
+
+    public void updateCategory(Long id, CategoryPutDto putDto){
+        repository.findById(id).map(category -> {
+            category.setName(putDto.getName());
+            category.setDescription(putDto.getDescription());
+            category.setImage(putDto.getImage());
+            return repository.save(category);
+        }).orElseThrow(()->{
+            throw new CategoryNotFoundException();
+        });
 }
