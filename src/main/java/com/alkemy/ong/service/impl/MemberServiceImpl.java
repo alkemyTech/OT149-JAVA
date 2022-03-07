@@ -25,6 +25,15 @@ public class MemberServiceImpl implements MemberService {
         return membersRepository.findAll().stream().map(memberMapper::toDto).collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteMember(Integer id) {
+        Member member = membersRepository.getById(id);
+
+        if (member != null) {
+            membersRepository.delete(member);
+        }
+    }
+
     @Transactional
     @Override
     public Integer saveMember(MemberDto dto) {
@@ -35,5 +44,4 @@ public class MemberServiceImpl implements MemberService {
 
         return member.getId();
     }
-
 }

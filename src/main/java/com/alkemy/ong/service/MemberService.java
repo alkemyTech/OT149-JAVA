@@ -8,5 +8,7 @@ public interface MemberService {
 
     List<MemberDto> getAll();
 
+    void deleteMember(Integer id);
+
     Integer saveMember(MemberDto dto);
 }
