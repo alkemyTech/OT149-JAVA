@@ -15,6 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private final CategoriesRepository repository;
+    @Autowired
+    private final CategoryMapper mapper;
+
+    public CategoryDetailDto getCategoryById(Long id){
+        return repository.findById(id).map(category -> {
+            return mapper.toCategoryDetailDto(category);
+        }).orElseThrow(()->{
+            throw new CategoryNotFoundException();
+        });
+    }
+
 
 
     @Override
