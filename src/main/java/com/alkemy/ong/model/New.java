@@ -47,4 +47,6 @@ public class New {
     @OneToOne
     @JoinColumn(name = "CATEGORY_ID")
     private Category categoryId;
+
+    private String type;
 }

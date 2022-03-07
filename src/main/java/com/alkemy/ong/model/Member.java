@@ -3,7 +3,9 @@ package com.alkemy.ong.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -27,23 +29,29 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Member {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String name;
-	private String facebookUrl;
-	private String instagramUrl;
-	private String linkedinUrl;
-	private String image;
-	@Lob
-	private String description;
-	@Column(name="created_at",nullable = false, updatable = false)
-	@CreatedDate
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate createdAt;
-	@LastModifiedDate
-	@Column(name="updated_at")
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate updatedAt;
-	private boolean isActive = true;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String name;
+    private String facebookUrl;
+    private String instagramUrl;
+    private String linkedinUrl;
+    private String image;
+
+    @Lob
+    private String description;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @CreationTimestamp
+    private LocalDate createdAt;
+
+    @Column(name = "updated_at")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @UpdateTimestamp
+    private LocalDate updatedAt;
+
+    @Column(name = "is_active")
+    private boolean isActive = Boolean.TRUE;
 }
