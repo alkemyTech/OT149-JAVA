@@ -15,6 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private final CategoriesRepository repository;
+    @Autowired
+    private final CategoryMapper mapper;
+
+    public CategoryDetailDto getCategoryById(Long id){
+        return repository.findById(id).map(category -> {
+            return mapper.toCategoryDetailDto(category);
+        }).orElseThrow(()->{
+            throw new CategoryNotFoundException();
+        });
+    }
+
 
 
     @Override
@@ -25,4 +36,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
         repository.deleteById(id);
     }
+
+    public void updateCategory(Long id, CategoryPutDto putDto){
+        repository.findById(id).map(category -> {
+            category.setName(putDto.getName());
+            category.setDescription(putDto.getDescription());
+            category.setImage(putDto.getImage());
+            return repository.save(category);
+        }).orElseThrow(()->{
+            throw new CategoryNotFoundException();
+        });
 }
