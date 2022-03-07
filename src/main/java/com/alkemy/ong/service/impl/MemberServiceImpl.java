@@ -28,10 +28,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMember(Integer id) {
-
         Member member = membersRepository.getById(id);
 
-        membersRepository.delete(member);
+        if (member != null) {
+            membersRepository.delete(member);
+        }
     }
 
 
