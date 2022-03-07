@@ -1,6 +1,9 @@
 package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.dto.CategoryDto;
+import com.alkemy.ong.dto.CategoryDetailDto;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import com.alkemy.ong.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,13 @@ public class CategoryController {
     @Autowired
     private final CategoryService service;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDetailDto>getCategoryById(@PathVariable Long id){
+        CategoryDetailDto detailCategory = service.getCategoryById(id);
+        return ResponseEntity.ok().body(detailCategory);
+    }
+        
+
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable("id")Long id){
@@ -36,5 +46,11 @@ public class CategoryController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createCategory(@Valid @RequestBody CategoryDto dto){
         service.createCategory(dto);
+    }
+    
+    @PutMapping("{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateCategory (@PathVariable("id") Long id, @Valid @RequestBody CategoryPutDto putDto){
+        service.updateCategory(id, putDto);
     }
 }

@@ -3,7 +3,9 @@ package com.alkemy.ong.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -41,13 +43,13 @@ public class Member {
     private String description;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    @CreatedDate
     @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @CreationTimestamp
     private LocalDate createdAt;
 
-    @LastModifiedDate
     @Column(name = "updated_at")
     @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @UpdateTimestamp
     private LocalDate updatedAt;
 
     @Column(name = "is_active")

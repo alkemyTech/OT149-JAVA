@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Data
@@ -16,14 +18,13 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MemberDto implements Serializable {
 
-    @NotEmpty(message = "The name field can not be empty")
+    @NotBlank(message = "The name field can not be empty")
+    @Pattern(message = "The name field must be string", regexp = "[a-zA-Z\\s]+")
     private String name;
     private String facebookUrl;
     private String instagramUrl;
     private String linkedinUrl;
-    @NotEmpty(message = "The image field can not be empty")
     private String image;
-    @NotEmpty(message = "The description field can not be empty")
     private String description;
 
 }
