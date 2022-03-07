@@ -3,7 +3,6 @@ package com.alkemy.ong.mapper;
 import com.alkemy.ong.dto.PageDto;
 import com.alkemy.ong.dto.TestimonialDto;
 import com.alkemy.ong.model.Testimonial;
-import org.aspectj.weaver.ast.Test;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 @Mapper
 public interface TestimonialMapper {
 
-	TestimonialDto toDto(Test testimonial);
+	TestimonialDto toDto(Testimonial testimonial);
 	Testimonial toTestimonial(TestimonialDto dto);
 
 	private List<TestimonialDto> toTestimonialDtoList(Page<Testimonial> testimonialPage) {

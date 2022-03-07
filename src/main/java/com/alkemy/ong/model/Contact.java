@@ -1,6 +1,5 @@
 package com.alkemy.ong.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -63,4 +62,5 @@ public class Contact {
     @Column(name = "deleted_at")
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate deletedAt;
+
 }

@@ -40,5 +40,6 @@ public class ContactServiceImpl implements ContactService {
     public List<ContactDto> getAll() {
         List<Contact> contacts = this.contactsRepository.findAll();
         return this.contactMapper.toContactDtoList(contacts);
+
     }
 }

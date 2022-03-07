@@ -28,15 +28,24 @@ public class TestimonialServiceImpl implements TestimonialService {
 	}
 
 	@Override
+	public TestimonialDto testimonialPut(Long id, TestimonialDto dto){
+		if(!testimonialsRepository.existsById(id)){
+			throw new TestimonialNotFoundException();
+		}
+		Testimonial testimonial = testimonialMapper.toTestimonial(dto);
+		return testimonialMapper.toDto(testimonialsRepository.save(testimonial));
+	}
+	
+	@Override
 	public PageDto<TestimonialDto> getPage(Integer page, Integer sizePage, String sortBy) {
 
 		Pageable pageable = PageRequest.of(page, sizePage, Sort.by(sortBy));
 		Page<Testimonial> pageRecovered = testimonialsRepository.findAll(pageable);
-		Integer totalPages=pageRecovered.getTotalPages();
+		Integer totalPages = pageRecovered.getTotalPages();
 
-		if(totalPages<page) {
+		if (totalPages < page) {
 			throw new TestimonialNotFoundException();
 		}
-		return testimonialMapper.toPageDto(pageRecovered, page,totalPages);
+		return testimonialMapper.toPageDto(pageRecovered, page, totalPages);
 	}
 }
