@@ -9,4 +9,5 @@ public interface ContactService {
     ContactDto saveContact(ContactDto dto);
 
     List<ContactDto> getAll();
+
 }

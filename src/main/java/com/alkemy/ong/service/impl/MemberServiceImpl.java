@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
         return membersRepository.findAll().stream().map(memberMapper::toDto).collect(Collectors.toList());
     }
 
+    @Transactional  
     @Override
     public void updateMember(Integer id, MemberDto dto) {
 
@@ -46,4 +46,24 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    @Transactional
+    @Override
+    public void deleteMember(Integer id) {
+        Member member = membersRepository.getById(id);
+
+        if (member != null) {
+            membersRepository.delete(member);
+        }
+    }
+
+    @Transactional
+    @Override
+    public Integer saveMember(MemberDto dto) {
+
+        Member member = memberMapper.toMember(dto);
+
+        membersRepository.save(member);
+
+        return member.getId();
+    }
 }
