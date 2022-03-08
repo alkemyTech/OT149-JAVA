@@ -1,6 +1,7 @@
 package com.alkemy.ong.service;
 
 import com.alkemy.ong.dto.CategoryDetailDto;
+import com.alkemy.ong.dto.CategoryPutDto;
 
 public interface CategoryService {
     CategoryDetailDto getCategoryById(Long id);

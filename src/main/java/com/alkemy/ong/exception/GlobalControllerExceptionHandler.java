@@ -50,25 +50,6 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }*/
 
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatus status,
-            WebRequest request) {
-        List<String> errors = new ArrayList();
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.add(error.getField() + ": " + error.getDefaultMessage());
-        }
-        for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
-            errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
-        }
-        ApiErrorDto errorDTO = new ApiErrorDto("Invalid data sent", errors, HttpStatus.BAD_REQUEST, LocalDate.now());
-        return handleExceptionInternal(ex, errorDTO, headers, errorDTO.getStatus(), request);
-    }
-
-  
   /*@ExceptionHandler(value = {NotFoundException.class})
     protected ResponseEntity<Object> handleOrganizationNotFound(RuntimeException ex, WebRequest request){
 
