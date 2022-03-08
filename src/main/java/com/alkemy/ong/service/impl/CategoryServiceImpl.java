@@ -1,6 +1,8 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CategoryDto;
+import com.alkemy.ong.dto.CategoryDetailDto;
+import com.alkemy.ong.dto.CategoryPutDto;
 import com.alkemy.ong.exception.CategoryNotFoundException;
 import com.alkemy.ong.mapper.CategoryMapper;
 import com.alkemy.ong.model.Category;
@@ -20,18 +22,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private final CategoryMapper mapper;
 
-    public CategoryDetailDto getCategoryById(Long id){
+    public CategoryDetailDto getCategoryById(Long id) {
         return repository.findById(id).map(category -> {
             return mapper.toCategoryDetailDto(category);
-        }).orElseThrow(()->{
+        }).orElseThrow(() -> {
             throw new CategoryNotFoundException();
         });
     }
 
     @Override
     @Transactional
-    public void deleteCategory(Long id){
-        if (repository.findById(id).isEmpty()){
+    public void deleteCategory(Long id) {
+        if (repository.findById(id).isEmpty()) {
             throw new CategoryNotFoundException();
         }
         repository.deleteById(id);
@@ -50,8 +52,9 @@ public class CategoryServiceImpl implements CategoryService {
             category.setDescription(putDto.getDescription());
             category.setImage(putDto.getImage());
             return repository.save(category);
-        }).orElseThrow(()->{
+        }).orElseThrow(() -> {
             throw new CategoryNotFoundException();
         });
+    }
 }
 }

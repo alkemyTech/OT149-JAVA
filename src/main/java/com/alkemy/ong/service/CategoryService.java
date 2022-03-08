@@ -2,6 +2,7 @@ package com.alkemy.ong.service;
 
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
+import com.alkemy.ong.dto.CategoryPutDto;
 
 public interface CategoryService  {
 

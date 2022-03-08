@@ -1,5 +1,6 @@
 package com.alkemy.ong.controller.v1;
 
+import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserResponseDto;
 import com.alkemy.ong.dto.RegisterRequest;
 import com.alkemy.ong.service.AuthService;
