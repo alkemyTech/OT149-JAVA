@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -42,10 +44,11 @@ public class CategoryController {
         service.deleteCategory(id);
     }
 
-    @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void createCategory(@Valid @RequestBody CategoryDto dto){
-        service.createCategory(dto);
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<Void> createCategory(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody CategoryDto dto){
+        final long categoryId = service.createCategory(dto);
+        UriComponents uriComponents = uriComponentsBuilder.path("/{id}").buildAndExpand(categoryId);
+        return ResponseEntity.created(uriComponents.toUri()).build();
     }
     
     @PutMapping("{id}")

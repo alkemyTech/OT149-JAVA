@@ -37,9 +37,11 @@ public class CategoryServiceImpl implements CategoryService {
         repository.deleteById(id);
     }
 
-    public void createCategory(CategoryDto dto){
+    public long createCategory(CategoryDto dto){
         Category category = mapper.toCategory(dto);
         repository.save(category);
+        long categoryId = category.getId();
+        return categoryId;
     }
     
     public void updateCategory(Long id, CategoryPutDto putDto){
