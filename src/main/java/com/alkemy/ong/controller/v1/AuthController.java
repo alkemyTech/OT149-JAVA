@@ -1,5 +1,7 @@
 package com.alkemy.ong.controller.v1;
 
+import com.alkemy.ong.dto.AuthenticationRequest;
+import com.alkemy.ong.dto.AuthenticationResponse;
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserResponseDto;
 import com.alkemy.ong.dto.RegisterRequest;
@@ -37,5 +39,10 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<UserDto> userLogged(){
         return new ResponseEntity<>(authService.getUserLogged(), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> signIn(@Valid @RequestBody AuthenticationRequest authRequest){
+        return ResponseEntity.ok(this.authService.signIn(authRequest));
     }
 }
