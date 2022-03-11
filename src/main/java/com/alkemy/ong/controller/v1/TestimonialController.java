@@ -5,6 +5,7 @@ import com.alkemy.ong.service.TestimonialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,6 +41,14 @@ public class TestimonialController {
         service.saveTestimonial(dto);
     }
 
+    /**
+     * This endpoint allows the administrator to delete a testimonial
+     *
+     * @param id The testimonial's id to be deleted
+     * @return Void
+     */
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/id")
     public ResponseEntity<Void> deleteTestimonial(@PathVariable Long id) {
         this.service.deleteTestimonial(id);
