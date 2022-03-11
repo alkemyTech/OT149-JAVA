@@ -49,7 +49,7 @@ public class TestimonialController {
      */
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTestimonial(@PathVariable Long id) {
         this.service.deleteTestimonial(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
