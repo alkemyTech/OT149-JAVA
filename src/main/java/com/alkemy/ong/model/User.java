@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,41 +30,41 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE users SET is_active=false WHERE id = ?")
-@Where(clause="is_active=true")
+@Where(clause = "is_active=true")
 @Table(name = "users")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String password;
 
     private String photo;
 
-    @Column(name ="created_at",updatable=false, nullable=false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private LocalDate createdDate;
 
-    @Column(name="updated_at",nullable=false)
+    @Column(name = "updated_at", nullable = false)
     @UpdateTimestamp
     private LocalDate modifiedDate;
 
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private boolean isActive = Boolean.TRUE;
 
-    @ManyToMany(fetch= FetchType.EAGER)
-	private Collection<Role> roleId = new ArrayList<>();
+    @OneToOne
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -71,12 +72,14 @@ public class User implements UserDetails{
     }
 
     @Override
-    public String getUsername(){
+    public String getUsername() {
         return email;
     }
 
     @Override
-    public boolean isAccountNonExpired() {return false;}
+    public boolean isAccountNonExpired() {
+        return false;
+    }
 
     @Override
     public boolean isAccountNonLocked() {
