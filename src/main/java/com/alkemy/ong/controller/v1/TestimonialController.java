@@ -1,10 +1,11 @@
 package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.dto.TestimonialDto;
-import com.alkemy.ong.exception.TestimonialNotFoundException;
 import com.alkemy.ong.service.TestimonialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,19 +24,25 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_TESTIMONIAL;
 @RequiredArgsConstructor
 public class TestimonialController {
 
-	@Autowired
-	private final TestimonialService service;
+    @Autowired
+    private final TestimonialService service;
 
-	@PutMapping("/{id}")
-	public TestimonialDto update(
-			@PathVariable Long id,
-			@Valid @RequestBody TestimonialDto dto){
-		return service.testimonialPut(id, dto);
-	}
+    @PutMapping("/{id}")
+    public TestimonialDto update(
+            @PathVariable Long id,
+            @Valid @RequestBody TestimonialDto dto) {
+        return service.testimonialPut(id, dto);
+    }
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public void createTestimonial(@Valid @RequestBody TestimonialDto dto){
-		service.saveTestimonial(dto);
-	}
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createTestimonial(@Valid @RequestBody TestimonialDto dto) {
+        service.saveTestimonial(dto);
+    }
+
+    @DeleteMapping("/id")
+    public ResponseEntity<Void> deleteTestimonial(@PathVariable Long id) {
+        this.service.deleteTestimonial(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
