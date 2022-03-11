@@ -18,10 +18,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 
 @Entity
@@ -62,12 +66,17 @@ public class User implements UserDetails{
     @Column(name="is_active")
     private boolean isActive = Boolean.TRUE;
 
-    @ManyToMany(fetch= FetchType.EAGER)
-	private Collection<Role> roleId = new ArrayList<>();
+    @OneToOne
+	private Role roleId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if (this.roleId!=null){
+            return new HashSet<>(Arrays.asList(this.roleId));
+        }else{
+            return Collections.emptyList();
+        }
+
     }
 
     @Override
