@@ -26,7 +26,7 @@ public class TestimonialServiceImpl implements TestimonialService {
     @Override
     public TestimonialDto testimonialPut(Long id, TestimonialDto dto) {
         if (!testimonialsRepository.existsById(id)) {
-            throw new TestimonialNotFoundException();
+            throw new TestimonialNotFoundException("Testimonial not found with id "+id);
         }
         Testimonial testimonial = testimonialMapper.toTestimonial(dto);
         return testimonialMapper.toDto(testimonialsRepository.save(testimonial));
@@ -35,7 +35,7 @@ public class TestimonialServiceImpl implements TestimonialService {
     @Override
     public void deleteTestimonial(Long id) {
         if (!this.testimonialsRepository.existsById(id)) {
-            throw new TestimonialNotFoundException();
+            throw new TestimonialNotFoundException("Testimonial not found with id "+id);
         }
         this.testimonialsRepository.deleteById(id);
     }
