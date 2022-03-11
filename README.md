@@ -14,10 +14,13 @@ Se poblara la DB con 20 users, 10 role_admin y 10 role_users
 
 Los usuarios estan construidos de forma que:
 
-username: "nombre@nombre.com" (email)
-password: "nombre" (en minúsculas)
+| usuario | password | role |
+|---|---|---|
+|nombre@nombre.com|nombre|ADMIN|
 
 Por ejemplo:
 
-username: "jonathan@jonathan.com"
-password: "jonathan" 
+| usuario | password | role |
+|---|---|---|
+|lautaro@lautaro.com|lautaro|ADMIN|
+
