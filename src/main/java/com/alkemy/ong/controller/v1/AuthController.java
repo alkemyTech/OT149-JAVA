@@ -35,14 +35,22 @@ public class AuthController {
     public ResponseEntity<UserResponseDto> saveUser(@Valid @RequestBody RegisterRequest user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
     }
-  
+
     @GetMapping("/me")
-    public ResponseEntity<UserDto> userLogged(){
+    public ResponseEntity<UserDto> userLogged() {
         return new ResponseEntity<>(authService.getUserLogged(), HttpStatus.OK);
     }
 
+    /**
+     * This endpoint allows the user to log in by entering their email and password to authenticate.
+     * Email and password are validated. In case the login is incorrect, the response will be {ok: false}
+     *
+     * @param authRequest The authentication request containing the user's email and password
+     * @return The authentication response containing the user's jwt token
+     */
+
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> signIn(@Valid @RequestBody AuthenticationRequest authRequest){
+    public ResponseEntity<AuthenticationResponse> signIn(@Valid @RequestBody AuthenticationRequest authRequest) {
         return ResponseEntity.ok(this.authService.signIn(authRequest));
     }
 }

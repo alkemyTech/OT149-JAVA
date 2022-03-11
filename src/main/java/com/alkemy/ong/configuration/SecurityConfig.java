@@ -1,7 +1,6 @@
 package com.alkemy.ong.configuration;
 
 import com.alkemy.ong.exception.UserNotFoundException;
-import com.alkemy.ong.model.User;
 import com.alkemy.ong.security.JwtRequestFilter;
 import com.alkemy.ong.security.impl.UserSecurityService;
 import com.alkemy.ong.service.UserService;
@@ -19,8 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Optional;
 
 @EnableWebSecurity
 @Configuration
