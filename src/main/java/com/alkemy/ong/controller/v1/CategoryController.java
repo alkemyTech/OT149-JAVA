@@ -2,6 +2,7 @@ package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
+import com.alkemy.ong.dto.CategoryListDto;
 import com.alkemy.ong.dto.CategoryPutDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,8 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static com.alkemy.ong.controller.ControllerConstants.V_1_CATEGORIES;
 
@@ -57,5 +60,11 @@ public class CategoryController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateCategory (@PathVariable("id") Long id, @Valid @RequestBody CategoryPutDto putDto){
         service.updateCategory(id, putDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryListDto>>getCategoryList(){
+
+        return ResponseEntity.ok().body(service.getAllCategories());
     }
 }
