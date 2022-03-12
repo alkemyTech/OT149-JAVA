@@ -43,4 +43,11 @@ public class NewServiceImpl implements NewService {
                     return mapper.toNewDetailDto(repository.save(tempNew));
                 }).orElseThrow(() -> new NotFoundException("News id not found - " + id));
     }
+
+    public long createNew(NewDto dto){
+        New news = mapper.toNew(dto);
+        repository.save(news);
+        long newId = news.getId();
+        return newId;
+    }
 }

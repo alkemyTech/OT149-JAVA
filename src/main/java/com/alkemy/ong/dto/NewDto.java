@@ -20,4 +20,6 @@ public class NewDto {
     private String image;
 
     private Category categoryId;
+
+    private String type = "news";
 }

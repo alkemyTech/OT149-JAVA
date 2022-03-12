@@ -9,6 +9,11 @@ public interface ControllerConstants {
     String V_1_AUTH = "/v1/auth";
     String V_1_TESTIMONIAL = "/v1/testimonials";
     String REQ_MAPP_ACTIVITIES = "/v1/activities";
+    String V_1_CONTACTS = "/v1/contacts";
     String V_1_MEMBERS = "/v1/members";
     String V_1_CATEGORIES = "/v1/categories";
+
+    // pagination
+    int DEFAULT_PAGE_NUMBER = 0;
+    int DEFAULT_PAGE_SIZE = 10;
 }

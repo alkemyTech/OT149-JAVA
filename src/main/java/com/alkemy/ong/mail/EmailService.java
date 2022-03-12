@@ -1,5 +1,6 @@
 package com.alkemy.ong.mail;
 
+import com.alkemy.ong.enumeration.EmailSubject;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.SendGrid;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -37,8 +40,15 @@ public class EmailService {
     }
 
     public void sendWelcomeEmail(String email) {
+        EmailSubject subject = EmailSubject.NEW_USER;
+        Mail mail = prepareMail(email, subject);
 
-        Mail mail = prepareMail(email);
+        sendRequest(mail);
+    }
+
+    public void sendThankForContactingEmail(String email) {
+        EmailSubject subject = EmailSubject.NEW_CONTACT;
+        Mail mail = prepareMail(email, subject);
 
         sendRequest(mail);
     }
@@ -57,7 +67,7 @@ public class EmailService {
         }
     }
 
-    private Mail prepareMail(String email) {
+    private Mail prepareMail(String email, EmailSubject subject) {
 
         Mail mail = new Mail();
 
@@ -71,6 +81,21 @@ public class EmailService {
 
         Personalization personalization = new Personalization();
         personalization.addTo(to);
+        switch (subject) {
+            case NEW_USER:
+                personalization.addDynamicTemplateData("subject", EmailSubject.NEW_USER.getSubject());
+                personalization.addDynamicTemplateData("title", "Te damos la bienvenida a Somos Más!");
+                personalization.addDynamicTemplateData("body", "Agradecemos que quieras formar parte de la comunidad Somos Más, tu usuario fue registrado con éxito en nuestra plataforma. Ante cualquier consulta, no dudes en contactarnos.");
+                break;
+            case NEW_CONTACT:
+                personalization.addDynamicTemplateData("subject", EmailSubject.NEW_CONTACT.getSubject());
+                personalization.addDynamicTemplateData("title", "Formulario de contacto recibido");
+                personalization.addDynamicTemplateData("body", "Muchas gracias por escribirnos! Somos Más se contactará con usted muy pronto.");
+                break;
+        }
+
+        List<String> contacts = Arrays.asList("Mail: somosfundacionmas@gmail.com", "Instagram: SomosMás", "Facebook: Somos_Más", "Teléfono de contacto: 1160112988");
+        personalization.addDynamicTemplateData("contacts", contacts);
         mail.addPersonalization(personalization);
 
         mail.setTemplateId(templateId);
