@@ -21,11 +21,11 @@ public class SlideServiceImpl implements SlideService {
     private final SlideMapper mapper;
 
     @Override
-	public List<SlideDetailDto> getAllSlides() {
-		List<Slide> slides = repository.findAll();
-		List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
-		return slidesDetailDto;
-	}
+    public List<SlideDetailDto> getAllSlides() {
+	List<Slide> slides = repository.findAll();
+	List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
+	return slidesDetailDto;
+    }
 
 }
 	
