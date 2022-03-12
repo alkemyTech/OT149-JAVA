@@ -1,7 +1,7 @@
 package com.alkemy.ong.service.impl;
 
-import com.alkemy.ong.dto.PageDto;
 import com.alkemy.ong.dto.TestimonialDto;
+import com.alkemy.ong.dto.TestimonialPagedList;
 import com.alkemy.ong.exception.TestimonialNotFoundException;
 import com.alkemy.ong.mapper.TestimonialMapper;
 import com.alkemy.ong.model.Testimonial;
@@ -10,9 +10,10 @@ import com.alkemy.ong.service.TestimonialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,17 +36,16 @@ public class TestimonialServiceImpl implements TestimonialService {
 		Testimonial testimonial = testimonialMapper.toTestimonial(dto);
 		return testimonialMapper.toDto(testimonialsRepository.save(testimonial));
 	}
-	
+
 	@Override
-	public PageDto<TestimonialDto> getPage(Integer page, Integer sizePage, String sortBy) {
+	public TestimonialPagedList pagedList(PageRequest pageRequest) {
 
-		Pageable pageable = PageRequest.of(page, sizePage, Sort.by(sortBy));
-		Page<Testimonial> pageRecovered = testimonialsRepository.findAll(pageable);
-		Integer totalPages = pageRecovered.getTotalPages();
+		Page<Testimonial> page = testimonialsRepository.findAll(pageRequest);
 
-		if (totalPages < page) {
-			throw new TestimonialNotFoundException();
-		}
-		return testimonialMapper.toPageDto(pageRecovered, page, totalPages);
+		final List<TestimonialDto> list = page.getContent().stream().map(testimonialMapper::toDto).collect(Collectors.toList());
+		final PageRequest of = PageRequest.of(page.getPageable().getPageNumber(), page.getPageable().getPageSize());
+		final long totalElements = page.getTotalElements();
+
+		return new TestimonialPagedList(list, of, totalElements);
 	}
 }

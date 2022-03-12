@@ -1,7 +1,8 @@
 package com.alkemy.ong.service;
 
-import com.alkemy.ong.dto.PageDto;
 import com.alkemy.ong.dto.TestimonialDto;
+import com.alkemy.ong.dto.TestimonialPagedList;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 
 public interface TestimonialService {
@@ -10,5 +11,6 @@ public interface TestimonialService {
 
 	@Secured("ROLE_ADMIN")
 	void saveTestimonial(TestimonialDto dto);
-	PageDto<TestimonialDto> getPage(Integer page, Integer sizePage, String sortBy);
+
+	TestimonialPagedList pagedList(PageRequest pageRequest);
 }
