@@ -12,7 +12,7 @@ public interface ContactMapper {
     Contact toContact(ContactDto dto);
 
     ContactDto toContactDto(Contact contact);
-    List<ContactDto> toContactDtoList(List<Contact> contacts);
 
+    List<ContactDto> toContactDtoList(List<Contact> contacts);
 
 }

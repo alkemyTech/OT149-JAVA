@@ -46,8 +46,8 @@ public class Contact {
     @Column(name = "message")
     private String message;
 
-    @Column(name="is_active")
-    private Boolean isActive=Boolean.TRUE;
+    @Column(name = "is_active")
+    private Boolean isActive = Boolean.TRUE;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
