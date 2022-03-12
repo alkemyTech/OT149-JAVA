@@ -13,4 +13,7 @@ public interface ControllerConstants {
     String V_1_MEMBERS = "/v1/members";
     String V_1_CATEGORIES = "/v1/categories";
 
+    // pagination
+    int DEFAULT_PAGE_NUMBER = 0;
+    int DEFAULT_PAGE_SIZE = 10;
 }

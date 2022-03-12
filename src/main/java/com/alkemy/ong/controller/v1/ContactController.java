@@ -1,7 +1,14 @@
 package com.alkemy.ong.controller.v1;
 
+import com.alkemy.ong.exception.ErrorDetails;
 import com.alkemy.ong.dto.ContactDto;
+import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.service.ContactService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +38,16 @@ public class ContactController {
      * @return The contact saved as ContactDto
      */
 
+
+    @Operation(summary = "Add a new contact to the database")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Create contact",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ContactDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid field",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class)) })
+    })
     @PostMapping
     public ResponseEntity<ContactDto> saveContact(@Valid @RequestBody ContactDto dto) {
         ContactDto result = this.contactService.saveContact(dto);
@@ -43,6 +60,13 @@ public class ContactController {
      *
      * @return The contacts list as List<ContactDto>
      */
+
+    @Operation(summary = "Get a contact list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retrieve a list of contacts",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ContactDto.class)) })
+    })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<ContactDto>> getAll() {
