@@ -44,6 +44,17 @@ public class OrganizationController {
         return ResponseEntity.ok().body(service.getOrganization(id));
     }
 
+    @Operation(summary = "Update organization")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Update organization",
+                    content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid field",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class)) }),
+            @ApiResponse(responseCode = "404", description = "Invalid id supplied",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class)) })
+    })
     @PutMapping("/public/{id}")
     public ResponseEntity<?> updateOrganization(@PathVariable Long id,
                                                 @Valid @RequestBody OrganizationPutDto organization){
