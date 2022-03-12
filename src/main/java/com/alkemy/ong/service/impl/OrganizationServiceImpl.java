@@ -1,11 +1,14 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.dto.OrganizationPutDto;
 import com.alkemy.ong.dto.OrganizationResponseDto;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.OrganizationResponseMapper;
+import com.alkemy.ong.model.Organization;
 import com.alkemy.ong.repository.OrganizationsRepository;
 import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +28,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public void updateOrganization(Long id, OrganizationPutDto dto){
-        Organization organization = repository.getById(id);
+        organizationsRepository.findById(id).map(organization -> {
             organization.setName(dto.getName());
             organization.setImages(dto.getImages());
             organization.setAddress(dto.getAddress());
@@ -33,18 +36,11 @@ public class OrganizationServiceImpl implements OrganizationService {
             organization.setEmail(dto.getEmail());
             organization.setWelcomeText(dto.getWelcomeText());
             organization.setAboutUsText(dto.getAboutUsText());
-            repository.save(organization);
-    }
-    @Override
-    public List<OrganizationValidationErrorDto>validationError(BindingResult result){
+            return organizationsRepository.save(organization);
+        }).orElseThrow(()->{
+            throw new NotFoundException("Organization not found.");
+        });
 
-        return result.getFieldErrors().stream().map(err -> {
-            return OrganizationValidationErrorDto.builder()
-                    .field(err.getField())
-                    .value((String) result.getFieldValue(err.getField()))
-                    .message(err.getDefaultMessage())
-                    .build();
-        }).collect(Collectors.toList());
-    }
 
+    }
 }
