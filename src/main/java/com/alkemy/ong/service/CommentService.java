@@ -2,7 +2,9 @@ package com.alkemy.ong.service;
 
 import com.alkemy.ong.dto.CommentDto;
 
+import java.util.Optional;
+
 public interface CommentService {
 
-	CommentDto saveComment(CommentDto dto);
+	Optional<CommentDto> saveComment(CommentDto dto);
 }

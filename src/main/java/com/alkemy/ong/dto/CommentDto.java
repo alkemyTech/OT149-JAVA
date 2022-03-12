@@ -18,7 +18,7 @@ public class CommentDto {
 	@NotBlank(message = "Obligatory field.")
 	private String body;
 	@Column(nullable = false)
-	private User usersId;
+	private Long usersId;
 	@Column(nullable = false)
-	private New newsId;
+	private Long newsId;
 }
