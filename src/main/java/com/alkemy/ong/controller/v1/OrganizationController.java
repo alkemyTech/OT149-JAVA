@@ -1,7 +1,5 @@
 package com.alkemy.ong.controller.v1;
 
-import com.alkemy.ong.dto.ApiErrorDto;
-import com.alkemy.ong.dto.NewDetailDto;
 import com.alkemy.ong.dto.OrganizationResponseDto;
 import com.alkemy.ong.exception.ErrorDetails;
 import com.alkemy.ong.service.OrganizationService;
