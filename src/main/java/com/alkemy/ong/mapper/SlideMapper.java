@@ -14,6 +14,7 @@ public interface SlideMapper {
     SlideDto toSlideDto(Slide slide);
 	
 	@Mapping(source = "slideDto.imageB64", target = "imageUrl")
+
     Slide toSlide(SlideDto slideDto);
 
 }

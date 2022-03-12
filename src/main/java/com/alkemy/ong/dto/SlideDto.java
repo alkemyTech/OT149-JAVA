@@ -5,11 +5,9 @@ import com.alkemy.ong.model.Organization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Base64;
 
 import javax.validation.constraints.NotEmpty;
-
 
 @Data
 @NoArgsConstructor
@@ -23,4 +21,3 @@ public class SlideDto {
     private Integer order;
 
     private Long organizationId;
-}
