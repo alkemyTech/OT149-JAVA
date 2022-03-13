@@ -12,5 +12,8 @@ public interface TestimonialService {
 	@Secured("ROLE_ADMIN")
 	void saveTestimonial(TestimonialDto dto);
 
+	void deleteTestimonial(Long id);
+
 	TestimonialPagedList pagedList(PageRequest pageRequest);
+
 }

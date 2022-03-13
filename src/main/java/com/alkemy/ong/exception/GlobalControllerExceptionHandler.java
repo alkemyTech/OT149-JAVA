@@ -17,7 +17,6 @@ import javax.json.stream.JsonGenerator;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,17 +41,6 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
         return super.handleExceptionInternal(ex, new HttpHeaders(), HttpStatus.NOT_FOUND, request, ApplicationErrorCode.NOT_FOUND, errorDTO.getMessage());
     }
 
-    @ExceptionHandler(value = {TestimonialNotFoundException.class})
-    protected ResponseEntity<ErrorResponse> handleTestimonialNotFoundException(TestimonialNotFoundException exc) {
-
-        ErrorResponse error = new ErrorResponse();
-
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setMessage("Testimonial not found");
-        error.setTimeStamp(ZonedDateTime.now());
-
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
 
     @ExceptionHandler(value = {BadUserLoginException.class})
     protected void handleBadUserLoginException(HttpServletResponse response) throws IOException {
@@ -64,18 +52,32 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
                 .writeEnd()
                 .close();
     }
-  
-    @ExceptionHandler(value = {NewNotFoundException.class})
-    protected ResponseEntity<Object> handleNewNotFound(RuntimeException ex, WebRequest request){
 
-       ErrorDetails error1 = ErrorDetails.builder()
-               .code(ApplicationErrorCode.NOT_FOUND)
-               .description(ApplicationErrorCode.NOT_FOUND.getDefaultMessage())
-               .field("id")
-               .location(Location.PATH)
-               .build();
+    @ExceptionHandler(value = {TestimonialNotFoundException.class})
+    protected ResponseEntity<ErrorDetails> handleTestimonialNotFoundException(TestimonialNotFoundException exc) {
+
+        ErrorDetails error = ErrorDetails.builder()
+                .code(ApplicationErrorCode.NOT_FOUND)
+                .description(exc.getMessage())
+                .field("id")
+                .location(Location.PATH)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(value = {NewNotFoundException.class})
+    protected ResponseEntity<Object> handleNewNotFound(RuntimeException ex, WebRequest request) {
+
+        ErrorDetails error1 = ErrorDetails.builder()
+                .code(ApplicationErrorCode.NOT_FOUND)
+                .description(ApplicationErrorCode.NOT_FOUND.getDefaultMessage())
+                .field("id")
+                .location(Location.PATH)
+                .build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(List.of(error1));
+
     }
 
 }
