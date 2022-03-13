@@ -5,4 +5,6 @@ import com.alkemy.ong.dto.CommentDto;
 public interface CommentService {
 
 	CommentDto commentPut(Long id, CommentDto dto);
+	Long saveComment(CommentDto dto);
+
 }
