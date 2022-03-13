@@ -1,6 +1,6 @@
 package com.alkemy.ong.controller.v1;
 
-import com.alkemy.ong.dto.NewDto;
+import com.alkemy.ong.dto.*;
 import com.alkemy.ong.exception.ErrorDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,10 +9,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.alkemy.ong.dto.NewDetailDto;
 import com.alkemy.ong.service.NewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +78,12 @@ public class NewController {
         UriComponents uriComponents = uriComponentsBuilder.path("/{id}").buildAndExpand(newId);
         return ResponseEntity.created(uriComponents.toUri()).build();
 
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteNew(@PathVariable Long id) {
+        service.deleteNew(id);
     }
 
 }

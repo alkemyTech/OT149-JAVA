@@ -1,7 +1,6 @@
 package com.alkemy.ong.configuration;
 
 import com.alkemy.ong.exception.UserNotFoundException;
-import com.alkemy.ong.model.User;
 import com.alkemy.ong.security.JwtRequestFilter;
 import com.alkemy.ong.security.impl.UserSecurityService;
 import com.alkemy.ong.service.UserService;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,10 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Optional;
-
 @EnableWebSecurity
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -36,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userSecurityService);
+        auth.userDetailsService(userSecurityService).passwordEncoder(passwordEncoded());
     }
 
     @Bean
@@ -58,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/v1/auth/*").permitAll()
+                .authorizeRequests().antMatchers("/v1/auth/*","/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
                 .and().sessionManagement()

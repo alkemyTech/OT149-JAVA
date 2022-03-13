@@ -1,7 +1,14 @@
 package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.dto.ActivityDto;
+
+import com.alkemy.ong.exception.ErrorDetails;
 import com.alkemy.ong.service.impl.ActivityServiceImp;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +34,14 @@ public class ActivityController {
     @Autowired
     private ActivityServiceImp activityServiceImp;
 
+    @Operation(summary = "Add a new activity to the database")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Create Activity",
+                    content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid field",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class)) })
+             })
     @PostMapping()
     public ResponseEntity<Void> addActivity(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody ActivityDto dto) {
 
@@ -37,6 +52,19 @@ public class ActivityController {
         return ResponseEntity.created(uriComponents.toUri()).build();
     }
 
+
+    @Operation(summary = "Update activity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Update Activity",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ActivityDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid field",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class)) }),
+            @ApiResponse(responseCode = "404", description = "Invalid id supplied",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class)) })
+    })
     @PutMapping("/{id}")
     public ResponseEntity<ActivityDto> updateActivity(@PathVariable Long id, @Valid @RequestBody ActivityDto dto) {
         return ResponseEntity.accepted().body(activityServiceImp.updateActivity(id, dto));
