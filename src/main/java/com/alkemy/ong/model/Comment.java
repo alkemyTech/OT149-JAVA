@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,13 +36,19 @@ public class Comment {
 
 	private String body;
 
-	@ManyToOne(fetch= FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User usersId;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "users_id", insertable = false, updatable = false)
+	private User user;
 
-	@ManyToOne(fetch= FetchType.LAZY)
-	@JoinColumn(name = "news_id")
-	private New newsId;
+	@Column(name = "users_id")
+	private Long usersId;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "news_id", insertable = false, updatable = false)
+	private New news;
+
+	@Column(name = "news_id")
+	private Long newsId;
 
 	@Column(updatable = false, nullable = false)
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
