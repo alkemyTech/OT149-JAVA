@@ -4,6 +4,7 @@ import com.alkemy.ong.dto.UserNotFoundErrorDTO;
 import com.alkemy.ong.enumeration.ApplicationErrorCode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -80,11 +81,11 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
 
     @ExceptionHandler(value = {BadUserLoginException.class})
     protected void handleBadUserLoginException(HttpServletResponse response) throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(401);
         JsonGenerator jsonGenerator = Json.createGenerator(response.getWriter());
         jsonGenerator.writeStartObject()
-                .write("ok", "false")
+                .write("ok", false)
                 .writeEnd()
                 .close();
     }

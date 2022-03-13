@@ -30,59 +30,59 @@ import java.util.HashSet;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE users SET is_active=false WHERE id = ?")
-@Where(clause="is_active=true")
+@Where(clause = "is_active=true")
 @Table(name = "users")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String password;
 
     private String photo;
 
-    @Column(name ="created_at",updatable=false, nullable=false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private LocalDate createdDate;
 
-    @Column(name="updated_at",nullable=false)
+    @Column(name = "updated_at", nullable = false)
     @UpdateTimestamp
     private LocalDate modifiedDate;
 
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private boolean isActive = Boolean.TRUE;
 
     @OneToOne
-	private Role roleId;
+    private Role roleId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.roleId!=null){
+        if (this.roleId != null) {
             return new HashSet<>(Arrays.asList(this.roleId));
-        }else{
-            return Collections.emptyList();
         }
-
+        return Collections.emptyList();
     }
 
     @Override
-    public String getUsername(){
+    public String getUsername() {
         return email;
     }
 
     @Override
-    public boolean isAccountNonExpired() {return false;}
+    public boolean isAccountNonExpired() {
+        return false;
+    }
 
     @Override
     public boolean isAccountNonLocked() {
