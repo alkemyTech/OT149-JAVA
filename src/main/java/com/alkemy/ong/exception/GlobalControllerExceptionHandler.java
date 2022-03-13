@@ -2,6 +2,7 @@ package com.alkemy.ong.exception;
 
 import com.alkemy.ong.dto.UserNotFoundErrorDTO;
 import com.alkemy.ong.enumeration.ApplicationErrorCode;
+import com.alkemy.ong.enumeration.Location;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,4 +69,18 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
   
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {NewNotFoundException.class})
+    protected ResponseEntity<Object> handleNewNotFound(RuntimeException ex, WebRequest request){
+
+       ErrorDetails error1 = ErrorDetails.builder()
+               .code(ApplicationErrorCode.NOT_FOUND)
+               .description(ApplicationErrorCode.NOT_FOUND.getDefaultMessage())
+               .field("id")
+               .location(Location.PATH)
+               .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(List.of(error1));
+    }
+
 }
