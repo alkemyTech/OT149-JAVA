@@ -2,6 +2,7 @@ package com.alkemy.ong.exception;
 
 import com.alkemy.ong.dto.UserNotFoundErrorDTO;
 import com.alkemy.ong.enumeration.ApplicationErrorCode;
+import com.alkemy.ong.enumeration.Location;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,32 +41,6 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
         return super.handleExceptionInternal(ex, new HttpHeaders(), HttpStatus.NOT_FOUND, request, ApplicationErrorCode.NOT_FOUND, errorDTO.getMessage());
     }
 
-    /*@ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exc){
-
-        ErrorResponse error = new ErrorResponse();
-
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setMessage("Testimonial not found");
-        error.setTimeStamp(ZonedDateTime.now());
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }*/
-
-  /*@ExceptionHandler(value = {NotFoundException.class})
-    protected ResponseEntity<Object> handleOrganizationNotFound(RuntimeException ex, WebRequest request){
-
-        ErrorResponse error = new ErrorResponse();
-
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setMessage(ex.getMessage());
-        error.setTimeStamp(ZonedDateTime.now());
-
-        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-
-    }
-    }*/
-
     @ExceptionHandler(value = {TestimonialNotFoundException.class})
     protected ResponseEntity<ErrorResponse> handleTestimonialNotFoundException(TestimonialNotFoundException exc) {
 
@@ -78,7 +53,6 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler(value = {BadUserLoginException.class})
     protected void handleBadUserLoginException(HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -89,4 +63,18 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
                 .writeEnd()
                 .close();
     }
+  
+    @ExceptionHandler(value = {NewNotFoundException.class})
+    protected ResponseEntity<Object> handleNewNotFound(RuntimeException ex, WebRequest request){
+
+       ErrorDetails error1 = ErrorDetails.builder()
+               .code(ApplicationErrorCode.NOT_FOUND)
+               .description(ApplicationErrorCode.NOT_FOUND.getDefaultMessage())
+               .field("id")
+               .location(Location.PATH)
+               .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(List.of(error1));
+    }
+
 }
