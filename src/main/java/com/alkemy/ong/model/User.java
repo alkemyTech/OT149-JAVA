@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 
 @Entity
@@ -64,12 +65,12 @@ public class User implements UserDetails {
     private boolean isActive = Boolean.TRUE;
 
     @OneToOne
-    private Role roleId;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.roleId != null) {
-            return new HashSet<>(Arrays.asList(this.roleId));
+        if (this.role != null) {
+            return new HashSet<>(List.of(this.role));
         }
         return Collections.emptyList();
     }
