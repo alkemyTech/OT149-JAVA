@@ -1,21 +1,27 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.dto.RegisterRequest;
+import com.alkemy.ong.dto.UserDto;
+import com.alkemy.ong.dto.UserPagedList;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.dto.UserResponseDto;
 import com.alkemy.ong.exception.UserNotFoundException;
 import com.alkemy.ong.mail.EmailService;
 import com.alkemy.ong.mapper.UserMapper;
 import com.alkemy.ong.model.User;
-import com.alkemy.ong.dto.RegisterRequest;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.JwtUtils;
 import com.alkemy.ong.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +46,17 @@ public class UserServiceImpl implements UserService {
                 user.getPhoto(),
                 user.getCreatedDate(),
                 jwt);
+    }
+
+    public UserPagedList pagedList(PageRequest pageRequest) {
+
+        Page<User> pageUser = userRepository.findAll(pageRequest);
+
+        final List<UserDto> list = pageUser.getContent().stream().map(userMapper::toDto).collect(Collectors.toList());
+        final PageRequest of = PageRequest.of(pageUser.getPageable().getPageNumber(), pageUser.getPageable().getPageSize());
+        final long totalElements = pageUser.getTotalElements();
+
+        return new UserPagedList(list, of, totalElements);
     }
 
     @Override
@@ -81,8 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(Long userId) {
-        User user = userRepository.getById(userId);
-        userRepository.delete(user);
+        userRepository.findById(userId).ifPresent(userRepository::delete);;
     }
 
     @Override

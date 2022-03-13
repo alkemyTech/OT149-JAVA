@@ -1,6 +1,5 @@
 package com.alkemy.ong.exception;
 
-
 import com.alkemy.ong.dto.UserNotFoundErrorDTO;
 import com.alkemy.ong.enumeration.ApplicationErrorCode;
 import com.alkemy.ong.enumeration.Location;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Arrays;
-
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
@@ -33,16 +31,16 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
 
         return super.handleExceptionInternal(ex, new HttpHeaders(), HttpStatus.NOT_FOUND, request, ApplicationErrorCode.NOT_FOUND, errorDTO.getMessage());
     }
-
-    /*@ExceptionHandler(MethodArgumentNotValidException.class)
+  
+/*@ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exc){
-
+    
         ErrorResponse error = new ErrorResponse();
-
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setMessage("Testimonial not found");
+        
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(exc.getFieldError().getDefaultMessage());
         error.setTimeStamp(ZonedDateTime.now());
-
+        
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }*/
 
