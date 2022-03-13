@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -27,16 +25,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	@Override
-	public Optional<CommentDto> saveComment(CommentDto dto) {
-		if ( newsRepository.existsById(dto.getNewsId()) &&
-		userRepository.existsById(dto.getUsersId())) {
+	public Long saveComment(CommentDto dto) {
 			Comment comment = mapper.toComment(dto);
-			Comment savedComment = repository.save(comment);
-			CommentDto savedCommentDto = mapper.toCommentDto(savedComment);
-			return Optional.of(savedCommentDto);
-		} else {
-			return Optional.empty();
-		}
-
+			repository.save(comment);
+			return comment.getId();
 	}
 }
