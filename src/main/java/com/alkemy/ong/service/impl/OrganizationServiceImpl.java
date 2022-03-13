@@ -36,6 +36,9 @@ public class OrganizationServiceImpl implements OrganizationService {
             organization.setEmail(dto.getEmail());
             organization.setWelcomeText(dto.getWelcomeText());
             organization.setAboutUsText(dto.getAboutUsText());
+            organization.setFacebook(dto.getFacebook());
+            organization.setInstagram(dto.getInstagram());
+            organization.setLinkedin(dto.getLinkedin());
             return organizationsRepository.save(organization);
         }).orElseThrow(()->{
             throw new NotFoundException("Organization not found.");
