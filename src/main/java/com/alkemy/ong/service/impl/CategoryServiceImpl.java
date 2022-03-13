@@ -2,17 +2,25 @@ package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
+import com.alkemy.ong.dto.CategoryListDto;
+import com.alkemy.ong.dto.CategoryPagedList;
 import com.alkemy.ong.dto.CategoryPutDto;
 import com.alkemy.ong.exception.CategoryNotFoundException;
+import com.alkemy.ong.mapper.CategoryListMapper;
 import com.alkemy.ong.mapper.CategoryMapper;
 import com.alkemy.ong.model.Category;
+import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.CategoriesRepository;
 import com.alkemy.ong.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoriesRepository repository;
     @Autowired
     private final CategoryMapper mapper;
+
+    private final CategoryListMapper listMapper;
 
     public CategoryDetailDto getCategoryById(Long id) {
         return repository.findById(id).map(category -> {
@@ -55,6 +65,18 @@ public class CategoryServiceImpl implements CategoryService {
         }).orElseThrow(() -> {
             throw new CategoryNotFoundException();
         });
+    }
+
+    @Override
+    public CategoryPagedList getAllCategories(PageRequest pageRequest) {
+        Page<Category> pageCategory = repository.findAll(pageRequest);
+
+        final List<CategoryListDto> list = listMapper.toCategoryListDto(pageCategory.getContent());
+        final PageRequest of = PageRequest.of(pageCategory.getPageable().getPageNumber(), pageCategory.getPageable().getPageSize());
+        final long totalElements = pageCategory.getTotalElements();
+
+
+        return new CategoryPagedList(list, of, totalElements);
     }
 }
 
