@@ -100,6 +100,13 @@ public class TestimonialController {
      * @return Void
      */
 
+    @Operation(summary = "Allows the administrator to delete a testimonial")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Delete testimonial"),
+            @ApiResponse(responseCode = "404", description = "Testimonial not found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+    })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTestimonial(@PathVariable Long id) {
