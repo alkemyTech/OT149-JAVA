@@ -8,8 +8,6 @@ import com.alkemy.ong.service.SlideService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,15 +23,15 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_SLIDES;
 @RequestMapping(V_1_SLIDES)
 @RequiredArgsConstructor
 public class SlideController {
-    private final SlideService service;
+	private final SlideService service;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping
-    public ResponseEntity<SlideDto> createSlide (@Valid @RequestBody SlideDto dto) throws FileUploadException{
-        final SlideDto slideDto = service.saveSlide(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(slideDto);
-
-    }
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PostMapping
+	public ResponseEntity<Void> createSlide(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody SlideDto dto) {
+		final Long id = service.saveSlide(dto);
+		UriComponents uriComponents = uriComponentsBuilder.path(V_1_SLIDES + "/{id}").buildAndExpand(id);
+		return ResponseEntity.created(uriComponents.toUri()).build();
+	}
 
 }
 	
