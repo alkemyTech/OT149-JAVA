@@ -19,33 +19,42 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TestimonialServiceImpl implements TestimonialService {
 
-	private final TestimonialsRepository testimonialsRepository;
-	private final TestimonialMapper testimonialMapper;
+    private final TestimonialsRepository testimonialsRepository;
+    private final TestimonialMapper testimonialMapper;
 
-	@Override
-	public void saveTestimonial(TestimonialDto dto) {
-		Testimonial testimonial = testimonialMapper.toTestimonial(dto);
-		testimonialsRepository.save(testimonial);
-	}
+    @Override
+    public void saveTestimonial(TestimonialDto dto) {
+        Testimonial testimonial = testimonialMapper.toTestimonial(dto);
+        testimonialsRepository.save(testimonial);
+    }
 
-	@Override
-	public TestimonialDto testimonialPut(Long id, TestimonialDto dto){
-		if(!testimonialsRepository.existsById(id)){
-			throw new TestimonialNotFoundException();
-		}
-		Testimonial testimonial = testimonialMapper.toTestimonial(dto);
-		return testimonialMapper.toDto(testimonialsRepository.save(testimonial));
-	}
+    @Override
+    public TestimonialDto testimonialPut(Long id, TestimonialDto dto) {
+        if (!testimonialsRepository.existsById(id)) {
+            throw new TestimonialNotFoundException("Testimonial not found with id " + id);
+        }
+        Testimonial testimonial = testimonialMapper.toTestimonial(dto);
+        return testimonialMapper.toDto(testimonialsRepository.save(testimonial));
+    }
 
-	@Override
-	public TestimonialPagedList pagedList(PageRequest pageRequest) {
+    @Override
+    public TestimonialPagedList pagedList(PageRequest pageRequest) {
 
-		Page<Testimonial> page = testimonialsRepository.findAll(pageRequest);
+        Page<Testimonial> page = testimonialsRepository.findAll(pageRequest);
 
-		final List<TestimonialDto> list = page.getContent().stream().map(testimonialMapper::toDto).collect(Collectors.toList());
-		final PageRequest of = PageRequest.of(page.getPageable().getPageNumber(), page.getPageable().getPageSize());
-		final long totalElements = page.getTotalElements();
+        final List<TestimonialDto> list = page.getContent().stream().map(testimonialMapper::toDto).collect(Collectors.toList());
+        final PageRequest of = PageRequest.of(page.getPageable().getPageNumber(), page.getPageable().getPageSize());
+        final long totalElements = page.getTotalElements();
 
-		return new TestimonialPagedList(list, of, totalElements);
-	}
+        return new TestimonialPagedList(list, of, totalElements);
+    }
+
+    @Override
+    public void deleteTestimonial(Long id) {
+        if (!this.testimonialsRepository.existsById(id)) {
+            throw new TestimonialNotFoundException("Testimonial not found with id " + id);
+        }
+        this.testimonialsRepository.deleteById(id);
+    }
 }
+

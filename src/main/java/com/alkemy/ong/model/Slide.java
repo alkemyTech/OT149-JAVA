@@ -37,7 +37,7 @@ public class Slide {
 	@Column(name = "text", nullable = false)
 	private String text;
 	
-	@Column(name = "order", nullable = false)
+	@Column(name = "slide_order", nullable = false)
 	private Integer order;
 
 	@ManyToOne

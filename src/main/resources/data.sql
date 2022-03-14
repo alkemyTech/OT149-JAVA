@@ -121,26 +121,28 @@ SELECT 3,
         <li>Paseos recreativos y educativos: Estos paseos están pensados para
         promover la participación y sentido de pertenencia de los niños, niñas
         y adolescentes al área educativa.</li>',
-        NULL WHERE NOT EXISTS (SELECT * FROM activities WHERE id=3);
+       NULL WHERE NOT EXISTS (SELECT * FROM activities WHERE id=3);
 
 -- It inserts the members data
-INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+INSERT INTO members (id, created_at, description, facebook_url, image, instagram_url, is_active, linkedin_url, name,
+                     updated_at)
 SELECT 1,
-        CURDATE(),
-        'Presidenta María estudió economía y se especializó en economía para el
-        desarrollo. Comenzó como voluntaria en la fundación y fue quien promovió el
-        crecimiento y la organización de la institución acompañando la transformación
-        de un simple comedor barrial al centro comunitario de atención integral que es
-        hoy en día',
-        'https://www.facebook.com/MariaIrola',
-        'https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646255651033-Maria_Irola.jpg',
-        'https://www.instagram.com/Maria_Irola',
-        TRUE,
-        'https://www.linkedin.com/in/MariaIrola',
-        'María Irola',
-        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=1);
+       CURDATE(),
+       'Presidenta María estudió economía y se especializó en economía para el
+       desarrollo. Comenzó como voluntaria en la fundación y fue quien promovió el
+       crecimiento y la organización de la institución acompañando la transformación
+       de un simple comedor barrial al centro comunitario de atención integral que es
+       hoy en día',
+       'https://www.facebook.com/MariaIrola',
+       'https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646255651033-Maria_Irola.jpg',
+       'https://www.instagram.com/Maria_Irola',
+       TRUE,
+       'https://www.linkedin.com/in/MariaIrola',
+       'María Irola',
+       NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=1);
 
-INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+INSERT INTO members (id, created_at, description, facebook_url, image, instagram_url, is_active, linkedin_url, name,
+                     updated_at)
 SELECT 2,
        CURDATE(),
        'Fundadora Marita estudió la carrera de nutrición y se especializó en nutrición
@@ -155,7 +157,8 @@ SELECT 2,
        'Marita Gomez',
        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=2);
 
-INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+INSERT INTO members (id, created_at, description, facebook_url, image, instagram_url, is_active, linkedin_url, name,
+                     updated_at)
 SELECT 3,
        CURDATE(),
        'Terapista Ocupacional',
@@ -167,7 +170,8 @@ SELECT 3,
        'Miriam Rodriguez',
        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=3);
 
-INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+INSERT INTO members (id, created_at, description, facebook_url, image, instagram_url, is_active, linkedin_url, name,
+                     updated_at)
 SELECT 4,
        CURDATE(),
        'Psicopedagoga',
@@ -179,7 +183,8 @@ SELECT 4,
        'Cecilia Mendez',
        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=4);
 
-INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+INSERT INTO members (id, created_at, description, facebook_url, image, instagram_url, is_active, linkedin_url, name,
+                     updated_at)
 SELECT 5,
        CURDATE(),
        'Psicólogo',
@@ -191,7 +196,8 @@ SELECT 5,
        'Mario Fuentes',
        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=5);
 
-INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+INSERT INTO members (id, created_at, description, facebook_url, image, instagram_url, is_active, linkedin_url, name,
+                     updated_at)
 SELECT 6,
        CURDATE(),
        'Contador',
@@ -203,7 +209,8 @@ SELECT 6,
        'Rodrigo Fuente',
        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=6);
 
-INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+INSERT INTO members (id, created_at, description, facebook_url, image, instagram_url, is_active, linkedin_url, name,
+                     updated_at)
 SELECT 7,
        CURDATE(),
        'Profesora de Artes Dramáticas',
@@ -215,7 +222,8 @@ SELECT 7,
        'Maria Garcia',
        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=7);
 
-INSERT INTO members (id, created_at,description,facebook_url,image,instagram_url,is_active,linkedin_url,name,updated_at)
+INSERT INTO members (id, created_at, description, facebook_url, image, instagram_url, is_active, linkedin_url, name,
+                     updated_at)
 SELECT 8,
        CURDATE(),
        'Profesor de Educación Física',
@@ -226,3 +234,245 @@ SELECT 8,
        'https://www.linkedin.com/in/MarcoFernandez',
        'Marco Fernandez',
        NULL WHERE NOT EXISTS (SELECT * FROM members WHERE id=8);
+
+-- It inserts the users data
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 1,
+       CURDATE(),
+       'jonathan@jonathan.com',
+       'Jonathan',
+       TRUE,
+       'Manera',
+       CURDATE(),
+       '$2a$10$G1Abkwtim/8dQzleqysh8.CzVk2MjMitMD5mEgi1kS5EYhz1yajXu',
+       'jonathan.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=1);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 2,
+       CURDATE(),
+       'gustavo@gustavo.com',
+       'Gustavo',
+       TRUE,
+       'Hernández',
+       CURDATE(),
+       '$2a$10$DG0WbMHihHQilUssObgK6.b1iO8.RLGzqwYuSLUB31p/KvtEXmmke',
+       'gustavo.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=2);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 3,
+       CURDATE(),
+       'fernandoj@fernandoj.com',
+       'Fernando',
+       TRUE,
+       'Julian',
+       CURDATE(),
+       '$2a$10$.6bfR5pCT5JLBt6b1AKmUO5Llh4S1uXxFgnhosCqLhLIXsTSDsqBO',
+       'fernandoj.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=3);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 4,
+       CURDATE(),
+       'fernandog@fernandog.com',
+       'Fernando',
+       TRUE,
+       'Gaspari',
+       CURDATE(),
+       '$2a$10$0fJ1lGyeEgsSFCsOEvZ6UufpQwPZKY3ZtnulUJ/uEmXNd48184N26',
+       'fernandog.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=4);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 5,
+       CURDATE(),
+       'ignacio@ignacio.com',
+       'Ignacio',
+       TRUE,
+       'Padovan',
+       CURDATE(),
+       '$2a$10$aumWHKQYrp0TsEGhPB6DsuiXWuKBZRgw4VseKZrWW..0C7tpOW8uO',
+       'ignacio.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=5);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 6,
+       CURDATE(),
+       'rodrigo@rodrigo.com',
+       'Rodrigo',
+       TRUE,
+       'Costa',
+       CURDATE(),
+       '$2a$10$.0zOKCVDcr4R/h.jlv6oe.YWOwG.fYWBWxmRcCLHMW4R0pHGHJ.nq',
+       'rodrigo.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=6);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 7,
+       CURDATE(),
+       'lautaro@lautaro.com',
+       'Lautaro',
+       TRUE,
+       'Yanzon',
+       CURDATE(),
+       '$2a$10$ngPoIhOUJvXTMhK2hVcAku0tgv3GS7aE0LG6Dvr.N9ExfBogXs0qS',
+       'lautaro.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=7);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 8,
+       CURDATE(),
+       'juanpablo@juanpablo.com',
+       'Juan Pablo',
+       TRUE,
+       'Tomasi',
+       CURDATE(),
+       '$2a$10$kzz8Qsiz3Ty82f4IgyWkU.Z604dzKDsmKPdqwJKwZbBK4tgyCWTiW',
+       'juanpablo.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=8);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 9,
+       CURDATE(),
+       'romina@romina.com',
+       'Romina',
+       TRUE,
+       'Julian',
+       CURDATE(),
+       '$2a$10$4uCo67rA.7JYtuJMxCoJzOfAtMhZr.MXOU0IUaGkO.NmzuxdXQ4bK',
+       'romina.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=9);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 10,
+       CURDATE(),
+       'valentina@valentina.com',
+       'Valentina',
+       TRUE,
+       'Aragona',
+       CURDATE(),
+       '$2a$10$oUogVjQlnddvAo7aFAB16.m01xrd6HIDdPJ2ruu6VtHpIzvZ9D5GO',
+       'valentina.jpg',
+       '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=10);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 11,
+       CURDATE(),
+       'agustin@agustin.com',
+       'Agustin',
+       TRUE,
+       'Rossi',
+       CURDATE(),
+       '$2a$10$UepmH01zFfhDLLMy.6lzquPrdvsoNQw/q.9ovBZi0.NHfU6w.tFjC',
+       'agustin.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=11);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 12,
+       CURDATE(),
+       'luis@luis.com',
+       'Luis',
+       TRUE,
+       'Advincula',
+       CURDATE(),
+       '$2a$10$beNYUzZdUEWvKUv2TtGlieWOe7VbJcMC0XqWujMjGZUIj1.b3rXGy',
+       'luis.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=12);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 13,
+       CURDATE(),
+       'carlos@carlos.com',
+       'Carlos',
+       TRUE,
+       'Izquierdoz',
+       CURDATE(),
+       '$2a$10$NolhtTArOO22w2d8sXHx/e5n3nfcIhhQzgbP9G54cOm.Qk9p6Be4m',
+       'carlos.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=13);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 14,
+       CURDATE(),
+       'marcos@marcos.com',
+       'Marcos',
+       TRUE,
+       'Rojo',
+       CURDATE(),
+       '$2a$10$DwAX6euQe7bG67N3j.SBXOSkEshxO6fPglMQnY.bGt/hK3oKGJvEO',
+       'marcos.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=14);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 15,
+       CURDATE(),
+       'frank@frank.com',
+       'Frank',
+       TRUE,
+       'Fabra',
+       CURDATE(),
+       '$2a$10$iTV65wCEkWHdjKnWq0xp1OtDlUAvkGdgAK7WdILsR3gTWewMvX7FS',
+       'frank.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=15);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 16,
+       CURDATE(),
+       'pol@pol.com',
+       'Pol',
+       TRUE,
+       'Fernandez',
+       CURDATE(),
+       '$2a$10$UsGWPabbZbBXaDXhGfnMzu4ZU/AXf7jKRUkOp17f8E5zqtHpSaKKW',
+       'pol.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=16);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 17,
+       CURDATE(),
+       'alan@alan.com',
+       'Alan',
+       TRUE,
+       'Varela',
+       CURDATE(),
+       '$2a$10$MyWM9Boxe.KFDcWUt.TO.u53tCNNuUqeyNfchlQt8VcDaxw1mGtuO',
+       'alan.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=17);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 18,
+       CURDATE(),
+       'juan@juan.com',
+       'Juan',
+       TRUE,
+       'Ramirez',
+       CURDATE(),
+       '$2a$10$d0vr0NsTV8tCwBEf/gTq5.HqtOi9vSfUa5MawA0csXEFxzhWmyx3m',
+       'juan.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=18);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 19,
+       CURDATE(),
+       'oscar@oscar.com',
+       'Oscar',
+       TRUE,
+       'Romero',
+       CURDATE(),
+       '$2a$10$trOMpQaE7GPe9qI59IPMqOvliWoRTWEn6wQjZBKE.s31rlKQbpvPa',
+       'oscar.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=19);
+
+INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
+SELECT 20,
+       CURDATE(),
+       'dario@dario.com',
+       'Dario',
+       TRUE,
+       'Benedetto',
+       CURDATE(),
+       '$2a$10$Y2PSkbupOTt.5cQ8IYaq/uYCW60PeYex4LCeUiyVAqC8yFQ0T1jy.',
+       'dario.jpg',
+       '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=20);
