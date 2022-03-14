@@ -22,5 +22,24 @@ Por ejemplo:
 
 | usuario | password | role |
 |---|---|---|
-|lautaro@lautaro.com|lautaro|ADMIN|
+|jonathan@jonathan.com|jonathan|ADMIN|
+|gustavo@gustavo.com|gustavo|ADMIN|
+|fernando@fernando.com|fernando|ADMIN|
+|fernando@fernando.com|fernando|ADMIN|
+|ignacio@ignacio.com|ignacio|ADMIN|
+|rodrigo@rodrigo.com|rodrigo|ADMIN|
+|juanpablo@juanpablo.com|juanpablo|ADMIN|
+|romina@romina.com|romina|ADMIN|
+|valentina@valentina.com|valentina|ADMIN|
+|agustin@agustin.com|agustin|USER|
+|luis@luis.com|luis|USER|
+|carlos@carlos.com|carlos|USER|
+|marcos@marcos.com|marcos|USER|
+|frank@frank.com|frank|USER|
+|pol@pol.com|pol|USER|
+|alan@alan.com|alan|USER|
+|juan@juan.com|juan|USER|
+|oscar@oscar.com|oscar|USER|
+|dario@dario.com|dario|USER|
+
 
