@@ -10,6 +10,7 @@ import com.alkemy.ong.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -36,5 +37,10 @@ public class CommentServiceImpl implements CommentService {
 		}).orElseThrow(() -> {
 			throw new NotFoundException("Comment not found");
 		});
+	}
+
+	public List<CommentDto> getAllCommentsByPost(Long id){
+		List<Comment>commentList = repository.findByNewsId(id);
+		return mapper.toListCommentDto(commentList);
 	}
 }
