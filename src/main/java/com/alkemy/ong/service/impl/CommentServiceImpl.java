@@ -1,7 +1,6 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CommentDto;
-import com.alkemy.ong.dto.CommentDtoList;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
 import com.alkemy.ong.repository.CommentRepository;
@@ -22,9 +21,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public List<CommentDtoList> getAllComment() {
+	public List<CommentDto> getAllComment() {
 		List<Comment> commentList = repository.findAll();
-		return mapper.toCommentDtoList(commentList);
+		return mapper.toCommentDtoReduced(commentList);
 	}
 
 	@Override

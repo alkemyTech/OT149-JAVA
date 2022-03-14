@@ -1,7 +1,6 @@
 package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.dto.CommentDto;
-import com.alkemy.ong.dto.CommentDtoList;
 import com.alkemy.ong.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,8 +42,8 @@ public class CommentController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping
-	public ResponseEntity<List<CommentDtoList>> getAllComments() {
-		List<CommentDtoList> commentDtoLists = service.getAllComment();
+	public ResponseEntity<List<CommentDto>> getAllComments() {
+		List<CommentDto> commentDtoLists = service.getAllComment();
 		return ResponseEntity.status(HttpStatus.OK).body(commentDtoLists);
 	}
 
