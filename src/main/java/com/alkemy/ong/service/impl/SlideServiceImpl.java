@@ -1,5 +1,6 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.exception.NewNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +24,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SlideServiceImpl implements SlideService {
 
-	private final SlideRepository repository;
-	private final SlideMapper mapper;
-	private final AmazonS3ServiceImpl amazonService;
-	private final OrganizationService orgService;
-
+    private final SlideRepository repository;
+    private final SlideMapper mapper;
+    private final AmazonS3ServiceImpl amazonService;
+    private final OrganizationService orgService;
+    
+	@Transactional(readOnly = true)
+	@Override
+	public SlideDetailDto getSlideById(Long id) {
+        return repository.findById(id)
+        		.map(mapper::toSlideDetailDto)
+        		.orElseThrow(() -> new NewNotFoundException());
+	}
+	
 	@Transactional
 	@Override
 	public Long saveSlide(SlideDto dto) {

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SlideRepository extends JpaRepository<Slide, Long> {
   
-	@Query("SELECT MAX(s.order) FROM Slide s WHERE s.organizationId = :idOrganization")
+	@Query("SELECT MAX(s.order) FROM Slide s WHERE s.organization.id = :idOrganization")
 	Integer findMaxOrder(@Param("idOrganization") Long idOrganization);
 }
