@@ -33,4 +33,9 @@ public class CommentServiceImpl implements CommentService {
 			repository.save(comment);
 			return comment.getId();
 	}
+
+	public List<CommentDto> getAllCommentsByPost(Long id){
+		List<Comment>commentList = repository.findByNewsId(id);
+		return mapper.toListCommentDto(commentList);
+	}
 }

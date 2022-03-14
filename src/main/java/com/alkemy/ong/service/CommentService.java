@@ -4,8 +4,11 @@ import com.alkemy.ong.dto.CommentDto;
 import com.alkemy.ong.dto.CommentDtoList;
 import java.util.List;
 
+import java.util.List;
+
 public interface CommentService {
 
 	List<CommentDtoList> getAllComment();
 	Long saveComment(CommentDto dto);
+	List<CommentDto> getAllCommentsByPost(Long id);
 }

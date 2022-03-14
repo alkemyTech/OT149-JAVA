@@ -23,4 +23,7 @@ public class OrganizationPutDto {
     @NotBlank(message = "welcomeText cannot be empty.")
     private  String welcomeText;
     private String aboutUsText;
+    private String facebook;
+    private String linkedin;
+    private String instagram;
 }

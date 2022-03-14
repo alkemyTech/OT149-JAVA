@@ -42,7 +42,7 @@ public class Slide {
 
 	@ManyToOne
 	@JoinColumn(name = "ORGANIZATION_ID", nullable = false)
-	private Organization organizationId;
+	private Organization organization;
 
 	@Column(name = "created_at", nullable = false, updatable = false)
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
