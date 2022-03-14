@@ -91,13 +91,18 @@ public class NewController {
 
     @GetMapping
     public ResponseEntity<NewPagedList> list(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                                             @RequestParam(value = "pageSize", required = false) Integer pageSize){
+                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                             UriComponentsBuilder uriComponentsBuilder){
         if (pageNumber == null || pageNumber < 0){
             pageNumber = ControllerConstants.DEFAULT_PAGE_NUMBER;
         }
         if (pageSize == null || pageSize < 1){
             pageSize = ControllerConstants.DEFAULT_PAGE_SIZE;
         }
+        UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_NEWS + "?pageNumber={page}");
+        NewPagedList pagedList = service.pagedList(PageRequest.of(pageNumber, pageSize));
+        pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber + 1).toUri());
+        pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber - 1).toUri());
         return ResponseEntity.ok(service.pagedList(PageRequest.of(pageNumber, pageSize)));
     }
 
