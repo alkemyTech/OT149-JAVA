@@ -8,8 +8,8 @@ public interface SlideService {
 
 	SlideDetailDto getSlideById(Long id);
   
-	SlideDto saveSlide(SlideDto dto);
+	Long saveSlide(SlideDto dto);
 	
-  List<SlideDetailDto> getAllSlides();
+        List<SlideDetailDto> getAllSlides();
   
 }
