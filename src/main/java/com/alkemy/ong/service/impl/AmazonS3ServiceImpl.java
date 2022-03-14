@@ -100,25 +100,26 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
         return new Date().getTime() + "-" + filename.replace(" ", "_");
     }
 
+	@SneakyThrows
 	@Override
-	public String uploadImage64(String b64) throws FileUploadException {
+	public String uploadImage64(String b64) {
 
 		File file = null;
-        try {
-            file = b64ToFile(b64);
-            String fileName = generateFileName(file);
-            String fileUrl = s3client.getUrl(this.BUCKET_NAME, fileName).toExternalForm();
-            uploadFileTos3bucket(fileName, file);
-            return fileUrl;
+		try {
+			file = b64ToFile(b64);
+			String fileName = generateFileName(file);
+			String fileUrl = s3client.getUrl(this.BUCKET_NAME, fileName).toExternalForm();
+			uploadFileTos3bucket(fileName, file);
+			return fileUrl;
 
-        } catch (IOException ex) {
-            log.error("Error uploading file: ", ex);
-            throw new FileUploadException("Error uploading file");
-        } finally {
-            if ((file != null) && !file.delete()) {
-                log.error("Error deleting file");
-            }
-        }
+		} catch (IOException ex) {
+			log.error("Error uploading file: ", ex);
+			throw new FileUploadException("Error uploading file");
+		} finally {
+			if ((file != null) && !file.delete()) {
+				log.error("Error deleting file");
+			}
+		}
 	}
     
 }
