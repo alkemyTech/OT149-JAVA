@@ -24,18 +24,13 @@ public class CommentController {
 
 	private final CommentService service;
 
-	public CommentController(CommentService service) {
-		this.service = service;
-	}
-
 	@PutMapping("/{id}")
-	public CommentDto update(
+	public void update(
 			@PathVariable Long id,
 			@Valid @RequestBody CommentDto dto){
-		return service.commentPut(id, dto);
+		service.commentPut(id, dto);
 	}
 
-}
 	@PostMapping()
 	public ResponseEntity<Void> createComment(UriComponentsBuilder uriComponentsBuilder,
 	                                          @Valid @RequestBody CommentDto dto) {
