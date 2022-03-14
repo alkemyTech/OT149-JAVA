@@ -45,9 +45,6 @@ public class CommentController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Success",
 					content = @Content),
-			@ApiResponse(responseCode = "404", description = "Post not found.",
-					content = { @Content(mediaType = "application/json",
-							schema = @Schema(implementation = ErrorDetails.class)) })
 	})
 	@GetMapping("/posts/{id}")
 	public ResponseEntity<List<CommentDto>> getAllCommentsByPost(@PathVariable Long id){
