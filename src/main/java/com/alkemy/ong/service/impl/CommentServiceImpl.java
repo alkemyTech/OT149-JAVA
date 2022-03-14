@@ -1,14 +1,13 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CommentDto;
+import com.alkemy.ong.exception.NotFoundException;
+import org.springframework.stereotype.Service;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
 import com.alkemy.ong.repository.CommentRepository;
-import com.alkemy.ong.repository.NewsRepository;
-import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,10 +18,6 @@ public class CommentServiceImpl implements CommentService {
 	private CommentMapper mapper;
 	@Autowired
 	private CommentRepository repository;
-	@Autowired
-	private NewsRepository newsRepository;
-	@Autowired
-	private UserRepository userRepository;
 
 	@Transactional
 	@Override
@@ -30,6 +25,18 @@ public class CommentServiceImpl implements CommentService {
 			Comment comment = mapper.toComment(dto);
 			repository.save(comment);
 			return comment.getId();
+    }
+
+	@Transactional
+	@Override
+	public void commentPut(Long id, CommentDto dto){
+		repository.findById(id).map( comment -> {
+			comment.setBody(dto.getBody());
+
+			return mapper.toCommentDto(comment);
+		}).orElseThrow(() -> {
+			throw new NotFoundException("Comment not found");
+		});
 	}
 
 	public List<CommentDto> getAllCommentsByPost(Long id){
