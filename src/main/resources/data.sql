@@ -476,4 +476,3 @@ SELECT 20,
        '$2a$10$Y2PSkbupOTt.5cQ8IYaq/uYCW60PeYex4LCeUiyVAqC8yFQ0T1jy.',
        'dario.jpg',
        '2' WHERE NOT EXISTS (SELECT * FROM users WHERE id=20);
-
