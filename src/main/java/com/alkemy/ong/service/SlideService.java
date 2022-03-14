@@ -6,8 +6,12 @@ import com.alkemy.ong.dto.SlideDetailDto;
 
 public interface SlideService {
 
-	SlideDto saveSlide(SlideDto dto);
-	
-  List<SlideDetailDto> getAllSlides();
-  
+	SlideDetailDto getSlideById(Long id);
+
+	Long saveSlide(SlideDto dto);
+
+	List<SlideDetailDto> getAllSlides();
+
+	SlideDetailDto updateSlides(SlideDto dto, Long id);
+
 }

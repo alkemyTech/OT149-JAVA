@@ -1,8 +1,11 @@
 package com.alkemy.ong.controller.v1;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import com.alkemy.ong.dto.SlideDto;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 import com.alkemy.ong.dto.SlideDetailDto;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +28,22 @@ import java.util.List;
 @RequestMapping(V_1_SLIDES)
 @RequiredArgsConstructor
 public class SlideController {
-	private final SlideService service;
+  
+    private final SlideService service;
+    
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<SlideDetailDto>getSlideById(@PathVariable Long id){
+    	SlideDetailDto detailSlide = service.getSlideById(id);
+        return ResponseEntity.ok().body(detailSlide);
+    }
+  
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping
+    public ResponseEntity<List<SlideDetailDto>> getAllSlides(){
+        List<SlideDetailDto> detailSlidesDto = service.getAllSlides();
+        return ResponseEntity.ok().body(detailSlidesDto);
+    }
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping
@@ -34,5 +52,12 @@ public class SlideController {
 		UriComponents uriComponents = uriComponentsBuilder.path(V_1_SLIDES + "/{id}").buildAndExpand(id);
 		return ResponseEntity.created(uriComponents.toUri()).build();
 	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PutMapping("/{id}")
+	public ResponseEntity<SlideDetailDto> updateSlides(@RequestBody SlideDto dto, @PathVariable(value="id") Long id ){
 
+		return new ResponseEntity<SlideDetailDto>(service.updateSlides(dto,id),HttpStatus.CREATED);
+	}
+  
 }
