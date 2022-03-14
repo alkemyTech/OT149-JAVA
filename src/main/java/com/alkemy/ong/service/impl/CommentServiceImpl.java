@@ -1,6 +1,7 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CommentDto;
+import com.alkemy.ong.exception.CommentNotFoundException;
 import com.alkemy.ong.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import com.alkemy.ong.mapper.CommentMapper;
