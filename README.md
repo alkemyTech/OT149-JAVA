@@ -24,8 +24,8 @@ Por ejemplo:
 |---|---|---|
 |jonathan@jonathan.com|jonathan|ADMIN|
 |gustavo@gustavo.com|gustavo|ADMIN|
-|fernando@fernando.com|fernando|ADMIN|
-|fernando@fernando.com|fernando|ADMIN|
+|fernandoj@fernandoj.com|fernando|ADMIN|
+|fernandog@fernandog.com|fernando|ADMIN|
 |ignacio@ignacio.com|ignacio|ADMIN|
 |rodrigo@rodrigo.com|rodrigo|ADMIN|
 |juanpablo@juanpablo.com|juanpablo|ADMIN|

@@ -264,25 +264,25 @@ SELECT 2,
 INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
 SELECT 3,
        CURDATE(),
-       'fernando@fernando.com',
+       'fernandoj@fernandoj.com',
        'Fernando',
        TRUE,
        'Julian',
        CURDATE(),
        '$2a$10$.6bfR5pCT5JLBt6b1AKmUO5Llh4S1uXxFgnhosCqLhLIXsTSDsqBO',
-       'fernando.jpg',
+       'fernandoj.jpg',
        '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=3);
 
 INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
 SELECT 4,
        CURDATE(),
-       'fernando@fernando.com',
+       'fernandog@fernandog.com',
        'Fernando',
        TRUE,
        'Gaspari',
        CURDATE(),
        '$2a$10$0fJ1lGyeEgsSFCsOEvZ6UufpQwPZKY3ZtnulUJ/uEmXNd48184N26',
-       'fernando.jpg',
+       'fernandog.jpg',
        '1' WHERE NOT EXISTS (SELECT * FROM users WHERE id=4);
 
 INSERT INTO users (id, created_at, email, first_name, is_active, last_name, updated_at, password, photo, role_id)
