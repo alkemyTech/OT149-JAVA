@@ -25,6 +25,13 @@ public class OrganizationServiceImpl implements OrganizationService {
                 .map(organizationResponseMapper::toOrganizationResponseDto)
                 .orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
     }
+    
+    @Override
+    public Organization findById(Long id) {
+    	
+    	return organizationsRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
+    }
 
     @Override
     public void updateOrganization(Long id, OrganizationPutDto dto){

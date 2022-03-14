@@ -18,5 +18,5 @@ public class SlideDto {
     private Integer order;
 
     private Long organizationId;
+    
 }
-	
