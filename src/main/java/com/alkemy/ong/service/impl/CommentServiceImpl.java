@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -29,5 +30,10 @@ public class CommentServiceImpl implements CommentService {
 			Comment comment = mapper.toComment(dto);
 			repository.save(comment);
 			return comment.getId();
+	}
+
+	public List<CommentDto> getAllCommentsByPost(Long id){
+		List<Comment>commentList = repository.findByNewsId(id);
+		return mapper.toListCommentDto(commentList);
 	}
 }
