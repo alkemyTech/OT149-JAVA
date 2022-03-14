@@ -25,6 +25,13 @@ public class OrganizationServiceImpl implements OrganizationService {
                 .map(organizationResponseMapper::toOrganizationResponseDto)
                 .orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
     }
+    
+    @Override
+    public Organization findById(Long id) {
+    	
+    	return organizationsRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
+    }
 
     @Override
     public void updateOrganization(Long id, OrganizationPutDto dto){
@@ -36,6 +43,9 @@ public class OrganizationServiceImpl implements OrganizationService {
             organization.setEmail(dto.getEmail());
             organization.setWelcomeText(dto.getWelcomeText());
             organization.setAboutUsText(dto.getAboutUsText());
+            organization.setFacebook(dto.getFacebook());
+            organization.setInstagram(dto.getInstagram());
+            organization.setLinkedin(dto.getLinkedin());
             return organizationsRepository.save(organization);
         }).orElseThrow(()->{
             throw new NotFoundException("Organization not found.");

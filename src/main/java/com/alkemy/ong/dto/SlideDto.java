@@ -5,7 +5,7 @@ import com.alkemy.ong.model.Organization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.util.Base64;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -13,13 +13,11 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SlideDto {
-    @NotEmpty(message = "The url´s image field cannot be empty")
-    private String imageUrl;
+    @NotEmpty(message = "The image field cannot be empty")
+    private String imageB64;
     @NotEmpty(message = "The text field cannot be empty")
     private String text;
     @NotEmpty(message = "The order field cannot be empty")
     private Integer order;
 
-    private Organization organizationId;
-}
-	
+    private Long organizationId;
