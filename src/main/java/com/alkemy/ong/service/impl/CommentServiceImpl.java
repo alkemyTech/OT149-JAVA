@@ -1,6 +1,7 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CommentDto;
+import com.alkemy.ong.exception.CommentNotFoundException;
 import com.alkemy.ong.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import com.alkemy.ong.mapper.CommentMapper;
@@ -42,5 +43,12 @@ public class CommentServiceImpl implements CommentService {
 	public List<CommentDto> getAllCommentsByPost(Long id){
 		List<Comment>commentList = repository.findByNewsId(id);
 		return mapper.toListCommentDto(commentList);
+	}
+
+	public void deleteComment(Long id) {
+		if (repository.findById(id).isEmpty()) {
+			throw new CommentNotFoundException();
+		}
+		repository.deleteById(id);
 	}
 }

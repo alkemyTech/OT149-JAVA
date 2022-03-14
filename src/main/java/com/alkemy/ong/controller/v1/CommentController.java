@@ -50,6 +50,21 @@ public class CommentController {
 		return ResponseEntity.created(uriComponents.toUri()).build();
 	}
 
+	@Operation(summary = "Delete a comment by its id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Comment deleted",
+					content = @Content),
+			@ApiResponse(responseCode = "403", description = "Without permission",
+					content = @Content),
+			@ApiResponse(responseCode = "404", description = "Comment not found",
+					content = { @Content(mediaType = "application/json",
+							schema = @Schema(implementation = ErrorDetails.class)) })
+	})
+	@DeleteMapping("/{id}")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Comment deleted.")
+	public void deleteComment(@PathVariable Long id){
+		service.deleteComment(id);
+	}
 	@Operation(summary = "Get comments by post.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Success",

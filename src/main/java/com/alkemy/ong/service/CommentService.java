@@ -8,5 +8,6 @@ public interface CommentService {
 
 	void commentPut(Long id, CommentDto dto);
 	Long saveComment(CommentDto dto);
+	void deleteComment(Long id);
 	List<CommentDto> getAllCommentsByPost(Long id);
 }
