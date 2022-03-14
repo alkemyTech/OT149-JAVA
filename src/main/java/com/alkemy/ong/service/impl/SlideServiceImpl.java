@@ -2,7 +2,6 @@ package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.exception.NewNotFoundException;
 import com.alkemy.ong.exception.NotFoundException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +32,7 @@ public class SlideServiceImpl implements SlideService {
 	public SlideDetailDto getSlideById(Long id) {
 		return repository.findById(id).map(mapper::toSlideDetailDto).orElseThrow(() -> new NewNotFoundException());
 	}
-
+  
 	@Transactional
 	@Override
 	public Long saveSlide(SlideDto dto) {

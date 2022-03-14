@@ -13,5 +13,5 @@ public interface SlideService {
 	List<SlideDetailDto> getAllSlides();
 
 	SlideDetailDto updateSlides(SlideDto dto, Long id);
-
+  
 }
