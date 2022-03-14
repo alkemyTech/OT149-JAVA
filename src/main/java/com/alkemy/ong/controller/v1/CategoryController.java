@@ -105,19 +105,30 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<CategoryPagedList>getCategoryList(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                                                        @RequestParam(value = "pageSize", required = false) Integer pageSize){
+    public ResponseEntity<CategoryPagedList>getCategoryList(@RequestParam(value = "page", required = false) Integer page,
+                                                        @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                            UriComponentsBuilder uriComponentsBuilder){
 
-        if (pageNumber == null || pageNumber < 0){
-            pageNumber = ControllerConstants.DEFAULT_PAGE_NUMBER;
+        if (page == null || page < 0){
+            page = ControllerConstants.DEFAULT_PAGE_NUMBER;
         }
 
         if (pageSize == null || pageSize < 1) {
             pageSize = ControllerConstants.DEFAULT_PAGE_SIZE;
         }
+
+        UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_CATEGORIES + "?page={page}");
+
+        CategoryPagedList pagedList = service.getAllCategories(PageRequest.of(page, pageSize));
+
+        if(page < pagedList.getTotalPages() -1)
+        pagedList.setNextUri(uriBuilder.buildAndExpand(page + 1).toUri());
+
+        if(page > 0)
+        pagedList.setBackUri(uriBuilder.buildAndExpand(page - 1).toUri());
         
 
 
-        return ResponseEntity.ok().body(service.getAllCategories(PageRequest.of(pageNumber, pageSize)));
+        return ResponseEntity.ok().body(pagedList);
     }
 }

@@ -3,12 +3,17 @@ package com.alkemy.ong.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.net.URI;
 import java.util.List;
 
+@Getter
+@Setter
 public class CategoryPagedList extends PageImpl<CategoryListDto> {
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -29,4 +34,7 @@ public class CategoryPagedList extends PageImpl<CategoryListDto> {
     public CategoryPagedList(List<CategoryListDto> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }
+
+    private URI nextUri;
+    private URI backUri;
 }
