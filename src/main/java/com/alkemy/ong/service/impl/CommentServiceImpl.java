@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -28,6 +27,7 @@ public class CommentServiceImpl implements CommentService {
 		return mapper.toCommentDtoList(commentList);
 	}
 
+	@Override
 	public Long saveComment(CommentDto dto) {
 			Comment comment = mapper.toComment(dto);
 			repository.save(comment);
