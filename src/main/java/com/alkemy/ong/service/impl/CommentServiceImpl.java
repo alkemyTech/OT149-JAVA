@@ -1,6 +1,9 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CommentDto;
+import com.alkemy.ong.exception.CommentNotFoundException;
+import com.alkemy.ong.exception.NewNotFoundException;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
 import com.alkemy.ong.repository.CommentRepository;
@@ -29,5 +32,12 @@ public class CommentServiceImpl implements CommentService {
 			Comment comment = mapper.toComment(dto);
 			repository.save(comment);
 			return comment.getId();
+	}
+
+	public void deleteComment(Long id) {
+		if (repository.findById(id).isEmpty()) {
+			throw new CommentNotFoundException();
+		}
+		repository.deleteById(id);
 	}
 }
