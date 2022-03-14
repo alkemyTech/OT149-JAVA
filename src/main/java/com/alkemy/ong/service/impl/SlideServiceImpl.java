@@ -13,6 +13,12 @@ import com.alkemy.ong.service.SlideService;
 
 import lombok.RequiredArgsConstructor;
 
+import com.alkemy.ong.dto.SlideDetailDto;
+import com.alkemy.ong.model.Slide;
+
+import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SlideServiceImpl implements SlideService {
@@ -48,5 +54,12 @@ public class SlideServiceImpl implements SlideService {
 
 		return saved.getId();
 	}
+
+  @Override
+  public List<SlideDetailDto> getAllSlides() {
+    List<Slide> slides = repository.findAll();
+    List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
+    return slidesDetailDto;
+  }
 
 }

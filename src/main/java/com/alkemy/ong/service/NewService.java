@@ -8,4 +8,5 @@ public interface NewService {
     NewDetailDto addNews(NewDto news, Long id);
     long createNew (NewDto news);
 
+    void deleteNew(Long id);
 }

@@ -1,7 +1,9 @@
 package com.alkemy.ong.mapper;
 
-import com.alkemy.ong.dto.SlideDto;
+import com.alkemy.ong.dto.SlideDetailDto;
 import com.alkemy.ong.model.Slide;
+
+import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,5 +17,7 @@ public interface SlideMapper {
 
 	@Mapping(source = "slideDto.imageB64", target = "imageUrl")
 	Slide toSlide(SlideDto slideDto);
+  
+  List<SlideDetailDto> toSlideDetailDto(List<Slide> slides);
 
 }
