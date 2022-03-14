@@ -33,7 +33,6 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	public List<CommentDto> getAllCommentsByPost(Long id){
-		newsRepository.findById(id);
 		List<Comment>commentList = repository.findByNewsId(id);
 		return mapper.toListCommentDto(commentList);
 	}
