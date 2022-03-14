@@ -1,5 +1,7 @@
 package com.alkemy.ong.controller.v1;
 
+import com.alkemy.ong.dto.AuthenticationRequest;
+import com.alkemy.ong.dto.AuthenticationResponse;
 import com.alkemy.ong.exception.ErrorDetails;
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserResponseDto;
@@ -49,6 +51,7 @@ public class AuthController {
     }
 
 
+
     @Operation(summary = "Get an user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the user",
@@ -58,8 +61,34 @@ public class AuthController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class)) })
             })
+
     @GetMapping("/me")
-    public ResponseEntity<UserDto> userLogged(){
+    public ResponseEntity<UserDto> userLogged() {
         return new ResponseEntity<>(authService.getUserLogged(), HttpStatus.OK);
+    }
+
+    /**
+     * This endpoint allows the user to log in by entering their email and password to authenticate.
+     * Email and password are validated. In case the login is incorrect, the response will be {ok: false}
+     *
+     * @param authRequest The authentication request containing the user's email and password
+     * @return The authentication response containing the user's jwt token
+     */
+    @Operation(summary = "Login a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User successfully logged in",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AuthenticationResponse.class)) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(
+                                    example = "{\n\"ok\": false\n}",
+                                    type = "boolean",
+                                    description = "false if User not logged in")) })
+    })
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> signIn(@Valid @RequestBody AuthenticationRequest authRequest) {
+        return ResponseEntity.ok(this.authService.signIn(authRequest));
     }
 }

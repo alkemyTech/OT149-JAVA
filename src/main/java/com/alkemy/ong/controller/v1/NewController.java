@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,14 +37,14 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_NEWS;
 public class NewController {
     private final NewService service;
 
-    @Operation(summary = "Get a news by its id")
+    @Operation(summary = "Get New by id.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the new",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = NewDetailDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "New not found",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+            @ApiResponse(responseCode = "200", description = "New found.",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = NewDetailDto.class))}),
+            @ApiResponse(responseCode = "404", description = "New not found.",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = ErrorDetails.class))})
     })
     @GetMapping("/{id}")
     public ResponseEntity<NewDetailDto>getNewById(@PathVariable Long id){
@@ -51,35 +52,28 @@ public class NewController {
         return ResponseEntity.ok().body(detailNew);
     }
 
-
-
-    @Operation(summary = "Update news")
+    @Operation(summary = "Update New by id.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Update News",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = NewDetailDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Invalid field",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) }),
-            @ApiResponse(responseCode = "404", description = "Invalid id supplied",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+            @ApiResponse(responseCode = "200", description = "Updated New.",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = NewDto.class))}),
+            @ApiResponse(responseCode = "404", description = "New not found.",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = ErrorDetails.class))})
     })
-  @PutMapping("/{id}")
+    @PutMapping("/{id}")
 	public ResponseEntity<NewDetailDto> saveOrUpdateNews(@RequestBody NewDto news, @PathVariable(value="id") Long id ){
 
 		return new ResponseEntity<NewDetailDto>(service.addNews(news,id),HttpStatus.CREATED);
 	}
 
-
-
-    @Operation(summary = "Add a new news to the database")
+    @Operation(summary = "Create New.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Create news",
-                    content = @Content),
-            @ApiResponse(responseCode = "400", description = "Invalid field",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+            @ApiResponse(responseCode = "201", description = "Created New",
+            content = @Content),
+            @ApiResponse(responseCode = "400", description = "Field cannot be empty.",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = ErrorDetails.class))})
     })
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Void> createNew (UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody NewDto dto){
@@ -104,6 +98,12 @@ public class NewController {
         pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber + 1).toUri());
         pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber - 1).toUri());
         return ResponseEntity.ok(service.pagedList(PageRequest.of(pageNumber, pageSize)));
+    }
+    
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteNew(@PathVariable Long id) {
+        service.deleteNew(id);
     }
 
 }
