@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -78,5 +79,48 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
             }
         }
     }
+    
+	public File b64ToFile(String b64) throws FileNotFoundException, IOException {
+		
+		byte[] bI = org.apache.commons.codec.binary.Base64.decodeBase64((b64.substring(b64.indexOf(",")+1)).getBytes());		
+		
+		File convFile = new File("slideName");
+        try (FileOutputStream fos = new FileOutputStream(convFile)) {
+            fos.write(bI);
+        }
+		
+		return convFile;
+	}
+	
+	public String generateFileName(File file) {
+        String filename = file.getName();
+        if (filename == null) {
+            throw new NullFileException("The file name must not be null");
+        }
+        return new Date().getTime() + "-" + filename.replace(" ", "_");
+    }
+
+	@SneakyThrows
+	@Override
+	public String uploadImage64(String b64) {
+
+		File file = null;
+		try {
+			file = b64ToFile(b64);
+			String fileName = generateFileName(file);
+			String fileUrl = s3client.getUrl(this.BUCKET_NAME, fileName).toExternalForm();
+			uploadFileTos3bucket(fileName, file);
+			return fileUrl;
+
+		} catch (IOException ex) {
+			log.error("Error uploading file: ", ex);
+			throw new FileUploadException("Error uploading file");
+		} finally {
+			if ((file != null) && !file.delete()) {
+				log.error("Error deleting file");
+			}
+		}
+	}
+    
 }
 

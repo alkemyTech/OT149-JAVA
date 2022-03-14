@@ -13,4 +13,7 @@ public class OrganizationResponseDto {
     private String images;
     private String address;
     private int phone;
+    private String facebook;
+    private String instagram;
+    private String linkedin;
 }
