@@ -40,6 +40,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_TESTIMONIAL;
 @RestController
 @RequestMapping(V_1_TESTIMONIAL)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class TestimonialController {
 
     @Autowired
@@ -78,7 +79,7 @@ public class TestimonialController {
         service.saveTestimonial(dto);
     }
 
-    @Operation(summary = "Get a paginated list of testimonials", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Get a paginated list of testimonials")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retrieve a paginated list of testimonials",
                     content = {@Content(mediaType = "application/json",
@@ -111,7 +112,7 @@ public class TestimonialController {
      * @return Void
      */
 
-    @Operation(summary = "Delete a testimonial by id", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Delete a testimonial by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete testimonial",
                     content = @Content),
