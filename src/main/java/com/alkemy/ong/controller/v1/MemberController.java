@@ -42,7 +42,10 @@ public class MemberController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Retrieve a list of members", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class))})})
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping
-    public ResponseEntity<MemberPagedList> list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    public ResponseEntity<MemberPagedList> list(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "pageSize", required = false)
+                    Integer pageSize, UriComponentsBuilder uriComponentsBuilder) {
         if (page == null || page < 0) {
             page = ControllerConstants.DEFAULT_PAGE_NUMBER;
         }
@@ -51,7 +54,13 @@ public class MemberController {
             pageSize = ControllerConstants.DEFAULT_PAGE_SIZE;
         }
 
-        return ResponseEntity.ok(memberService.pagedList(PageRequest.of(page, pageSize)));
+        UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_MEMBERS).queryParam("page={page}");
+
+        MemberPagedList pagedList = memberService.pagedList(PageRequest.of(page, pageSize));
+        pagedList.setNextUri(uriBuilder.buildAndExpand(page + 1).toUri());
+        pagedList.setBackUri(uriBuilder.buildAndExpand(page - 1).toUri());
+
+        return ResponseEntity.ok(pagedList);
     }
 
     @Operation(summary = "Update member")
@@ -73,7 +82,8 @@ public class MemberController {
     @Operation(summary = "Add a new member to the database")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Create member", content = @Content), @ApiResponse(responseCode = "400", description = "Invalid field", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})})
     @PostMapping
-    public ResponseEntity<Void> addMember(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody MemberDto dto) {
+    public ResponseEntity<Void> addMember(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody
+            MemberDto dto) {
 
         final int memberId = memberService.saveMember(dto);
 
