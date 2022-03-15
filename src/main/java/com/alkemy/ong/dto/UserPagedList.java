@@ -9,10 +9,10 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public class UserPagedList extends PageImpl<UserDto> {
+public class UserPagedList extends PageImpl<UserPatchDTO> {
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public UserPagedList(@JsonProperty("content") List<UserDto> content,
+    public UserPagedList(@JsonProperty("content") List<UserPatchDTO> content,
                          @JsonProperty("number") int number,
                          @JsonProperty("size") int size,
                          @JsonProperty("totalElements") Long totalElements,
@@ -26,7 +26,7 @@ public class UserPagedList extends PageImpl<UserDto> {
         super(content, PageRequest.of(number, size), totalElements);
     }
 
-    public UserPagedList(List<UserDto> content, Pageable pageable, long total) {
+    public UserPagedList(List<UserPatchDTO> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }
 
