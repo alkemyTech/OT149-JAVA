@@ -78,6 +78,16 @@ public class TestimonialController {
         service.saveTestimonial(dto);
     }
 
+    @Operation(summary = "Get a paginated list of testimonials", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retrieve a paginated list of testimonials",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TestimonialPagedList.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+    })
+
     @GetMapping
     public ResponseEntity<TestimonialPagedList> list(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
@@ -101,9 +111,10 @@ public class TestimonialController {
      * @return Void
      */
 
-    @Operation(summary = "Delete a testimonial", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Delete a testimonial by id", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Delete testimonial"),
+            @ApiResponse(responseCode = "204", description = "Delete testimonial",
+                    content = @Content),
             @ApiResponse(responseCode = "404", description = "Testimonial not found",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))}),
