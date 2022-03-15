@@ -74,6 +74,18 @@ public class AuthController {
      * @param authRequest The authentication request containing the user's email and password
      * @return The authentication response containing the user's jwt token
      */
+    @Operation(summary = "Login a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User successfully logged in",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AuthenticationResponse.class)) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(
+                                    example = "{\n\"ok\": false\n}",
+                                    type = "boolean",
+                                    description = "false if User not logged in")) })
+    })
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> signIn(@Valid @RequestBody AuthenticationRequest authRequest) {
