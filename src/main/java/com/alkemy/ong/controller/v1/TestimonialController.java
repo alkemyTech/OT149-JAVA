@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,12 +101,16 @@ public class TestimonialController {
      * @return Void
      */
 
-    @Operation(summary = "Allows the administrator to delete a testimonial")
+    @Operation(summary = "Delete a testimonial", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete testimonial"),
             @ApiResponse(responseCode = "404", description = "Testimonial not found",
                     content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))})
+
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
