@@ -38,7 +38,9 @@ public class Organization {
 	private  String welcomeText;
 	@Lob
 	private String aboutUsText;
-	
+	private String facebook;
+	private String linkedin;
+	private String instagram;
 	
 	@Column( name ="updated_at")
 	@LastModifiedDate
