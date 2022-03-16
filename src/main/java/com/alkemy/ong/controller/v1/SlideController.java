@@ -1,11 +1,14 @@
 package com.alkemy.ong.controller.v1;
 
+import org.springframework.web.bind.annotation.PutMapping;
+
 import static com.alkemy.ong.controller.ControllerConstants.V_1_SLIDES;
 
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,15 +37,15 @@ public class SlideController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<SlideDetailDto>getSlideById(@PathVariable Long id){
-    	SlideDetailDto detailSlide = service.getSlideById(id);
-        return ResponseEntity.ok().body(detailSlide);
+	SlideDetailDto detailSlide = service.getSlideById(id);
+	return ResponseEntity.ok().body(detailSlide);
     }
-  
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<SlideDetailDto>> getAllSlides(){
-        List<SlideDetailDto> detailSlidesDto = service.getAllSlides();
-        return ResponseEntity.ok().body(detailSlidesDto);
+	List<SlideDetailDto> detailSlidesDto = service.getAllSlides();
+	return ResponseEntity.ok().body(detailSlidesDto);
     }
 
     @GetMapping("/public/{idOrg}")
@@ -61,6 +64,11 @@ public class SlideController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+   	@PutMapping("/{id}")
+	public void updateSlides(@RequestBody SlideDto dto, @PathVariable(value="id") Long id ){
+		service.updateSlides(dto,id);
+	}
+    	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public void deleteSlide(@PathVariable Long id) {
 		service.deleteSlide(id);
