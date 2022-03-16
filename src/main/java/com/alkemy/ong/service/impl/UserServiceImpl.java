@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
         Page<User> pageUser = userRepository.findAll(pageRequest);
 
-        final List<UserDto> list = pageUser.getContent().stream().map(userMapper::toDto).collect(Collectors.toList());
+        final List<UserPatchDTO> list = pageUser.getContent().stream().map(userMapper::toUserPatchDTO).collect(Collectors.toList());
         final PageRequest of = PageRequest.of(pageUser.getPageable().getPageNumber(), pageUser.getPageable().getPageSize());
         final long totalElements = pageUser.getTotalElements();
 
