@@ -1,27 +1,28 @@
 package com.alkemy.ong.controller.v1;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import com.alkemy.ong.dto.SlideDto;
+import static com.alkemy.ong.controller.ControllerConstants.V_1_SLIDES;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import com.alkemy.ong.dto.SlideDetailDto;
+import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import com.alkemy.ong.service.SlideService;
+import javax.validation.Valid;
 
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import javax.validation.Valid;
-import static com.alkemy.ong.controller.ControllerConstants.V_1_SLIDES;
-import java.util.List;
+
+import com.alkemy.ong.dto.SlideDetailDto;
+import com.alkemy.ong.dto.SlideDto;
+import com.alkemy.ong.service.SlideService;
+
+import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(V_1_SLIDES)
 @RequiredArgsConstructor
@@ -49,6 +50,13 @@ public class SlideController {
 		final Long id = service.saveSlide(dto);
 		UriComponents uriComponents = uriComponentsBuilder.path(V_1_SLIDES + "/{id}").buildAndExpand(id);
 		return ResponseEntity.created(uriComponents.toUri()).build();
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/{id}")
+	public void deleteSlide(@PathVariable Long id) {
+		service.deleteSlide(id);
 	}
   
 }
