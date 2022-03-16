@@ -8,6 +8,7 @@ import com.alkemy.ong.controller.ControllerConstants;
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
 import com.alkemy.ong.dto.CategoryListDto;
+import com.alkemy.ong.dto.CategoryPagedList;
 import com.alkemy.ong.dto.CategoryPutDto;
 
 import com.alkemy.ong.exception.ErrorDetails;
@@ -118,7 +119,7 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<CategoryPagedList>getCategoryList(@RequestParam(value = "page", required = false) Integer page,
-                                                        @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                            @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                             UriComponentsBuilder uriComponentsBuilder){
 
         if (page == null || page < 0){
@@ -133,11 +134,17 @@ public class CategoryController {
 
         CategoryPagedList pagedList = service.getAllCategories(PageRequest.of(page, pageSize));
 
-        if(page < pagedList.getTotalPages() -1)
-        pagedList.setNextUri(uriBuilder.buildAndExpand(page + 1).toUri());
+        if(page < pagedList.getTotalPages() -1) {
+            pagedList.setNextUri(uriBuilder.buildAndExpand(page + 1).toUri());
+        }else{
+            pagedList.setNextUri(uriBuilder.buildAndExpand(page).toUri());
+        }
 
-        if(page > 0)
-        pagedList.setBackUri(uriBuilder.buildAndExpand(page - 1).toUri());
+        if(page > 0) {
+            pagedList.setBackUri(uriBuilder.buildAndExpand(page - 1).toUri());
+        }else{
+            pagedList.setBackUri(uriBuilder.buildAndExpand(page).toUri());
+        }
         
 
 
