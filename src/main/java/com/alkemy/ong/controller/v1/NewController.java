@@ -93,11 +93,20 @@ public class NewController {
         if (pageSize == null || pageSize < 1){
             pageSize = ControllerConstants.DEFAULT_PAGE_SIZE;
         }
-        UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_NEWS + "?pageNumber={page}");
+        UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_NEWS).queryParam("pageNumber={page}");
         NewPagedList pagedList = service.pagedList(PageRequest.of(pageNumber, pageSize));
-        pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber + 1).toUri());
-        pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber - 1).toUri());
-        return ResponseEntity.ok(service.pagedList(PageRequest.of(pageNumber, pageSize)));
+        if (pagedList.hasNext()){
+            pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber + 1).toUri());
+        }else {
+            pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber).toUri());
+        }
+        if (pagedList.hasPrevious()){
+            pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber - 1).toUri());
+        }else {
+            pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber).toUri());
+        }
+
+        return ResponseEntity.ok(pagedList);
     }
     
     @ResponseStatus(HttpStatus.NO_CONTENT)
