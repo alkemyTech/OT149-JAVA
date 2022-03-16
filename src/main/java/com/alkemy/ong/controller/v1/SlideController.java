@@ -7,7 +7,8 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_SLIDES;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,7 +60,7 @@ public class SlideController {
    	@PutMapping("/{id}")
 	public void updateSlides(@RequestBody SlideDto dto, @PathVariable(value="id") Long id ){
 		service.updateSlides(dto,id);
-  
+	}
     	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public void deleteSlide(@PathVariable Long id) {
