@@ -1,6 +1,8 @@
 package com.alkemy.ong.configuration;
 
 import com.alkemy.ong.exception.UserNotFoundException;
+import com.alkemy.ong.security.CustomAccessDeniedHandler;
+import com.alkemy.ong.security.CustomAuthenticationEntryPoint;
 import com.alkemy.ong.security.JwtRequestFilter;
 import com.alkemy.ong.security.impl.UserSecurityService;
 import com.alkemy.ong.service.UserService;
@@ -14,6 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,11 +63,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 .authorizeRequests().antMatchers("/v1/auth/*","/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
-                .and().exceptionHandling()
+                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+                .accessDeniedHandler(accessDeniedHandler())
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint(){
+        return new CustomAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new CustomAccessDeniedHandler();
     }
 }
 

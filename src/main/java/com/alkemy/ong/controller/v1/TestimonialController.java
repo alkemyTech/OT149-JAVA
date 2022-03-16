@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_TESTIMONIAL;
 @RestController
 @RequestMapping(V_1_TESTIMONIAL)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class TestimonialController {
 
     @Autowired
@@ -77,6 +79,16 @@ public class TestimonialController {
         service.saveTestimonial(dto);
     }
 
+    @Operation(summary = "Get a paginated list of testimonials")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retrieve a paginated list of testimonials",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TestimonialPagedList.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+    })
+
     @GetMapping
     public ResponseEntity<TestimonialPagedList> list(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
@@ -100,6 +112,18 @@ public class TestimonialController {
      * @return Void
      */
 
+    @Operation(summary = "Delete a testimonial by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Delete testimonial",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Testimonial not found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+
+    })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTestimonial(@PathVariable Long id) {

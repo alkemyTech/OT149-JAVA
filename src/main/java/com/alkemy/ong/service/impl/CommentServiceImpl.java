@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -20,7 +21,13 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private CommentRepository repository;
 
-	@Transactional
+	@Transactional(readOnly = true)
+	@Override
+	public List<CommentDto> getAllComment() {
+		List<Comment> commentList = repository.findAll();
+		return mapper.toCommentDtoReduced(commentList);
+	}
+
 	@Override
 	public Long saveComment(CommentDto dto) {
 			Comment comment = mapper.toComment(dto);

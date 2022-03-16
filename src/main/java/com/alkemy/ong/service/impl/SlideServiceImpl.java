@@ -2,20 +2,20 @@ package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.exception.NewNotFoundException;
 import com.alkemy.ong.exception.NotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alkemy.ong.dto.SlideDetailDto;
 import com.alkemy.ong.dto.SlideDto;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.SlideMapper;
 import com.alkemy.ong.model.Organization;
 import com.alkemy.ong.model.Slide;
 import com.alkemy.ong.repository.SlideRepository;
 import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.service.SlideService;
-
 import lombok.RequiredArgsConstructor;
-
-import com.alkemy.ong.dto.SlideDetailDto;
 import java.util.List;
 
 @Service
@@ -30,9 +30,9 @@ public class SlideServiceImpl implements SlideService {
 	@Transactional(readOnly = true)
 	@Override
 	public SlideDetailDto getSlideById(Long id) {
-		return repository.findById(id).map(mapper::toSlideDetailDto).orElseThrow(() -> new NewNotFoundException());
+		return repository.findById(id).map(mapper::toSlideDetailDto).orElseThrow(() -> new NotFoundException("Id not found: " + id));
 	}
-  
+
 	@Transactional
 	@Override
 	public Long saveSlide(SlideDto dto) {
@@ -93,4 +93,13 @@ public class SlideServiceImpl implements SlideService {
 		});
 		
 	}
+
+  @Override
+	public void deleteSlide(Long id) {
+		if (!repository.existsById(id)) {
+			throw new NotFoundException("Id not found: " + id);
+		}
+		repository.deleteById(id);
+	}
+	
 }
