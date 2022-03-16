@@ -1,10 +1,13 @@
 package com.alkemy.ong.service.impl;
 
-import com.alkemy.ong.exception.NewNotFoundException;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alkemy.ong.dto.SlideDetailDto;
 import com.alkemy.ong.dto.SlideDto;
+import com.alkemy.ong.exception.NewNotFoundException;
 import com.alkemy.ong.mapper.SlideMapper;
 import com.alkemy.ong.model.Organization;
 import com.alkemy.ong.model.Slide;
@@ -14,29 +17,21 @@ import com.alkemy.ong.service.SlideService;
 
 import lombok.RequiredArgsConstructor;
 
-import com.alkemy.ong.dto.SlideDetailDto;
-import com.alkemy.ong.model.Slide;
-
-import lombok.RequiredArgsConstructor;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class SlideServiceImpl implements SlideService {
 
-    private final SlideRepository repository;
-    private final SlideMapper mapper;
-    private final AmazonS3ServiceImpl amazonService;
-    private final OrganizationService orgService;
-    
+	private final SlideRepository repository;
+	private final SlideMapper mapper;
+	private final AmazonS3ServiceImpl amazonService;
+	private final OrganizationService orgService;
+
 	@Transactional(readOnly = true)
 	@Override
 	public SlideDetailDto getSlideById(Long id) {
-        return repository.findById(id)
-        		.map(mapper::toSlideDetailDto)
-        		.orElseThrow(() -> new NewNotFoundException());
+		return repository.findById(id).map(mapper::toSlideDetailDto).orElseThrow(() -> new NewNotFoundException());
 	}
-	
+
 	@Transactional
 	@Override
 	public Long saveSlide(SlideDto dto) {
@@ -64,11 +59,20 @@ public class SlideServiceImpl implements SlideService {
 		return saved.getId();
 	}
 
-  @Override
-  public List<SlideDetailDto> getAllSlides() {
-    List<Slide> slides = repository.findAll();
-    List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
-    return slidesDetailDto;
-  }
+	@Transactional(readOnly = true)
+	@Override
+	public List<SlideDetailDto> getAllSlides() {
+		List<Slide> slides = repository.findAll();
+		List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
+		return slidesDetailDto;
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<SlideDetailDto> getAllSlidesbyOrg(Long idOrg) {
+		List<Slide> slides = repository.findByOrg(idOrg);
+		List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
+		return slidesDetailDto;
+	}
 
 }
