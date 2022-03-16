@@ -56,9 +56,8 @@ public class SlideController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
    	@PutMapping("/{id}")
-	public ResponseEntity<Void> updateSlides(@RequestBody SlideDto dto, @PathVariable(value="id") Long id ){
+	public void updateSlides(@RequestBody SlideDto dto, @PathVariable(value="id") Long id ){
 		service.updateSlides(dto,id);
-		return new ResponseEntity<Void>(null);
 	}
   
 }
