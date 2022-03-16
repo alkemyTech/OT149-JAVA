@@ -4,6 +4,7 @@ import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
 import com.alkemy.ong.dto.CategoryListDto;
 import com.alkemy.ong.dto.CategoryPagedList;
+
 import com.alkemy.ong.dto.CategoryPutDto;
 import com.alkemy.ong.exception.CategoryNotFoundException;
 import com.alkemy.ong.mapper.CategoryListMapper;
@@ -68,6 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+
     public CategoryPagedList getAllCategories(PageRequest pageRequest) {
         Page<Category> pageCategory = repository.findAll(pageRequest);
 
@@ -77,6 +79,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
         return new CategoryPagedList(list, of, totalElements);
+
     }
 }
 

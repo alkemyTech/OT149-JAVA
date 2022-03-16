@@ -13,7 +13,7 @@ public enum ApplicationErrorCode {
     ILLEGAL_ARGUMENT("Has been passed an illegal or inappropriate argument."),
     HTTP_CLIENT_ERROR("The request failed because a 4xx error was received."),
     BAD_CREDENTIALS("The server can’t return a response due to invalid credentials."),
-    TOKEN_INVALID_OR_EXPIRED("The server can’t return a response due to an invalid token or token expired."),
+    TOKEN_INVALID_OR_EXPIRED("The server can not return a response due to an invalid token or token expired."),
     INTERNAL_ERROR("There was an error on the server and the request could not be completed."),
     SERVICE_NOT_IMPLEMENTED("The requested service is not implemented in this api version."),
     SERVICE_UNAVAILABLE("The server is unavailable to handle this request right now. Please try again later."),
@@ -29,7 +29,8 @@ public enum ApplicationErrorCode {
     MISSING_REQUEST_PART("The request is not a multipart/form-data request."),
     NOT_HANDLER_FOUND("The server could not found a handler for the request."),
     TYPE_MISMATCH("A type mismatch occurred trying to set a property."),
-    PARAMS_REQUIRED("The request body may be missing mandatory parameters.");
+    PARAMS_REQUIRED("The request body may be missing mandatory parameters."),
+    ROLE_INVALID("The server can not return a response due to an invalid role");
 
     private final String defaultMessage;
 

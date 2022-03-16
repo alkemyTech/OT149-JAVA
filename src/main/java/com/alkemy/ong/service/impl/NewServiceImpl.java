@@ -2,6 +2,7 @@ package com.alkemy.ong.service.impl;
 
 
 import com.alkemy.ong.dto.NewDetailDto;
+import com.alkemy.ong.exception.CategoryNotFoundException;
 import com.alkemy.ong.exception.NewNotFoundException;
 import com.alkemy.ong.mapper.NewMapper;
 import com.alkemy.ong.model.New;
@@ -49,5 +50,13 @@ public class NewServiceImpl implements NewService {
         repository.save(news);
         long newId = news.getId();
         return newId;
+    }
+
+    @Override
+    public void deleteNew(Long id) {
+        if (repository.findById(id).isEmpty()) {
+            throw new NewNotFoundException();
+        }
+        repository.deleteById(id);
     }
 }

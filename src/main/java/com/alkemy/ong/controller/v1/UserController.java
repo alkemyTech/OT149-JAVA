@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -46,33 +47,34 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "Update user",
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Invalid field",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "Invalid id supplied",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
     })
     @PatchMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void userPatch(
             @PathVariable("id") Long id,
-            @Valid @RequestBody UserPatchDTO patchDto){
-            service.userPatch(id, patchDto);
+            @Valid @RequestBody UserPatchDTO patchDto) {
+        service.userPatch(id, patchDto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<UserPagedList> list(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                                              @RequestParam(value = "pageSize", required = false) Integer pageSize){
+    public ResponseEntity<UserPagedList> list(@RequestParam(value = "page", required = false) Integer page,
+                                              @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
-        if (pageNumber == null || pageNumber < 0){
-            pageNumber = ControllerConstants.DEFAULT_PAGE_NUMBER;
+        if (page == null || page < 0) {
+            page = ControllerConstants.DEFAULT_PAGE_NUMBER;
         }
 
         if (pageSize == null || pageSize < 1) {
             pageSize = ControllerConstants.DEFAULT_PAGE_SIZE;
         }
 
-        return ResponseEntity.ok(service.pagedList(PageRequest.of(pageNumber, pageSize)));
+        return ResponseEntity.ok(service.pagedList(PageRequest.of(page, pageSize)));
     }
 
 

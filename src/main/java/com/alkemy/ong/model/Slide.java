@@ -37,12 +37,12 @@ public class Slide {
 	@Column(name = "text", nullable = false)
 	private String text;
 	
-	@Column(name = "order", nullable = false)
+	@Column(name = "slide_order", nullable = false)
 	private Integer order;
 
 	@ManyToOne
 	@JoinColumn(name = "ORGANIZATION_ID", nullable = false)
-	private Organization organizationId;
+	private Organization organization;
 
 	@Column(name = "created_at", nullable = false, updatable = false)
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
