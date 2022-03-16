@@ -53,9 +53,10 @@ public class SlideController {
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @DeleteMapping("/{id}")
-    public void deleteSlide(@PathVariable Long id) {
-        service.deleteSlide(id);
-    }
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/{id}")
+	public void deleteSlide(@PathVariable Long id) {
+		service.deleteSlide(id);
+	}
   
 }
