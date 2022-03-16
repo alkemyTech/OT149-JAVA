@@ -34,15 +34,15 @@ public class SlideController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<SlideDetailDto>getSlideById(@PathVariable Long id){
-    	SlideDetailDto detailSlide = service.getSlideById(id);
-        return ResponseEntity.ok().body(detailSlide);
+	SlideDetailDto detailSlide = service.getSlideById(id);
+	return ResponseEntity.ok().body(detailSlide);
     }
-  
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<SlideDetailDto>> getAllSlides(){
-        List<SlideDetailDto> detailSlidesDto = service.getAllSlides();
-        return ResponseEntity.ok().body(detailSlidesDto);
+	List<SlideDetailDto> detailSlidesDto = service.getAllSlides();
+	return ResponseEntity.ok().body(detailSlidesDto);
     }
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -54,10 +54,11 @@ public class SlideController {
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PutMapping("/{id}")
-	public ResponseEntity<SlideDetailDto> updateSlides(@RequestBody SlideDto dto, @PathVariable(value="id") Long id ){
-
-		return new ResponseEntity<SlideDetailDto>(service.updateSlides(dto,id),HttpStatus.CREATED);
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+   	@PutMapping("/{id}")
+	public ResponseEntity<Void> updateSlides(@RequestBody SlideDto dto, @PathVariable(value="id") Long id ){
+		service.updateSlides(dto,id);
+		return new ResponseEntity<Void>(null);
 	}
   
 }
