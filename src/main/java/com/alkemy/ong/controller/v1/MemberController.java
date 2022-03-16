@@ -46,6 +46,7 @@ public class MemberController {
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "pageSize", required = false)
                     Integer pageSize, UriComponentsBuilder uriComponentsBuilder) {
+
         if (page == null || page < 0) {
             page = ControllerConstants.DEFAULT_PAGE_NUMBER;
         }
@@ -57,8 +58,18 @@ public class MemberController {
         UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_MEMBERS).queryParam("page={page}");
 
         MemberPagedList pagedList = memberService.pagedList(PageRequest.of(page, pageSize));
-        pagedList.setNextUri(uriBuilder.buildAndExpand(page + 1).toUri());
-        pagedList.setBackUri(uriBuilder.buildAndExpand(page - 1).toUri());
+
+        if (pagedList.hasNext()) {
+            pagedList.setNextUri(uriBuilder.buildAndExpand(page + 1).toUri());
+        } else {
+            pagedList.setNextUri(uriBuilder.buildAndExpand(page).toUri());
+        }
+
+        if (pagedList.hasPrevious()) {
+            pagedList.setBackUri(uriBuilder.buildAndExpand(page - 1).toUri());
+        } else {
+            pagedList.setBackUri(uriBuilder.buildAndExpand(page).toUri());
+        }
 
         return ResponseEntity.ok(pagedList);
     }
