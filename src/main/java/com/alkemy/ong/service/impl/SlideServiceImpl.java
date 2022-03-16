@@ -70,9 +70,9 @@ public class SlideServiceImpl implements SlideService {
 
 	@Transactional
 	@Override
-	public SlideDetailDto updateSlides(SlideDto dto, Long id) {
+	public void updateSlides(SlideDto dto, Long id) {
 		
-		return repository.findById(id).map(slide -> {
+		repository.findById(id).map(slide -> {
 			slide.setImageUrl(amazonService.uploadImage64(dto.getImageB64()));
 			slide.setOrder(dto.getOrder());
 			slide.setOrganization(orgService.findById(dto.getOrganizationId()));
@@ -88,7 +88,6 @@ public class SlideServiceImpl implements SlideService {
 			}
 			
 			repository.save(slide);
-			return mapper.toSlideDetailDto(slide);
 		}).orElseThrow(()->{
 			throw new NotFoundException("Slide not found.");
 		});
