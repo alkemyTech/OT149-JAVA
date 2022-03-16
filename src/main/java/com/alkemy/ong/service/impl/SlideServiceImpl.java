@@ -1,6 +1,8 @@
 package com.alkemy.ong.service.impl;
 
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +74,14 @@ public class SlideServiceImpl implements SlideService {
 	public List<SlideDetailDto> getAllSlidesbyOrg(Long idOrg) {
 		List<Slide> slides = repository.findByOrg(idOrg);
 		List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
+		Collections.sort(slidesDetailDto, new Comparator<SlideDetailDto>() {
+            @Override
+            public int compare(SlideDetailDto p1, SlideDetailDto p2) {
+                return p1.getOrder() - p2.getOrder();
+            }
+        });
 		return slidesDetailDto;
+
 	}
 
 }
