@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +57,13 @@ public class SlideController {
 		final Long id = service.saveSlide(dto);
 		UriComponents uriComponents = uriComponentsBuilder.path(V_1_SLIDES + "/{id}").buildAndExpand(id);
 		return ResponseEntity.created(uriComponents.toUri()).build();
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/{id}")
+	public void deleteSlide(@PathVariable Long id) {
+		service.deleteSlide(id);
 	}
   
 }
