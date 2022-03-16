@@ -1,4 +1,4 @@
-package com.alkemy.ong.configuration;
+package com.alkemy.ong.security;
 
 import com.alkemy.ong.enumeration.ApplicationErrorCode;
 import com.alkemy.ong.enumeration.Location;

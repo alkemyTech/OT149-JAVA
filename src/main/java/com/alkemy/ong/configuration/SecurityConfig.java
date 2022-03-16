@@ -1,6 +1,8 @@
 package com.alkemy.ong.configuration;
 
 import com.alkemy.ong.exception.UserNotFoundException;
+import com.alkemy.ong.security.CustomAccessDeniedHandler;
+import com.alkemy.ong.security.CustomAuthenticationEntryPoint;
 import com.alkemy.ong.security.JwtRequestFilter;
 import com.alkemy.ong.security.impl.UserSecurityService;
 import com.alkemy.ong.service.UserService;
