@@ -87,7 +87,7 @@ public class SlideServiceImpl implements SlideService {
 				}
 			}
 			
-			repository.save(slide);
+			return repository.save(slide);
 		}).orElseThrow(()->{
 			throw new NotFoundException("Slide not found.");
 		});
