@@ -1,5 +1,6 @@
 package com.alkemy.ong.controller.v1;
 
+import com.alkemy.ong.controller.ControllerConstants;
 import com.alkemy.ong.dto.*;
 import com.alkemy.ong.exception.ErrorDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
@@ -80,6 +83,32 @@ public class NewController {
 
     }
 
+    @GetMapping
+    public ResponseEntity<NewPagedList> list(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                             UriComponentsBuilder uriComponentsBuilder){
+        if (pageNumber == null || pageNumber < 0){
+            pageNumber = ControllerConstants.DEFAULT_PAGE_NUMBER;
+        }
+        if (pageSize == null || pageSize < 1){
+            pageSize = ControllerConstants.DEFAULT_PAGE_SIZE;
+        }
+        UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_NEWS).queryParam("pageNumber={page}");
+        NewPagedList pagedList = service.pagedList(PageRequest.of(pageNumber, pageSize));
+        if (pagedList.hasNext()){
+            pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber + 1).toUri());
+        }else {
+            pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber).toUri());
+        }
+        if (pagedList.hasPrevious()){
+            pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber - 1).toUri());
+        }else {
+            pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber).toUri());
+        }
+
+        return ResponseEntity.ok(pagedList);
+    }
+    
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteNew(@PathVariable Long id) {

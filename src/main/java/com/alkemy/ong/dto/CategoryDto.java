@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class CategoryDto {
     @NotBlank(message = "Obligatory field.")
-    @Pattern(regexp = "[a-zA-Z]+")
+    @Pattern(regexp = "[a-zA-Z\\s]+")
     private String name;
     private String description;
     private String image;

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,13 +29,16 @@ public class TestimonialServiceImpl implements TestimonialService {
         testimonialsRepository.save(testimonial);
     }
 
+    @Transactional
     @Override
     public TestimonialDto testimonialPut(Long id, TestimonialDto dto) {
-        if (!testimonialsRepository.existsById(id)) {
-            throw new TestimonialNotFoundException("Testimonial not found with id " + id);
-        }
-        Testimonial testimonial = testimonialMapper.toTestimonial(dto);
-        return testimonialMapper.toDto(testimonialsRepository.save(testimonial));
+        return testimonialsRepository.findById(id).map(testimonial -> {
+           testimonial.setName(dto.getName());
+           testimonial.setContent(dto.getContent());
+           testimonial.setImage(dto.getImage());
+            testimonialsRepository.save(testimonial);
+           return testimonialMapper.toDto(testimonial);
+        }).orElseThrow(() -> new TestimonialNotFoundException("Testimonial not found."));
     }
 
     @Override
@@ -57,4 +61,3 @@ public class TestimonialServiceImpl implements TestimonialService {
         this.testimonialsRepository.deleteById(id);
     }
 }
-
