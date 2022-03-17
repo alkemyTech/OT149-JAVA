@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -34,12 +35,15 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_MEMBERS;
 @RestController
 @RequestMapping(V_1_MEMBERS)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class MemberController {
 
     private final MemberServiceImpl memberService;
 
-    @Operation(summary = "Get a member list")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Retrieve a list of members", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class))})})
+    @Operation(summary = "Get a paginated list of members")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retrieve a paginated list of members", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = MemberPagedList.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})})
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping
     public ResponseEntity<MemberPagedList> list(
@@ -75,7 +79,13 @@ public class MemberController {
     }
 
     @Operation(summary = "Update member")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Update member", content = @Content), @ApiResponse(responseCode = "400", description = "Invalid field", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}), @ApiResponse(responseCode = "404", description = "Invalid id supplied", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Update member", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid field", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "404", description = "Invalid id supplied", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+    })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
     public void updateMember(@PathVariable Integer id, @Valid @RequestBody MemberDto dto) {
@@ -83,7 +93,13 @@ public class MemberController {
     }
 
     @Operation(summary = "Delete a member by its id")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Delete the member", content = @Content), @ApiResponse(responseCode = "404", description = "Member not found", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Delete the member", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Member not found", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+    })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteMember(@PathVariable Integer id) {
@@ -91,7 +107,13 @@ public class MemberController {
     }
 
     @Operation(summary = "Add a new member to the database")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Create member", content = @Content), @ApiResponse(responseCode = "400", description = "Invalid field", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Create member", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid field", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+    })
     @PostMapping
     public ResponseEntity<Void> addMember(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody
             MemberDto dto) {
