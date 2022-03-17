@@ -86,13 +86,13 @@ class UserControllerTest {
     @Test
     void list_shouldRespond200() throws Exception {
 
-        final UserDto user1 = UserDto.builder()
+        final UserPatchDTO user1 = UserPatchDTO.builder()
                 .firstName("John")
                 .lastName("Foo")
                 .photo("foo.jpg")
                 .build();
 
-        final UserDto user2 = UserDto.builder()
+        final UserPatchDTO user2 = UserPatchDTO.builder()
                 .firstName("Jane")
                 .lastName("Bar")
                 .photo("bar.jpg")
