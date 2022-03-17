@@ -54,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
 	public void commentPut(Long id, CommentDto dto){
 		repository.findById(id).map( comment -> {
 			comment.setBody(dto.getBody());
-
+			repository.save(comment);
 			return mapper.toCommentDto(comment);
 		}).orElseThrow(() -> {
 			throw new NotFoundException("Comment not found");
