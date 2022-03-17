@@ -99,7 +99,7 @@ public class CategoryController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Void> createCategory(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody CategoryDto dto){
         final long categoryId = service.createCategory(dto);
-        UriComponents uriComponents = uriComponentsBuilder.path("/{id}").buildAndExpand(categoryId);
+        UriComponents uriComponents = uriComponentsBuilder.path(V_1_CATEGORIES + "/{id}").buildAndExpand(categoryId);
         return ResponseEntity.created(uriComponents.toUri()).build();
     }
 
