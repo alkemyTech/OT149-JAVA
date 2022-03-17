@@ -1,7 +1,6 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.RegisterRequest;
-import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserPagedList;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.dto.UserResponseDto;
@@ -38,16 +37,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserResponseDto registerResponse(User user, String jwt) {
-        return new UserResponseDto(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPhoto(),
-                user.getCreatedDate(),
-                jwt);
+        return new UserResponseDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhoto(), user.getCreatedDate(), jwt);
     }
 
+    @Transactional(readOnly = true)
+    @Override
     public UserPagedList pagedList(PageRequest pageRequest) {
 
         Page<User> pageUser = userRepository.findAll(pageRequest);
@@ -59,6 +53,7 @@ public class UserServiceImpl implements UserService {
         return new UserPagedList(list, of, totalElements);
     }
 
+    @Transactional
     @Override
     public UserResponseDto saveUser(RegisterRequest registerRequest) {
 
@@ -77,6 +72,7 @@ public class UserServiceImpl implements UserService {
      * @param id       Id del User a patchear.
      * @param patchDto Dto del User modificado.
      */
+    @Transactional
     @Override
     public void userPatch(Long id, UserPatchDTO patchDto) {
 
@@ -89,20 +85,18 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(user);
 
         }).orElseThrow(() -> {
-
             throw new UserNotFoundException();
-
         });
     }
 
-    @Override
     @Transactional
+    @Override
     public void deleteUser(Long userId) {
-        userRepository.findById(userId).ifPresent(userRepository::delete);;
+        userRepository.findById(userId).ifPresent(userRepository::delete);
     }
 
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
