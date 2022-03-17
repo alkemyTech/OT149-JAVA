@@ -5,6 +5,7 @@ import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
 import com.alkemy.ong.dto.CategoryListDto;
 import com.alkemy.ong.dto.CategoryPutDto;
+import com.alkemy.ong.dto.ContactDto;
 import com.alkemy.ong.exception.ErrorDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.alkemy.ong.service.CategoryService;
@@ -40,6 +42,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_CATEGORIES;
 @RestController
 @RequestMapping(V_1_CATEGORIES)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class CategoryController {
     @Autowired
     private final CategoryService service;
@@ -51,7 +54,10 @@ public class CategoryController {
                             schema = @Schema(implementation = CategoryDetailDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Category not found",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+                            schema = @Schema(implementation = ErrorDetails.class)) }),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
     })
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDetailDto>getCategoryById(@PathVariable Long id){
@@ -64,9 +70,13 @@ public class CategoryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete the category",
                     content = @Content),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "Category not found",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+                            schema = @Schema(implementation = ErrorDetails.class)) }),
+
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -81,12 +91,15 @@ public class CategoryController {
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Invalid field",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+                            schema = @Schema(implementation = ErrorDetails.class)) }),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
     })
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Void> createCategory(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody CategoryDto dto){
         final long categoryId = service.createCategory(dto);
-        UriComponents uriComponents = uriComponentsBuilder.path("/{id}").buildAndExpand(categoryId);
+        UriComponents uriComponents = uriComponentsBuilder.path(V_1_CATEGORIES + "/{id}").buildAndExpand(categoryId);
         return ResponseEntity.created(uriComponents.toUri()).build();
     }
 
@@ -98,6 +111,9 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid field",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class)) }),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "Invalid id supplied",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class)) })
@@ -108,6 +124,16 @@ public class CategoryController {
         service.updateCategory(id, putDto);
     }
 
+
+    @Operation(summary = "Get a category list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retrieve a list of categories",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryListDto.class)) }),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+    })
     @GetMapping
     public ResponseEntity<List<CategoryListDto>>getCategoryList(){
 

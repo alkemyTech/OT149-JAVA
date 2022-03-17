@@ -10,5 +10,6 @@ public interface NewMapper {
     NewDetailDto toNewDetailDto(New newModel);
     New toNew(NewDetailDto dto);
     New toNew(NewDto dto);
+    NewDto toDto (New newModel);
 
 }

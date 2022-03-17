@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_IMAGES_UPLOAD;
 @RestController
 @RequestMapping(V_1_IMAGES_UPLOAD)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class ImageUploadController {
 
 	private final AmazonS3Service service;
@@ -34,7 +36,10 @@ public class ImageUploadController {
 							schema = @Schema(implementation = String.class)) }),
 			@ApiResponse(responseCode = "400", description = "Invalid field",
 					content = { @Content(mediaType = "application/json",
-							schema = @Schema(implementation = ErrorDetails.class)) })
+							schema = @Schema(implementation = ErrorDetails.class)) }),
+			@ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+					content = {@Content(mediaType = "application/json",
+							schema = @Schema(implementation = ErrorDetails.class))})
 	})
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

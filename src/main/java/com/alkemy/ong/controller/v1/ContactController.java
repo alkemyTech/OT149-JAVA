@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_CONTACTS;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(V_1_CONTACTS)
+@SecurityRequirement(name = "bearerAuth")
 public class ContactController {
 
     private final ContactService contactService;
@@ -46,7 +48,10 @@ public class ContactController {
                             schema = @Schema(implementation = ContactDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid field",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+                            schema = @Schema(implementation = ErrorDetails.class)) }),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
     })
     @PostMapping
     public ResponseEntity<ContactDto> saveContact(@Valid @RequestBody ContactDto dto) {
@@ -65,7 +70,10 @@ public class ContactController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retrieve a list of contacts",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContactDto.class)) })
+                            schema = @Schema(implementation = ContactDto.class)) }),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
