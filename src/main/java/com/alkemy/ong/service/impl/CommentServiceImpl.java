@@ -50,17 +50,17 @@ public class CommentServiceImpl implements CommentService {
         return comment.getId();
     }
 
-    @Transactional
-    @Override
-    public void commentPut(Long id, CommentDto dto) {
-        repository.findById(id).map(comment -> {
-            comment.setBody(dto.getBody());
-
-            return mapper.toCommentDto(comment);
-        }).orElseThrow(() -> {
-            throw new NotFoundException("Comment not found");
-        });
-    }
+	@Transactional
+	@Override
+	public void commentPut(Long id, CommentDto dto){
+		repository.findById(id).map( comment -> {
+			comment.setBody(dto.getBody());
+			repository.save(comment);
+			return mapper.toCommentDto(comment);
+		}).orElseThrow(() -> {
+			throw new NotFoundException("Comment not found");
+		});
+	}
 
     @Transactional(readOnly = true)
     @Override
