@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ import static com.alkemy.ong.controller.ControllerConstants.REQ_MAPP_ACTIVITIES;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(REQ_MAPP_ACTIVITIES)
+@SecurityRequirement(name = "bearerAuth")
 public class ActivityController {
 
     @Autowired
@@ -40,7 +42,10 @@ public class ActivityController {
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Invalid field",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+                            schema = @Schema(implementation = ErrorDetails.class)) }),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
              })
     @PostMapping()
     public ResponseEntity<Void> addActivity(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody ActivityDto dto) {
@@ -61,9 +66,13 @@ public class ActivityController {
             @ApiResponse(responseCode = "400", description = "Invalid field",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class)) }),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "Invalid id supplied",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+                            schema = @Schema(implementation = ErrorDetails.class)) }),
+
     })
     @PutMapping("/{id}")
     public ResponseEntity<ActivityDto> updateActivity(@PathVariable Long id, @Valid @RequestBody ActivityDto dto) {

@@ -40,10 +40,12 @@ public class MemberController {
 
     private final MemberServiceImpl memberService;
 
+
     @Operation(summary = "Get a paginated list of members")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retrieve a paginated list of members", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = MemberPagedList.class))}),
             @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})})
+
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping
     public ResponseEntity<MemberPagedList> list(
@@ -100,6 +102,7 @@ public class MemberController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))})
     })
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteMember(@PathVariable Integer id) {
