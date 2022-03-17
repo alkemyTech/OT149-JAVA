@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,8 +43,8 @@ public class AuthController {
             @ApiResponse(responseCode = "201", description = "Create user",
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Invalid field",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
     })
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> saveUser(@Valid @RequestBody RegisterRequest user) {
@@ -51,16 +52,18 @@ public class AuthController {
     }
 
 
-
-    @Operation(summary = "Get an user")
+    @Operation(summary = "Get an user", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the user",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDto.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "User not found",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
-            })
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))})
+    })
 
     @GetMapping("/me")
     public ResponseEntity<UserDto> userLogged() {
@@ -77,14 +80,14 @@ public class AuthController {
     @Operation(summary = "Login a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User successfully logged in",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AuthenticationResponse.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AuthenticationResponse.class))}),
             @ApiResponse(responseCode = "401", description = "User not logged in",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(
                                     example = "{\n\"ok\": false\n}",
                                     type = "boolean",
-                                    description = "false if User not logged in")) })
+                                    description = "false if User not logged in"))})
     })
 
     @PostMapping("/login")
