@@ -5,6 +5,7 @@ import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
 import com.alkemy.ong.dto.CategoryListDto;
 import com.alkemy.ong.dto.CategoryPutDto;
+import com.alkemy.ong.dto.ContactDto;
 import com.alkemy.ong.exception.ErrorDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -108,6 +109,13 @@ public class CategoryController {
         service.updateCategory(id, putDto);
     }
 
+
+    @Operation(summary = "Get a category list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retrieve a list of categories",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryListDto.class)) })
+    })
     @GetMapping
     public ResponseEntity<List<CategoryListDto>>getCategoryList(){
 
