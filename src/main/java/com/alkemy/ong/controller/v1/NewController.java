@@ -89,7 +89,7 @@ public class NewController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Void> createNew(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody NewDto dto) {
         final long newId = service.createNew(dto);
-        UriComponents uriComponents = uriComponentsBuilder.path("/{id}").buildAndExpand(newId);
+        UriComponents uriComponents = uriComponentsBuilder.path(V_1_NEWS + "/{id}").buildAndExpand(newId);
         return ResponseEntity.created(uriComponents.toUri()).build();
 
     }
