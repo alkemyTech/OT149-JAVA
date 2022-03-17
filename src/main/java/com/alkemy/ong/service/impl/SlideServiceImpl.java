@@ -75,12 +75,7 @@ public class SlideServiceImpl implements SlideService {
 	public List<SlideDetailDto> getAllSlidesbyOrg(Long idOrg) {
 		List<Slide> slides = repository.findByOrg(idOrg);
 		List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
-		Collections.sort(slidesDetailDto, new Comparator<SlideDetailDto>() {
-            @Override
-            public int compare(SlideDetailDto p1, SlideDetailDto p2) {
-                return p1.getOrder() - p2.getOrder();
-            }
-        });
+		slidesDetailDto.sort(Comparator.comparingInt(SlideDetailDto::getOrder));
 		return slidesDetailDto;
 
 	}
