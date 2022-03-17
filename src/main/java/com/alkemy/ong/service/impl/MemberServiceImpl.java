@@ -54,7 +54,6 @@ public class MemberServiceImpl implements MemberService {
         }).orElseThrow(() -> {
             throw new MemberNotFoundException();
         });
-
     }
 
     @Transactional
@@ -73,5 +72,4 @@ public class MemberServiceImpl implements MemberService {
 
         return member.getId();
     }
-
 }

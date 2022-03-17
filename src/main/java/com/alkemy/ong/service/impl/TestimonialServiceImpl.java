@@ -23,6 +23,7 @@ public class TestimonialServiceImpl implements TestimonialService {
     private final TestimonialsRepository testimonialsRepository;
     private final TestimonialMapper testimonialMapper;
 
+    @Transactional
     @Override
     public void saveTestimonial(TestimonialDto dto) {
         Testimonial testimonial = testimonialMapper.toTestimonial(dto);
@@ -33,14 +34,15 @@ public class TestimonialServiceImpl implements TestimonialService {
     @Override
     public TestimonialDto testimonialPut(Long id, TestimonialDto dto) {
         return testimonialsRepository.findById(id).map(testimonial -> {
-           testimonial.setName(dto.getName());
-           testimonial.setContent(dto.getContent());
-           testimonial.setImage(dto.getImage());
+            testimonial.setName(dto.getName());
+            testimonial.setContent(dto.getContent());
+            testimonial.setImage(dto.getImage());
             testimonialsRepository.save(testimonial);
-           return testimonialMapper.toDto(testimonial);
+            return testimonialMapper.toDto(testimonial);
         }).orElseThrow(() -> new TestimonialNotFoundException("Testimonial not found."));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public TestimonialPagedList pagedList(PageRequest pageRequest) {
 
@@ -53,6 +55,7 @@ public class TestimonialServiceImpl implements TestimonialService {
         return new TestimonialPagedList(list, of, totalElements);
     }
 
+    @Transactional
     @Override
     public void deleteTestimonial(Long id) {
         if (!this.testimonialsRepository.existsById(id)) {
