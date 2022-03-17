@@ -18,6 +18,7 @@ import com.alkemy.ong.repository.SlideRepository;
 import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.service.SlideService;
 import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
 @Service
@@ -113,5 +114,4 @@ public class SlideServiceImpl implements SlideService {
 		}
 		repository.deleteById(id);
 	}
-	
 }

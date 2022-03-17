@@ -55,9 +55,13 @@ public class TestimonialController {
             @ApiResponse(responseCode = "400", description = "Invalid field",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "Invalid id supplied",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))})
+
     })
     @PutMapping("/{id}")
     public TestimonialDto update(
@@ -70,6 +74,9 @@ public class TestimonialController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Create testimonial"),
             @ApiResponse(responseCode = "400", description = "Invalid field",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))})
     })
@@ -116,12 +123,12 @@ public class TestimonialController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete testimonial",
                     content = @Content),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "Testimonial not found",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))}),
-            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class))})
 
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")

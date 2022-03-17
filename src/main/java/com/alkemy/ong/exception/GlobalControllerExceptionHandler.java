@@ -53,8 +53,8 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
                 .close();
     }
 
-    @ExceptionHandler(value = {TestimonialNotFoundException.class})
-    protected ResponseEntity<ErrorDetails> handleTestimonialNotFoundException(TestimonialNotFoundException exc) {
+    @ExceptionHandler(value = {TestimonialNotFoundException.class, NotFoundException.class})
+    protected ResponseEntity<ErrorDetails> handleTestimonialNotFoundException(RuntimeException exc) {
 
         ErrorDetails error = ErrorDetails.builder()
                 .code(ApplicationErrorCode.NOT_FOUND)

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_COMMENTS;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(V_1_COMMENTS)
+@SecurityRequirement(name = "bearerAuth")
 public class CommentController {
 
 	private final CommentService service;
@@ -66,8 +68,9 @@ public class CommentController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "204", description = "Comment deleted",
 					content = @Content),
-			@ApiResponse(responseCode = "403", description = "Without permission",
-					content = @Content),
+			@ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+					content = {@Content(mediaType = "application/json",
+							schema = @Schema(implementation = ErrorDetails.class))}),
 			@ApiResponse(responseCode = "404", description = "Comment not found",
 					content = { @Content(mediaType = "application/json",
 							schema = @Schema(implementation = ErrorDetails.class)) })
@@ -82,6 +85,9 @@ public class CommentController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Success",
 					content = @Content),
+			@ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+					content = {@Content(mediaType = "application/json",
+							schema = @Schema(implementation = ErrorDetails.class))})
 	})
 	@GetMapping("/posts/{id}")
 	public ResponseEntity<List<CommentDto>> getAllCommentsByPost(@PathVariable Long id){

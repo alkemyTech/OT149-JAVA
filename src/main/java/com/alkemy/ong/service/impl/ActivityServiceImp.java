@@ -7,7 +7,6 @@ import com.alkemy.ong.model.Activity;
 import com.alkemy.ong.repository.ActivitiesRepository;
 import com.alkemy.ong.service.ActivityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ActivityServiceImp implements ActivityService {
 
-    @Autowired
-    private ActivitiesRepository activitiesRepository;
-    @Autowired
-    private ActivityMapper activityMapper;
+    private final ActivitiesRepository activitiesRepository;
+    private final ActivityMapper activityMapper;
 
     @Transactional
     @Override
@@ -31,6 +28,7 @@ public class ActivityServiceImp implements ActivityService {
         return activity.getId();
     }
 
+    @Transactional
     @Override
     public ActivityDto updateActivity(Long id, ActivityDto dto) {
 
@@ -47,5 +45,4 @@ public class ActivityServiceImp implements ActivityService {
 
         return responseDto;
     }
-
 }

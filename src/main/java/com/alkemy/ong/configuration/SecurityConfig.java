@@ -6,6 +6,7 @@ import com.alkemy.ong.security.impl.UserSecurityService;
 import com.alkemy.ong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -61,7 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/v1/slides/public/*","/v1/auth/*","/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**").permitAll()
+                .authorizeRequests().antMatchers("/v1/slides/public/*", "/v1/auth/register","/v1/auth/login","/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/v1/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/v1/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/v1/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("ADMIN","USER")
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .accessDeniedHandler(accessDeniedHandler())
