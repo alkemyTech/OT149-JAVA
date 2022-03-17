@@ -1,16 +1,20 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.MemberDto;
+import com.alkemy.ong.dto.MemberPagedList;
 import com.alkemy.ong.exception.MemberNotFoundException;
 import com.alkemy.ong.mapper.MemberMapper;
 import com.alkemy.ong.model.Member;
 import com.alkemy.ong.repository.MembersRepository;
 import com.alkemy.ong.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,11 +26,18 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<MemberDto> getAll() {
-        return membersRepository.findAll().stream().map(memberMapper::toDto).collect(Collectors.toList());
+    public MemberPagedList pagedList(PageRequest pageRequest) {
+
+        Page<Member> pageMember = membersRepository.findAll(pageRequest);
+
+        final List<MemberDto> list = pageMember.getContent().stream().map(memberMapper::toDto).collect(Collectors.toList());
+        final PageRequest of = PageRequest.of(pageMember.getPageable().getPageNumber(), pageMember.getPageable().getPageSize());
+        final long totalElements = pageMember.getTotalElements();
+
+        return new MemberPagedList(list, of, totalElements);
     }
 
-    @Transactional  
+    @Transactional
     @Override
     public void updateMember(Integer id, MemberDto dto) {
 
@@ -49,11 +60,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void deleteMember(Integer id) {
-        Member member = membersRepository.getById(id);
-
-        if (member != null) {
-            membersRepository.delete(member);
-        }
+        membersRepository.findById(id).ifPresent(membersRepository::delete);
     }
 
     @Transactional
@@ -66,4 +73,5 @@ public class MemberServiceImpl implements MemberService {
 
         return member.getId();
     }
+
 }
