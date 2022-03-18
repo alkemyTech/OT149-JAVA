@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_USERS;
 @RestController
 @RequestMapping(V_1_USERS)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
     private final UserService service;
@@ -47,6 +49,9 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "Update user",
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Invalid field",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "Invalid id supplied",
@@ -82,6 +87,9 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete the user",
                     content = @Content),
+            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class)) })

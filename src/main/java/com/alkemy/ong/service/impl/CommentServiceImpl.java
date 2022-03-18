@@ -22,31 +22,32 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-	@Autowired
-	private CommentMapper mapper;
-	@Autowired
-	private CommentRepository repository;
-	@Autowired
-	private UserRepository usersRepository;
-	@Autowired
-	private NewsRepository newRepository;
+    @Autowired
+    private CommentMapper mapper;
+    @Autowired
+    private CommentRepository repository;
+    @Autowired
+    private UserRepository usersRepository;
+    @Autowired
+    private NewsRepository newRepository;
 
-	@Transactional(readOnly = true)
-	@Override
-	public List<CommentDto> getAllComment() {
-		List<Comment> commentList = repository.findAll();
-		return mapper.toCommentDtoReduced(commentList);
-	}
+    @Transactional(readOnly = true)
+    @Override
+    public List<CommentDto> getAllComment() {
+        List<Comment> commentList = repository.findAll();
+        return mapper.toCommentDtoReduced(commentList);
+    }
 
-	@Override
-	public Long saveComment(CommentDto dto) {
-			User user = usersRepository.findById(dto.getUsersId()).orElseThrow(UserNotFoundException::new);
-			New news = newRepository.findById(dto.getNewsId()).orElseThrow(NewNotFoundException::new);
-			Comment comment = mapper.toComment(dto);
-			comment.setUser(user);
-			comment.setNews(news);
-			repository.save(comment);
-			return comment.getId();
+    @Transactional
+    @Override
+    public Long saveComment(CommentDto dto) {
+        User user = usersRepository.findById(dto.getUsersId()).orElseThrow(UserNotFoundException::new);
+        New news = newRepository.findById(dto.getNewsId()).orElseThrow(NewNotFoundException::new);
+        Comment comment = mapper.toComment(dto);
+        comment.setUser(user);
+        comment.setNews(news);
+        repository.save(comment);
+        return comment.getId();
     }
 
 	@Transactional
@@ -54,22 +55,26 @@ public class CommentServiceImpl implements CommentService {
 	public void commentPut(Long id, CommentDto dto){
 		repository.findById(id).map( comment -> {
 			comment.setBody(dto.getBody());
-
+			repository.save(comment);
 			return mapper.toCommentDto(comment);
 		}).orElseThrow(() -> {
 			throw new NotFoundException("Comment not found");
 		});
 	}
 
-	public List<CommentDto> getAllCommentsByPost(Long id){
-		List<Comment>commentList = repository.findByNewsId(id);
-		return mapper.toListCommentDto(commentList);
-	}
+    @Transactional(readOnly = true)
+    @Override
+    public List<CommentDto> getAllCommentsByPost(Long id) {
+        List<Comment> commentList = repository.findByNewsId(id);
+        return mapper.toListCommentDto(commentList);
+    }
 
-	public void deleteComment(Long id) {
-		if (repository.findById(id).isEmpty()) {
-			throw new CommentNotFoundException();
-		}
-		repository.deleteById(id);
-	}
+    @Transactional
+    @Override
+    public void deleteComment(Long id) {
+        if (repository.findById(id).isEmpty()) {
+            throw new CommentNotFoundException();
+        }
+        repository.deleteById(id);
+    }
 }

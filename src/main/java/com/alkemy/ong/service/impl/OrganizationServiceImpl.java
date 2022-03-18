@@ -10,6 +10,7 @@ import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,23 +19,21 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final OrganizationsRepository organizationsRepository;
     private final OrganizationResponseMapper organizationResponseMapper;
 
-
+    @Transactional(readOnly = true)
     @Override
     public OrganizationResponseDto getOrganization(Long id) {
-        return organizationsRepository.findById(id)
-                .map(organizationResponseMapper::toOrganizationResponseDto)
-                .orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
-    }
-    
-    @Override
-    public Organization findById(Long id) {
-    	
-    	return organizationsRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
+        return organizationsRepository.findById(id).map(organizationResponseMapper::toOrganizationResponseDto).orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public void updateOrganization(Long id, OrganizationPutDto dto){
+    public Organization findById(Long id) {
+        return organizationsRepository.findById(id).orElseThrow(() -> new NotFoundException("Organization id not found - " + id));
+    }
+
+    @Transactional
+    @Override
+    public void updateOrganization(Long id, OrganizationPutDto dto) {
         organizationsRepository.findById(id).map(organization -> {
             organization.setName(dto.getName());
             organization.setImages(dto.getImages());
@@ -47,10 +46,8 @@ public class OrganizationServiceImpl implements OrganizationService {
             organization.setInstagram(dto.getInstagram());
             organization.setLinkedin(dto.getLinkedin());
             return organizationsRepository.save(organization);
-        }).orElseThrow(()->{
+        }).orElseThrow(() -> {
             throw new NotFoundException("Organization not found.");
         });
-
-
     }
 }
