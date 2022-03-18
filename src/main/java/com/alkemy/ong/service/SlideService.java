@@ -12,6 +12,8 @@ public interface SlideService {
 
 	List<SlideDetailDto> getAllSlides();
 
+	List<SlideDetailDto> getAllSlidesbyOrg(Long id);
+
 	void updateSlides(SlideDto dto, Long id);
   
 	void deleteSlide(Long id);
