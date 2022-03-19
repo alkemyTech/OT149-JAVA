@@ -32,8 +32,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserDto getUserLogged() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
-        return mapper.toDto(usersRepository.findByEmail(user.getEmail())
+        String username = auth.getName();
+        return mapper.toDto(usersRepository.findByEmail(username)
                 .orElseThrow(() -> {
                     throw new UserNotFoundException();
                 }));
