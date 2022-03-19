@@ -6,7 +6,6 @@ import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.exception.BadUserLoginException;
 import com.alkemy.ong.exception.UserNotFoundException;
 import com.alkemy.ong.mapper.UserMapper;
-import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.JwtUtils;
 import com.alkemy.ong.service.AuthService;

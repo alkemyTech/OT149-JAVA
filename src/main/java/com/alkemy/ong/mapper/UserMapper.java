@@ -1,7 +1,5 @@
 package com.alkemy.ong.mapper;
 
-
-
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.model.User;
@@ -9,7 +7,6 @@ import com.alkemy.ong.dto.RegisterRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-
 
 @Mapper
 public interface UserMapper {
