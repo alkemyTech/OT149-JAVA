@@ -1,13 +1,15 @@
 package com.alkemy.ong.service.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import com.alkemy.ong.exception.NewNotFoundException;
-import com.alkemy.ong.exception.NotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alkemy.ong.dto.SlideDetailDto;
 import com.alkemy.ong.dto.SlideDto;
+
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.SlideMapper;
 import com.alkemy.ong.model.Organization;
@@ -16,6 +18,7 @@ import com.alkemy.ong.repository.SlideRepository;
 import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.service.SlideService;
 import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
 @Service
@@ -68,6 +71,16 @@ public class SlideServiceImpl implements SlideService {
 		return slidesDetailDto;
 	}
 
+	@Transactional(readOnly = true)
+	@Override
+	public List<SlideDetailDto> getAllSlidesbyOrg(Long idOrg) {
+		List<Slide> slides = repository.findByOrg(idOrg);
+		List<SlideDetailDto> slidesDetailDto = mapper.toSlideDetailDto(slides);
+		slidesDetailDto.sort(Comparator.comparingInt(SlideDetailDto::getOrder));
+		return slidesDetailDto;
+
+	}
+
 	@Transactional
 	@Override
 	public void updateSlides(SlideDto dto, Long id) {
@@ -101,5 +114,4 @@ public class SlideServiceImpl implements SlideService {
 		}
 		repository.deleteById(id);
 	}
-	
 }

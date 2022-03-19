@@ -1,26 +1,34 @@
 # OT149-JAVA: ONG PROJECT
 
-Step 1: run on docker
+## Build and Run
+
+Step 1: Build the project.
 
 ```sh
-$ docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -p 3306:3306 mysql
+mvn clean install -DskipTests
 ```
 
-Step 2: run the application
+Step 2: run on docker mysql.
 
-#Instrucciones para la seed de users
+```sh
+docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -p 3306:3306 mysql
+```
 
-Se poblara la DB con 20 users, 10 role_admin y 10 role_users
+Step 3: run the application.
 
-Los usuarios estan construidos de forma que:
+```sh
+ mvn spring-boot:run 
+```
 
-| usuario | password | role |
-|---|---|---|
-|nombre@nombre.com|nombre|ADMIN|
+Step 4: Open the documentation in your browser.
 
-Por ejemplo:
+URL: http://localhost:8080/api/docs
 
-| usuario | password | role |
+&nbsp;
+
+## Users and Roles
+
+| user | password | role |
 |---|---|---|
 |jonathan@jonathan.com|jonathan|ADMIN|
 |gustavo@gustavo.com|gustavo|ADMIN|

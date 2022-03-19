@@ -1,5 +1,6 @@
 package com.alkemy.ong.controller.v1;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import static com.alkemy.ong.controller.ControllerConstants.V_1_SLIDES;
@@ -26,9 +27,11 @@ import com.alkemy.ong.dto.SlideDto;
 import com.alkemy.ong.service.SlideService;
 
 import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping(V_1_SLIDES)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class SlideController {
   
     private final SlideService service;
@@ -47,6 +50,12 @@ public class SlideController {
 	return ResponseEntity.ok().body(detailSlidesDto);
     }
 
+    @GetMapping("/public/{idOrg}")
+    public ResponseEntity<List<SlideDetailDto>> getAllSlidesbyOrg(@PathVariable Long idOrg){
+        List<SlideDetailDto> detailSlidesDto = service.getAllSlidesbyOrg(idOrg);
+        return ResponseEntity.ok().body(detailSlidesDto);
+    }
+    
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Void> createSlide(UriComponentsBuilder uriComponentsBuilder, @Valid @RequestBody SlideDto dto) {
