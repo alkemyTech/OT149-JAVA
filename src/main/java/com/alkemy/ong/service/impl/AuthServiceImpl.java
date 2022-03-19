@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
     public UserDto getUserLogged() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        return mapper.toDto(usersRepository.findByEmail(username)
+        return mapper.toDtoReduced(usersRepository.findByEmail(username)
                 .orElseThrow(() -> {
                     throw new UserNotFoundException();
                 }));
