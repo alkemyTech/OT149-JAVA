@@ -158,17 +158,18 @@ public class CategoryController {
             pageSize = ControllerConstants.DEFAULT_PAGE_SIZE;
         }
 
-        UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_CATEGORIES + "?page={page}");
+        
+        UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_CATEGORIES).queryParam("pageNumber={page}");
 
         CategoryPagedList pagedList = service.getAllCategories(PageRequest.of(page, pageSize));
 
-        if(page < pagedList.getTotalPages() -1) {
+        if(pagedList.hasNext()) {
             pagedList.setNextUri(uriBuilder.buildAndExpand(page + 1).toUri());
         }else{
             pagedList.setNextUri(uriBuilder.buildAndExpand(page).toUri());
         }
 
-        if(page > 0) {
+        if(pagedList.hasPrevious()) {
             pagedList.setBackUri(uriBuilder.buildAndExpand(page - 1).toUri());
         }else{
             pagedList.setBackUri(uriBuilder.buildAndExpand(page).toUri());
