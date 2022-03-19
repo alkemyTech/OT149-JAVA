@@ -39,7 +39,7 @@ class ContactControllerIT {
 	private ContactService service;
 
 	@Test
-	void saveContact_shouldRespond200() throws Exception {
+	void saveContact_shouldRespond201() throws Exception {
 		final ContactDto contact = ContactDto.builder()
 				.id(1L)
 				.name("John")

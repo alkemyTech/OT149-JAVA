@@ -46,7 +46,7 @@ class ContactControllerTest {
 	}
 
 	@Test
-	void saveContact_shouldRespond200() throws Exception {
+	void saveContact_shouldRespond201() throws Exception {
 		final ContactDto contact = ContactDto.builder()
 				.id(ID)
 				.name("John")
@@ -93,7 +93,7 @@ class ContactControllerTest {
 				.message("message")
 				.build();
 
-		List<ContactDto> contactDtoList = new ArrayList<ContactDto>();
+		List<ContactDto> contactDtoList = new ArrayList<>();
 
 		contactDtoList.add(contact1);
 		contactDtoList.add(contact2);
