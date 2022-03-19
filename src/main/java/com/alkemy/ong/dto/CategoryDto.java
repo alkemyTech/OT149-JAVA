@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @Builder
 public class CategoryDto {
     @NotBlank(message = "Obligatory field.")
-    @Pattern(regexp = "[a-zA-Z\\s]+")
+    @Pattern(regexp = "[a-zA-Z0-9\\s]+")
     private String name;
     private String description;
     private String image;
