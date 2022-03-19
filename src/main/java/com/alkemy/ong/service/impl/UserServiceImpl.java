@@ -4,6 +4,7 @@ import com.alkemy.ong.dto.RegisterRequest;
 import com.alkemy.ong.dto.UserPagedList;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.dto.UserResponseDto;
+import com.alkemy.ong.exception.InternalServerException;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.exception.UserNotFoundException;
 import com.alkemy.ong.mail.EmailService;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final JwtUtils jwtUtils;
     private final RolesRepository rolesRepository;
+    private static final Long USER_ROLE_ID = 2L;
 
     private String getToken(User user) {
         return jwtUtils.generateToken(user);
@@ -65,8 +67,8 @@ public class UserServiceImpl implements UserService {
 
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
-        Role roleUser = rolesRepository.findById(2L).orElseThrow(() -> {
-            throw new NotFoundException("Role not found.");
+        Role roleUser = rolesRepository.findById(USER_ROLE_ID).orElseThrow(() -> {
+            throw new InternalServerException();
         });
 
         newUser.setRole(roleUser);
