@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @Builder
 public class CategoryDto {
     @NotBlank(message = "Obligatory field.")
-    @Pattern(regexp = "[a-zA-Z0-9\\s]+")
+    @Pattern(regexp = "[a-zA-Z\\s]+", message = "The name field must contain only text without numbers")
     private String name;
     private String description;
     private String image;

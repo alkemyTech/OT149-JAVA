@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
         return repository.findById(id).map(category -> {
             return mapper.toCategoryDetailDto(category);
         }).orElseThrow(() -> {
-            throw new CategoryNotFoundException();
+            throw new CategoryNotFoundException("Category not found with id "+id);
         });
     }
 
@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long id) {
         if (repository.findById(id).isEmpty()) {
-            throw new CategoryNotFoundException();
+            throw new CategoryNotFoundException("Category not found with id "+id);
         }
         repository.deleteById(id);
     }
@@ -66,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
             category.setImage(putDto.getImage());
             return repository.save(category);
         }).orElseThrow(() -> {
-            throw new CategoryNotFoundException();
+            throw new CategoryNotFoundException("Category not found with id "+id);
         });
     }
 

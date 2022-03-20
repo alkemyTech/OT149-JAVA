@@ -42,11 +42,11 @@ class CategoryControllerIT {
     @Order(1)
     void createCategory_shouldRespond201() throws Exception {
         for (long i = 1; i < 4; i++) {
-
+            final char LETTER = (char) (i + 64);
             final CategoryDto categoryDto = CategoryDto.builder()
-                    .name("Categoria " + i)
-                    .description("Esta es la categoria " + i)
-                    .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_" + i + ".png")
+                    .name("Categoria " + LETTER)
+                    .description("Esta es la categoria " + LETTER)
+                    .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_" + LETTER + ".png")
                     .build();
 
             final String actual = mockMvc.perform(post(ControllerConstants.V_1_CATEGORIES)
@@ -64,7 +64,7 @@ class CategoryControllerIT {
     @Order(2)
     void getCategoryById_shouldRespond200() throws Exception {
 
-        final String expected = "{\"name\":\"Categoria 1\",\"description\":\"Esta es la categoria 1\",\"image\":\"https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_1.png\"}";
+        final String expected = "{\"name\":\"Categoria A\",\"description\":\"Esta es la categoria A\",\"image\":\"https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_A.png\"}";
 
         assertTrue(
                 matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES + "/" + 1))
@@ -81,9 +81,9 @@ class CategoryControllerIT {
     @Order(3)
     void updateCategory_shouldRespond204() throws Exception {
         final CategoryPutDto categoryPutDto = CategoryPutDto.builder()
-                .name("Categoria 1 modificada")
-                .description("Esta es la categoria 1 modificada")
-                .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_1_modificada.png")
+                .name("Categoria A modificada")
+                .description("Esta es la categoria A modificada")
+                .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_A_modificada.png")
                 .build();
 
         final String actual = mockMvc.perform(put(ControllerConstants.V_1_CATEGORIES + "/" + 1)
@@ -109,7 +109,7 @@ class CategoryControllerIT {
     @Test
     @Order(5)
     void getCategoryList_shouldRespond200() throws Exception {
-        final String expected = "[{\"name\":\"Categoria 1 modificada\"},{\"name\":\"Categoria 2\"}]";
+        final String expected = "[{\"name\":\"Categoria A modificada\"},{\"name\":\"Categoria B\"}]";
         assertTrue(
                 matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES))
                                 .andExpect(status().isOk())
@@ -119,6 +119,109 @@ class CategoryControllerIT {
                         expected
                 )
         );
+    }
+
+    @Test
+    @Order(6)
+    void createCategory_shouldRespond400() throws Exception {
+
+
+        final CategoryDto categoryDto = CategoryDto.builder()
+                .name(" ")
+                .description("Esta es una categoria sin nombre")
+                .image("")
+                .build();
+        final String expected = "[{\"code\":\"INVALID_FIELD_VALUE\",\"description\":\"Obligatory field.\",\"field\":\"name\",\"location\":\"BODY\"}]";
+        assertTrue(
+                matchJson(mockMvc.perform(post(ControllerConstants.V_1_CATEGORIES)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .content(JsonUtils.objectToJson(categoryDto)))
+                                .andExpect(status().isBadRequest())
+                                .andReturn()
+                                .getResponse()
+                                .getContentAsString(),
+                        expected
+                )
+        );
 
     }
+
+    @Test
+    @Order(7)
+    void getCategoryById_shouldRespond404() throws Exception {
+
+        final String expected = "{\"code\":\"NOT_FOUND\",\"description\":\"Category not found with id 26\",\"field\":\"id\",\"location\":\"PATH\"}";
+
+        assertTrue(
+                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES + "/" + 26))
+                                .andExpect(status().isNotFound())
+                                .andReturn()
+                                .getResponse()
+                                .getContentAsString(),
+                        expected
+                )
+        );
+    }
+
+
+    @Test
+    @Order(8)
+    void updateCategory_shouldRespond400() throws Exception {
+        final CategoryPutDto categoryPutDto = CategoryPutDto.builder()
+                .name(" ")
+                .description("Categoria A modificada pero sin nombre")
+                .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_A_modificada.png")
+                .build();
+        final String expected = "[{\"code\":\"INVALID_FIELD_VALUE\",\"description\":\"Obligatory field.\",\"field\":\"name\",\"location\":\"BODY\"}]";
+
+        assertTrue(
+                matchJson(mockMvc.perform(put(ControllerConstants.V_1_CATEGORIES + "/" + 1)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .content(JsonUtils.objectToJson(categoryPutDto)))
+                                .andExpect(status().isBadRequest())
+                                .andReturn()
+                                .getResponse().getContentAsString(),
+                        expected
+                )
+        );
+
+    }
+
+    @Test
+    @Order(9)
+    void updateCategory_shouldRespond404() throws Exception {
+        final CategoryPutDto categoryPutDto = CategoryPutDto.builder()
+                .name("Categoria Z modificada")
+                .description("Esta es la categoria Z modificada")
+                .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_Z_modificada.png")
+                .build();
+        final String expected = "{\"code\":\"NOT_FOUND\",\"description\":\"Category not found with id 26\",\"field\":\"id\",\"location\":\"PATH\"}";
+
+        assertTrue(
+                matchJson(mockMvc.perform(put(ControllerConstants.V_1_CATEGORIES + "/" + 26)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .content(JsonUtils.objectToJson(categoryPutDto)))
+                                .andExpect(status().isNotFound())
+                                .andReturn()
+                                .getResponse().getContentAsString(),
+                        expected
+                )
+        );
+    }
+
+    @Test
+    @Order(10)
+    void deleteCategory_shouldRespond404() throws Exception {
+        final String expected = "{\"code\":\"NOT_FOUND\",\"description\":\"Category not found with id 26\",\"field\":\"id\",\"location\":\"PATH\"}";
+
+        assertTrue(
+                matchJson(mockMvc.perform(delete(ControllerConstants.V_1_CATEGORIES + "/" + 26))
+                                .andExpect(status().isNotFound())
+                                .andReturn()
+                                .getResponse().getContentAsString(),
+                        expected
+                )
+        );
+    }
+
 }
