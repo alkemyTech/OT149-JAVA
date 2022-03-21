@@ -32,13 +32,13 @@ public class ImageUploadController {
 	@Operation(summary = "Add a new image to the database")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "Create contact",
-					content = { @Content(mediaType = "application/json",
+					content = { @Content(mediaType = "MultipartFile",
 							schema = @Schema(implementation = String.class)) }),
 			@ApiResponse(responseCode = "400", description = "Invalid field",
-					content = { @Content(mediaType = "application/json",
+					content = { @Content(mediaType = "MultipartFile",
 							schema = @Schema(implementation = ErrorDetails.class)) }),
 			@ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
-					content = {@Content(mediaType = "application/json",
+					content = {@Content(mediaType = "MultipartFile",
 							schema = @Schema(implementation = ErrorDetails.class))})
 	})
 	@PostMapping
