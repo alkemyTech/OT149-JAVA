@@ -3,7 +3,6 @@ package com.alkemy.ong.service.impl;
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
 import com.alkemy.ong.dto.CategoryListDto;
-import com.alkemy.ong.dto.CategoryPutDto;
 import com.alkemy.ong.exception.CategoryNotFoundException;
 import com.alkemy.ong.mapper.CategoryListMapper;
 import com.alkemy.ong.mapper.CategoryMapper;
@@ -59,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public void updateCategory(Long id, CategoryPutDto putDto) {
+    public void updateCategory(Long id, CategoryDto putDto) {
         repository.findById(id).map(category -> {
             category.setName(putDto.getName());
             category.setDescription(putDto.getDescription());

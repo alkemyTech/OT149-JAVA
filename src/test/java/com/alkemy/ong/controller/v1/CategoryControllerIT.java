@@ -4,7 +4,6 @@ import com.alkemy.ong.H2Config;
 import com.alkemy.ong.SecurityConfig;
 import com.alkemy.ong.controller.ControllerConstants;
 import com.alkemy.ong.dto.CategoryDto;
-import com.alkemy.ong.dto.CategoryPutDto;
 import com.alkemy.ong.utils.JsonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -80,7 +79,7 @@ class CategoryControllerIT {
     @Test
     @Order(3)
     void updateCategory_shouldRespond204() throws Exception {
-        final CategoryPutDto categoryPutDto = CategoryPutDto.builder()
+        final CategoryDto categoryDto = CategoryDto.builder()
                 .name("Categoria A modificada")
                 .description("Esta es la categoria A modificada")
                 .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_A_modificada.png")
@@ -88,7 +87,7 @@ class CategoryControllerIT {
 
         final String actual = mockMvc.perform(put(ControllerConstants.V_1_CATEGORIES + "/" + 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtils.objectToJson(categoryPutDto)))
+                        .content(JsonUtils.objectToJson(categoryDto)))
                 .andExpect(status().isNoContent())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -167,7 +166,7 @@ class CategoryControllerIT {
     @Test
     @Order(8)
     void updateCategory_shouldRespond400() throws Exception {
-        final CategoryPutDto categoryPutDto = CategoryPutDto.builder()
+        final CategoryDto categoryDto = CategoryDto.builder()
                 .name(" ")
                 .description("Categoria A modificada pero sin nombre")
                 .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_A_modificada.png")
@@ -177,7 +176,7 @@ class CategoryControllerIT {
         assertTrue(
                 matchJson(mockMvc.perform(put(ControllerConstants.V_1_CATEGORIES + "/" + 1)
                                         .contentType(MediaType.APPLICATION_JSON)
-                                        .content(JsonUtils.objectToJson(categoryPutDto)))
+                                        .content(JsonUtils.objectToJson(categoryDto)))
                                 .andExpect(status().isBadRequest())
                                 .andReturn()
                                 .getResponse().getContentAsString(),
@@ -190,7 +189,7 @@ class CategoryControllerIT {
     @Test
     @Order(9)
     void updateCategory_shouldRespond404() throws Exception {
-        final CategoryPutDto categoryPutDto = CategoryPutDto.builder()
+        final CategoryDto categoryDto = CategoryDto.builder()
                 .name("Categoria Z modificada")
                 .description("Esta es la categoria Z modificada")
                 .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_Z_modificada.png")
@@ -200,7 +199,7 @@ class CategoryControllerIT {
         assertTrue(
                 matchJson(mockMvc.perform(put(ControllerConstants.V_1_CATEGORIES + "/" + 26)
                                         .contentType(MediaType.APPLICATION_JSON)
-                                        .content(JsonUtils.objectToJson(categoryPutDto)))
+                                        .content(JsonUtils.objectToJson(categoryDto)))
                                 .andExpect(status().isNotFound())
                                 .andReturn()
                                 .getResponse().getContentAsString(),
