@@ -3,6 +3,7 @@ package com.alkemy.ong.service.impl;
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryDetailDto;
 import com.alkemy.ong.dto.CategoryListDto;
+import com.alkemy.ong.dto.CategoryPagedList;
 import com.alkemy.ong.exception.CategoryNotFoundException;
 import com.alkemy.ong.mapper.CategoryListMapper;
 import com.alkemy.ong.mapper.CategoryMapper;
@@ -11,6 +12,8 @@ import com.alkemy.ong.repository.CategoriesRepository;
 import com.alkemy.ong.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,11 +61,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public void updateCategory(Long id, CategoryDto putDto) {
+    public void updateCategory(Long id, CategoryDto dto) {
         repository.findById(id).map(category -> {
-            category.setName(putDto.getName());
-            category.setDescription(putDto.getDescription());
-            category.setImage(putDto.getImage());
+            category.setName(dto.getName());
+            category.setDescription(dto.getDescription());
+            category.setImage(dto.getImage());
             return repository.save(category);
         }).orElseThrow(() -> {
             throw new CategoryNotFoundException("Category not found with id "+id);
@@ -71,8 +74,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CategoryListDto> getAllCategories() {
-        return listMapper.toCategoryListDto(repository.findAll());
+
+    public CategoryPagedList getAllCategories(PageRequest pageRequest) {
+        Page<Category> pageCategory = repository.findAll(pageRequest);
+
+        final List<CategoryListDto> list = listMapper.toCategoryListDto(pageCategory.getContent());
+        final PageRequest of = PageRequest.of(pageCategory.getPageable().getPageNumber(), pageCategory.getPageable().getPageSize());
+        final long totalElements = pageCategory.getTotalElements();
+
+
+        return new CategoryPagedList(list, of, totalElements);
+
     }
 }
 

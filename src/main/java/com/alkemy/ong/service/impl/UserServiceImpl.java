@@ -4,10 +4,14 @@ import com.alkemy.ong.dto.RegisterRequest;
 import com.alkemy.ong.dto.UserPagedList;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.dto.UserResponseDto;
+import com.alkemy.ong.exception.InternalServerException;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.exception.UserNotFoundException;
 import com.alkemy.ong.mail.EmailService;
 import com.alkemy.ong.mapper.UserMapper;
+import com.alkemy.ong.model.Role;
 import com.alkemy.ong.model.User;
+import com.alkemy.ong.repository.RolesRepository;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.JwtUtils;
 import com.alkemy.ong.service.UserService;
@@ -31,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final EmailService emailService;
     private final JwtUtils jwtUtils;
+    private final RolesRepository rolesRepository;
+    private static final Long USER_ROLE_ID = 2L;
 
     private String getToken(User user) {
         return jwtUtils.generateToken(user);
@@ -60,6 +66,12 @@ public class UserServiceImpl implements UserService {
         User newUser = userMapper.toUser(registerRequest);
 
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+        Role roleUser = rolesRepository.findById(USER_ROLE_ID).orElseThrow(() -> {
+            throw new InternalServerException();
+        });
+
+        newUser.setRole(roleUser);
 
         emailService.sendWelcomeEmail(newUser.getEmail());
 
