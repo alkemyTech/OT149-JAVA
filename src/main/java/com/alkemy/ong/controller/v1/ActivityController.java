@@ -52,7 +52,7 @@ public class ActivityController {
 
         final long activityId = activityServiceImp.saveActivity(dto);
 
-        UriComponents uriComponents = uriComponentsBuilder.path("/{id}").buildAndExpand(activityId);
+        UriComponents uriComponents = uriComponentsBuilder.path(REQ_MAPP_ACTIVITIES + "/{id}").buildAndExpand(activityId);
 
         return ResponseEntity.created(uriComponents.toUri()).build();
     }
