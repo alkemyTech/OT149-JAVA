@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.alkemy.ong.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,7 +43,6 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_CATEGORIES;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 public class CategoryController {
-    @Autowired
     private final CategoryService service;
 
     @Operation(summary = "Get a category by its id")
