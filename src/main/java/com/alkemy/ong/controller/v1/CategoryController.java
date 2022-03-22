@@ -133,12 +133,12 @@ public class CategoryController {
                             schema = @Schema(implementation = ErrorDetails.class))})
     })
     @GetMapping
-    public ResponseEntity<CategoryPagedList>getCategoryList(@RequestParam(value = "page", required = false) Integer page,
+    public ResponseEntity<CategoryPagedList>getCategoryList(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                             UriComponentsBuilder uriComponentsBuilder){
 
-        if (page == null || page < 0){
-            page = ControllerConstants.DEFAULT_PAGE_NUMBER;
+        if (pageNumber == null || pageNumber < 0){
+            pageNumber = ControllerConstants.DEFAULT_PAGE_NUMBER;
         }
 
         if (pageSize == null || pageSize < 1) {
@@ -148,18 +148,18 @@ public class CategoryController {
         
         UriComponentsBuilder uriBuilder = uriComponentsBuilder.path(V_1_CATEGORIES).queryParam("pageNumber={page}");
 
-        CategoryPagedList pagedList = service.getAllCategories(PageRequest.of(page, pageSize));
+        CategoryPagedList pagedList = service.getAllCategories(PageRequest.of(pageNumber, pageSize));
 
         if(pagedList.hasNext()) {
-            pagedList.setNextUri(uriBuilder.buildAndExpand(page + 1).toUri());
+            pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber + 1).toUri());
         }else{
-            pagedList.setNextUri(uriBuilder.buildAndExpand(page).toUri());
+            pagedList.setNextUri(uriBuilder.buildAndExpand(pageNumber).toUri());
         }
 
         if(pagedList.hasPrevious()) {
-            pagedList.setBackUri(uriBuilder.buildAndExpand(page - 1).toUri());
+            pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber - 1).toUri());
         }else{
-            pagedList.setBackUri(uriBuilder.buildAndExpand(page).toUri());
+            pagedList.setBackUri(uriBuilder.buildAndExpand(pageNumber).toUri());
         }
         
 

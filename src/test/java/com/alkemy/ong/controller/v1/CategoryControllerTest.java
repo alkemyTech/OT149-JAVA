@@ -158,7 +158,7 @@ class CategoryControllerTest {
         when(service.getAllCategories(eq(pageRequest))).thenReturn(categoryPagedList);
         final String expected = "{\"content\":[{\"name\":\"Categoria C\"},{\"name\":\"Categoria D\"}],\"number\":1,\"size\":2,\"totalElements\":5,\"pageable\":{\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true},\"offset\":2,\"pageNumber\":1,\"pageSize\":2,\"unpaged\":false,\"paged\":true},\"last\":false,\"totalPages\":3,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true},\"first\":false,\"numberOfElements\":2,\"nextUri\":\"http://localhost/v1/categories?pageNumber=2\",\"backUri\":\"http://localhost/v1/categories?pageNumber=0\",\"empty\":false}";
         assertTrue(
-                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("page", "1").queryParam("pageSize", "2"))
+                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("pageNumber", "1").queryParam("pageSize", "2"))
                                 .andExpect(status().isOk())
                                 .andReturn()
                                 .getResponse()
@@ -189,7 +189,7 @@ class CategoryControllerTest {
         final String expected = "{\"content\":[{\"name\":\"Categoria A modificada\"},{\"name\":\"Categoria B\"},{\"name\":\"Categoria C\"},{\"name\":\"Categoria D\"},{\"name\":\"Categoria E\"}],\"number\":0,\"size\":10,\"totalElements\":5,\"pageable\":{\"sort\":{\"unsorted\":true,\"sorted\":false,\"empty\":true},\"offset\":0,\"pageSize\":10,\"pageNumber\":0,\"paged\":true,\"unpaged\":false},\"last\":true,\"totalPages\":1,\"sort\":{\"unsorted\":true,\"sorted\":false,\"empty\":true},\"first\":true,\"numberOfElements\":5,\"nextUri\":\"http://localhost/v1/categories?pageNumber=0\",\"backUri\":\"http://localhost/v1/categories?pageNumber=0\",\"empty\":false}";
 
         assertTrue(
-                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("page", "-1").queryParam("pageSize", "-1"))
+                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("pageNumber", "-1").queryParam("pageSize", "-1"))
                                 .andExpect(status().isOk())
                                 .andReturn()
                                 .getResponse()
