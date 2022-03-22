@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,7 +42,6 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_TESTIMONIAL;
 @SecurityRequirement(name = "bearerAuth")
 public class TestimonialController {
 
-    @Autowired
     private final TestimonialService service;
 
 
