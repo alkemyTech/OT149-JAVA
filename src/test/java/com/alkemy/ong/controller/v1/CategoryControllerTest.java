@@ -12,11 +12,15 @@ import com.alkemy.ong.utils.JsonUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -30,6 +34,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.alkemy.ong.utils.TestUtils.matchJson;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -62,29 +67,30 @@ class CategoryControllerTest {
                 .build();
     }
 
-    @Test
     @Order(1)
-    void createCategory_shouldRespond201() throws Exception {
+    @DisplayName("Create Category")
+    @ParameterizedTest(name = "{displayName} - [{index}] {arguments}")
+    @MethodSource("provideLettersForCreateCategory")
+    void createCategory_shouldRespond201(String letter, Long idExpected) throws Exception {
+        final CategoryDto categoryDto = CategoryDto.builder()
+                .name("Categoria " + letter)
+                .description("Esta es la categoria " + letter)
+                .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_" + letter + ".png")
+                .build();
+        when(service.createCategory(eq(categoryDto))).thenReturn(idExpected);
+        final String actual = mockMvc.perform(post(ControllerConstants.V_1_CATEGORIES)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtils.objectToJson(categoryDto)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getHeader(HttpHeaders.LOCATION);
+        Assertions.assertEquals("http://localhost/v1/categories/" + idExpected, actual);
 
-        for (long i = 1; i < 7; i++) {
-            final char LETTER = (char) (i + 64);
-            final CategoryDto categoryDto = CategoryDto.builder()
-                    .name("Categoria " + LETTER)
-                    .description("Esta es la categoria " + LETTER)
-                    .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_" + LETTER + ".png")
-                    .build();
-
-            when(service.createCategory(eq(categoryDto))).thenReturn(i);
-            final String actual = mockMvc.perform(post(ControllerConstants.V_1_CATEGORIES)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(JsonUtils.objectToJson(categoryDto)))
-                    .andExpect(status().isCreated())
-                    .andReturn()
-                    .getResponse()
-                    .getHeader(HttpHeaders.LOCATION);
-            Assertions.assertEquals("http://localhost/v1/categories/" + i, actual);
-        }
     }
+
+
+
 
     @Test
     @Order(2)
@@ -304,5 +310,15 @@ class CategoryControllerTest {
         );
     }
 
+    private static Stream<Arguments> provideLettersForCreateCategory() {
+        return Stream.of(
+                Arguments.of("A", 1L),
+                Arguments.of("B", 2L),
+                Arguments.of("C", 3L),
+                Arguments.of("D", 4L),
+                Arguments.of("E", 5L),
+                Arguments.of("F", 6L)
+        );
+    }
 
 }

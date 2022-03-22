@@ -6,10 +6,14 @@ import com.alkemy.ong.controller.ControllerConstants;
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.utils.JsonUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.stream.Stream;
 
 import static com.alkemy.ong.utils.TestUtils.matchJson;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,26 +43,26 @@ class CategoryControllerIT {
     MockMvc mockMvc;
 
 
-    @Test
     @Order(1)
-    void createCategory_shouldRespond201() throws Exception {
-        for (long i = 1; i < 7; i++) {
-            final char LETTER = (char) (i + 64);
-            final CategoryDto categoryDto = CategoryDto.builder()
-                    .name("Categoria " + LETTER)
-                    .description("Esta es la categoria " + LETTER)
-                    .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_" + LETTER + ".png")
-                    .build();
+    @DisplayName("Create Category")
+    @ParameterizedTest(name = "{displayName} - [{index}] {arguments}")
+    @MethodSource("provideLettersForCreateCategory")
+    void createCategory_shouldRespond201(String letter, Long idExpected) throws Exception {
+        final CategoryDto categoryDto = CategoryDto.builder()
+                .name("Categoria " + letter)
+                .description("Esta es la categoria " + letter)
+                .image("https://cohorte-febrero-b35bfd02.s3.amazonaws.com/1646237572762-categoria_" + letter + ".png")
+                .build();
 
-            final String actual = mockMvc.perform(post(ControllerConstants.V_1_CATEGORIES)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(JsonUtils.objectToJson(categoryDto)))
-                    .andExpect(status().isCreated())
-                    .andReturn()
-                    .getResponse()
-                    .getHeader(HttpHeaders.LOCATION);
-            Assertions.assertEquals("http://localhost/v1/categories/" + i, actual);
-        }
+        final String actual = mockMvc.perform(post(ControllerConstants.V_1_CATEGORIES)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtils.objectToJson(categoryDto)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getHeader(HttpHeaders.LOCATION);
+        Assertions.assertEquals("http://localhost/v1/categories/" + idExpected, actual);
+
     }
 
     @Test
@@ -110,7 +116,7 @@ class CategoryControllerIT {
     void getCategoryList_shouldRespond200() throws Exception {
         final String expected = "{\"content\":[{\"name\":\"Categoria C\"},{\"name\":\"Categoria D\"}],\"number\":1,\"size\":2,\"totalElements\":5,\"pageable\":{\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true},\"offset\":2,\"pageNumber\":1,\"pageSize\":2,\"unpaged\":false,\"paged\":true},\"last\":false,\"totalPages\":3,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true},\"first\":false,\"numberOfElements\":2,\"nextUri\":\"http://localhost/v1/categories?pageNumber=2\",\"backUri\":\"http://localhost/v1/categories?pageNumber=0\",\"empty\":false}";
         assertTrue(
-                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("page","1").queryParam("pageSize","2"))
+                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("page", "1").queryParam("pageSize", "2"))
                                 .andExpect(status().isOk())
                                 .andReturn()
                                 .getResponse()
@@ -125,7 +131,7 @@ class CategoryControllerIT {
     void getCategoryList_shouldRespond200_withWrongQueryParam() throws Exception {
         final String expected = "{\"content\":[{\"name\":\"Categoria A modificada\"},{\"name\":\"Categoria B\"},{\"name\":\"Categoria C\"},{\"name\":\"Categoria D\"},{\"name\":\"Categoria E\"}],\"number\":0,\"size\":10,\"totalElements\":5,\"pageable\":{\"sort\":{\"unsorted\":true,\"sorted\":false,\"empty\":true},\"offset\":0,\"pageSize\":10,\"pageNumber\":0,\"paged\":true,\"unpaged\":false},\"last\":true,\"totalPages\":1,\"sort\":{\"unsorted\":true,\"sorted\":false,\"empty\":true},\"first\":true,\"numberOfElements\":5,\"nextUri\":\"http://localhost/v1/categories?pageNumber=0\",\"backUri\":\"http://localhost/v1/categories?pageNumber=0\",\"empty\":false}";
         assertTrue(
-                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("page","-1").queryParam("pageSize","-1"))
+                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("page", "-1").queryParam("pageSize", "-1"))
                                 .andExpect(status().isOk())
                                 .andReturn()
                                 .getResponse()
@@ -236,6 +242,17 @@ class CategoryControllerIT {
                                 .getResponse().getContentAsString(),
                         expected
                 )
+        );
+    }
+
+    private static Stream<Arguments> provideLettersForCreateCategory() {
+        return Stream.of(
+                Arguments.of("A", 1L),
+                Arguments.of("B", 2L),
+                Arguments.of("C", 3L),
+                Arguments.of("D", 4L),
+                Arguments.of("E", 5L),
+                Arguments.of("F", 6L)
         );
     }
 
