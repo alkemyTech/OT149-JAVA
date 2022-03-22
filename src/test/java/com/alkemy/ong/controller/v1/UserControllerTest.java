@@ -1,10 +1,10 @@
 package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.controller.ControllerConstants;
-import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserPagedList;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.exception.GlobalControllerExceptionHandler;
+import com.alkemy.ong.exception.UserNotFoundException;
 import com.alkemy.ong.service.UserService;
 import com.alkemy.ong.utils.JsonUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -43,6 +44,7 @@ class UserControllerTest {
     private UserService service;
 
     static final long ID = 123;
+    static final long notFoundId = 100;
 
     @BeforeEach
     void setUp() {
@@ -54,49 +56,40 @@ class UserControllerTest {
     @Test
     void userPatch_shouldRespond204() throws Exception {
 
-        final UserPatchDTO user = UserPatchDTO.builder()
-                .firstName("John")
-                .lastName("Foo")
-                .photo("foo.jpg")
-                .build();
+        final UserPatchDTO user = UserPatchDTO.builder().firstName("John").lastName("Foo").photo("foo.jpg").build();
 
         doNothing().when(service).userPatch(eq(ID), eq(user));
 
-        mockMvc.perform(patch(ControllerConstants.V_1_USERS + "/" + ID)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtils.objectToJson(user)))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(patch(ControllerConstants.V_1_USERS + "/" + ID).contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtils.objectToJson(user))).andExpect(status().isNoContent());
     }
 
     @Test
     void userPatch_shouldRespond400() throws Exception {
 
-        final UserPatchDTO user = UserPatchDTO.builder()
-                .firstName("")
-                .lastName("")
-                .photo("")
-                .build();
+        final UserPatchDTO user = UserPatchDTO.builder().firstName("").lastName("").photo("").build();
 
-        mockMvc.perform(patch(ControllerConstants.V_1_USERS + "/" + ID)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtils.objectToJson(user)))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(patch(ControllerConstants.V_1_USERS + "/" + ID).contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtils.objectToJson(user))).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void userPatch_shouldRespond404() throws Exception {
+
+        final UserPatchDTO user = UserPatchDTO.builder().firstName("John").lastName("Foo").photo("foo.jpg").build();
+
+        doThrow(new UserNotFoundException()).when(service).userPatch(notFoundId, user);
+
+        mockMvc.perform(patch(ControllerConstants.V_1_USERS + "/" + notFoundId).contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtils.objectToJson(user))).andExpect(status().isNotFound());
     }
 
     @Test
     void list_shouldRespond200() throws Exception {
 
-        final UserPatchDTO user1 = UserPatchDTO.builder()
-                .firstName("John")
-                .lastName("Foo")
-                .photo("foo.jpg")
-                .build();
+        final UserPatchDTO user1 = UserPatchDTO.builder().firstName("John").lastName("Foo").photo("foo.jpg").build();
 
-        final UserPatchDTO user2 = UserPatchDTO.builder()
-                .firstName("Jane")
-                .lastName("Bar")
-                .photo("bar.jpg")
-                .build();
+        final UserPatchDTO user2 = UserPatchDTO.builder().firstName("Jane").lastName("Bar").photo("bar.jpg").build();
 
         UserPagedList userPagedList = new UserPagedList(List.of(user1, user2), PageRequest.of(0, 2), 2);
 
@@ -104,17 +97,11 @@ class UserControllerTest {
 
         String expected = "{\"content\":[{\"firstName\":\"John\",\"lastName\":\"Foo\",\"photo\":\"foo.jpg\"},{\"firstName\":\"Jane\",\"lastName\":\"Bar\",\"photo\":\"bar.jpg\"}],\"number\":0,\"size\":2,\"totalElements\":2,\"pageable\":{\"sort\":{\"unsorted\":true,\"sorted\":false,\"empty\":true},\"pageNumber\":0,\"pageSize\":2,\"offset\":0,\"paged\":true,\"unpaged\":false},\"last\":true,\"totalPages\":1,\"sort\":{\"unsorted\":true,\"sorted\":false,\"empty\":true},\"first\":true,\"numberOfElements\":2,\"empty\":false}";
 
-        assertTrue(
-                matchJson(
-                        mockMvc.perform(get(ControllerConstants.V_1_USERS))
-                                .andExpect(status().isOk())
-                                .andReturn()
-                                .getResponse()
-                                .getContentAsString(),
-                        expected
-                )
-        );
-
+        assertTrue(matchJson(mockMvc.perform(get(ControllerConstants.V_1_USERS))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), expected));
     }
 
     @Test
@@ -122,7 +109,6 @@ class UserControllerTest {
 
         doNothing().when(service).deleteUser(eq(ID));
 
-        mockMvc.perform(delete(ControllerConstants.V_1_USERS + "/" + ID))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(delete(ControllerConstants.V_1_USERS + "/" + ID)).andExpect(status().isNoContent());
     }
 }
