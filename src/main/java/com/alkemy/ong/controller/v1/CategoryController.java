@@ -125,9 +125,9 @@ public class CategoryController {
     }
 
 
-    @Operation(summary = "Get a category list")
+    @Operation(summary = "Get a paginated list of categories")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retrieve a list of categories",
+            @ApiResponse(responseCode = "200", description = "Retrieve a paginated list of categories",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CategoryListDto.class)) }),
             @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",

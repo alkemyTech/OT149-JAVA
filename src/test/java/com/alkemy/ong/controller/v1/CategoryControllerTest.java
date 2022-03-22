@@ -4,6 +4,7 @@ import com.alkemy.ong.controller.ControllerConstants;
 import com.alkemy.ong.dto.CategoryDetailDto;
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.dto.CategoryListDto;
+import com.alkemy.ong.dto.CategoryPagedList;
 import com.alkemy.ong.exception.CategoryNotFoundException;
 import com.alkemy.ong.exception.GlobalControllerExceptionHandler;
 import com.alkemy.ong.service.CategoryService;
@@ -20,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -64,7 +66,7 @@ class CategoryControllerTest {
     @Order(1)
     void createCategory_shouldRespond201() throws Exception {
 
-        for (long i = 1; i < 4; i++) {
+        for (long i = 1; i < 7; i++) {
             final char LETTER = (char) (i + 64);
             final CategoryDto categoryDto = CategoryDto.builder()
                     .name("Categoria " + LETTER)
@@ -127,8 +129,8 @@ class CategoryControllerTest {
     @Test
     @Order(4)
     void deleteCategory_shouldRespond204() throws Exception {
-        doNothing().when(service).deleteCategory(eq(3L));
-        mockMvc.perform(delete(ControllerConstants.V_1_CATEGORIES + "/" + 3))
+        doNothing().when(service).deleteCategory(eq(6L));
+        mockMvc.perform(delete(ControllerConstants.V_1_CATEGORIES + "/" + 6))
                 .andExpect(status().isNoContent());
 
     }
@@ -136,17 +138,21 @@ class CategoryControllerTest {
     @Test
     @Order(5)
     void getCategoryList_shouldRespond200() throws Exception {
-        final List<CategoryListDto> dtos = new ArrayList<>(
+        final List<CategoryListDto> list = new ArrayList<>(
                 Arrays.asList(
-                        new CategoryListDto("Categoria A modificada"),
-                        new CategoryListDto("Categoria B")
+
+                        new CategoryListDto("Categoria C"),
+                        new CategoryListDto("Categoria D")
+
                 )
         );
+        final PageRequest pageRequest = PageRequest.of(1, 2);
+        final CategoryPagedList categoryPagedList = new CategoryPagedList(list, pageRequest, 5);
 
-        when(service.getAllCategories()).thenReturn(dtos);
-        final String expected = "[{\"name\":\"Categoria A modificada\"},{\"name\":\"Categoria B\"}]";
+        when(service.getAllCategories(eq(pageRequest))).thenReturn(categoryPagedList);
+        final String expected = "{\"content\":[{\"name\":\"Categoria C\"},{\"name\":\"Categoria D\"}],\"number\":1,\"size\":2,\"totalElements\":5,\"pageable\":{\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true},\"offset\":2,\"pageNumber\":1,\"pageSize\":2,\"unpaged\":false,\"paged\":true},\"last\":false,\"totalPages\":3,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true},\"first\":false,\"numberOfElements\":2,\"nextUri\":\"http://localhost/v1/categories?pageNumber=2\",\"backUri\":\"http://localhost/v1/categories?pageNumber=0\",\"empty\":false}";
         assertTrue(
-                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES))
+                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("page", "1").queryParam("pageSize", "2"))
                                 .andExpect(status().isOk())
                                 .andReturn()
                                 .getResponse()
@@ -159,6 +165,37 @@ class CategoryControllerTest {
 
     @Test
     @Order(6)
+    void getCategoryList_shouldRespond200_withWrongQueryParam() throws Exception {
+        final List<CategoryListDto> list = new ArrayList<>(
+                Arrays.asList(
+                        new CategoryListDto("Categoria A modificada"),
+                        new CategoryListDto("Categoria B"),
+                        new CategoryListDto("Categoria C"),
+                        new CategoryListDto("Categoria D"),
+                        new CategoryListDto("Categoria E")
+
+                )
+        );
+        final PageRequest pageRequest = PageRequest.of(ControllerConstants.DEFAULT_PAGE_NUMBER, ControllerConstants.DEFAULT_PAGE_SIZE);
+        final CategoryPagedList categoryPagedList = new CategoryPagedList(list, pageRequest, 5);
+
+        when(service.getAllCategories(eq(pageRequest))).thenReturn(categoryPagedList);
+        final String expected = "{\"content\":[{\"name\":\"Categoria A modificada\"},{\"name\":\"Categoria B\"},{\"name\":\"Categoria C\"},{\"name\":\"Categoria D\"},{\"name\":\"Categoria E\"}],\"number\":0,\"size\":10,\"totalElements\":5,\"pageable\":{\"sort\":{\"unsorted\":true,\"sorted\":false,\"empty\":true},\"offset\":0,\"pageSize\":10,\"pageNumber\":0,\"paged\":true,\"unpaged\":false},\"last\":true,\"totalPages\":1,\"sort\":{\"unsorted\":true,\"sorted\":false,\"empty\":true},\"first\":true,\"numberOfElements\":5,\"nextUri\":\"http://localhost/v1/categories?pageNumber=0\",\"backUri\":\"http://localhost/v1/categories?pageNumber=0\",\"empty\":false}";
+
+        assertTrue(
+                matchJson(mockMvc.perform(get(ControllerConstants.V_1_CATEGORIES).queryParam("page", "-1").queryParam("pageSize", "-1"))
+                                .andExpect(status().isOk())
+                                .andReturn()
+                                .getResponse()
+                                .getContentAsString(),
+                        expected
+                )
+        );
+
+    }
+
+    @Test
+    @Order(7)
     void createCategory_shouldRespond400() throws Exception {
 
 
@@ -184,7 +221,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     void getCategoryById_shouldRespond404() throws Exception {
 
         doThrow(new CategoryNotFoundException("Category not found with id 26")).when(service).getCategoryById(eq(26L));
@@ -204,7 +241,7 @@ class CategoryControllerTest {
 
 
     @Test
-    @Order(8)
+    @Order(9)
     void updateCategory_shouldRespond400() throws Exception {
         final CategoryDto categoryDto = CategoryDto.builder()
                 .name(" ")
@@ -227,7 +264,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     void updateCategory_shouldRespond404() throws Exception {
         final CategoryDto categoryDto = CategoryDto.builder()
                 .name("Categoria Z modificada")
@@ -251,7 +288,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     void deleteCategory_shouldRespond404() throws Exception {
         doThrow(new CategoryNotFoundException("Category not found with id 26")).when(service).deleteCategory(eq(26L));
 
