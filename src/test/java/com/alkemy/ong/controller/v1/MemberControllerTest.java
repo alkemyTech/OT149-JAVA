@@ -185,15 +185,6 @@ class MemberControllerTest {
     }
 
     @Test
-    void deleteMember_shouldRespond404() throws Exception {
-
-        doThrow(new MemberNotFoundException()).when(service).deleteMember(ID);
-
-        mockMvc.perform(delete(ControllerConstants.V_1_MEMBERS + "/" + ID)).andExpect(status().isNotFound());
-
-    }
-
-    @Test
     void addMember_shouldRespond201() throws Exception {
 
         final MemberDto member = MemberDto.builder()
