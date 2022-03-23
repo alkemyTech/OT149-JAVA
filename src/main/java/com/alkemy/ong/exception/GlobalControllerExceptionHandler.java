@@ -53,7 +53,7 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
                 .close();
     }
 
-    @ExceptionHandler(value = {TestimonialNotFoundException.class, NotFoundException.class})
+    @ExceptionHandler(value = {TestimonialNotFoundException.class, NotFoundException.class,CategoryNotFoundException.class})
     protected ResponseEntity<ErrorDetails> handleTestimonialNotFoundException(RuntimeException exc) {
 
         ErrorDetails error = ErrorDetails.builder()
@@ -79,5 +79,7 @@ public class GlobalControllerExceptionHandler extends AbstractExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(List.of(error1));
 
     }
+
+
 
 }
