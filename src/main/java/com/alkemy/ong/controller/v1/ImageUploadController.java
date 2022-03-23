@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -32,13 +33,13 @@ public class ImageUploadController {
 	@Operation(summary = "Add a new image to the database")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "Create contact",
-					content = { @Content(mediaType = "MultipartFile",
+					content = { @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
 							schema = @Schema(implementation = String.class)) }),
 			@ApiResponse(responseCode = "400", description = "Invalid field",
-					content = { @Content(mediaType = "MultipartFile",
+					content = { @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
 							schema = @Schema(implementation = ErrorDetails.class)) }),
 			@ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
-					content = {@Content(mediaType = "MultipartFile",
+					content = {@Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
 							schema = @Schema(implementation = ErrorDetails.class))})
 	})
 	@PostMapping
