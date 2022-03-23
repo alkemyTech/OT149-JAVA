@@ -4,7 +4,7 @@ import com.alkemy.ong.controller.ControllerConstants;
 import com.alkemy.ong.dto.MemberPagedList;
 import com.alkemy.ong.exception.ErrorDetails;
 import com.alkemy.ong.dto.MemberDto;
-import com.alkemy.ong.service.impl.MemberServiceImpl;
+import com.alkemy.ong.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,7 +38,7 @@ import static com.alkemy.ong.controller.ControllerConstants.V_1_MEMBERS;
 @SecurityRequirement(name = "bearerAuth")
 public class MemberController {
 
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
 
 
     @Operation(summary = "Get a paginated list of members")
