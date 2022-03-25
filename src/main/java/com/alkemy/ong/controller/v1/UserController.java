@@ -1,6 +1,7 @@
 package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.controller.ControllerConstants;
+import com.alkemy.ong.dto.MemberPagedList;
 import com.alkemy.ong.dto.UserPagedList;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.exception.ErrorDetails;
@@ -40,36 +41,42 @@ public class UserController {
 
     /**
      * Este metodo modifica los campos firstName, lastName y photo de User.
-     * @param id Id del User a patchear.
+     *
+     * @param id       Id del User a patchear.
      * @param patchDto Dto con los cambios a realizar.
      */
 
     @Operation(summary = "Update user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Update user",
-                    content = @Content),
-            @ApiResponse(responseCode = "400", description = "Invalid field",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class))}),
-            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class))}),
-            @ApiResponse(responseCode = "404", description = "Invalid id supplied",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class))})
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "204",
+            description = "Update user",
+            content = @Content), @ApiResponse(responseCode = "400",
+            description = "Invalid field",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDetails.class))}), @ApiResponse(responseCode = "403",
+            description = "Invalid token or token expired | Accessing with invalid role",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDetails.class))}), @ApiResponse(responseCode = "404",
+            description = "Invalid id supplied",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDetails.class))})})
     @PatchMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void userPatch(
-            @PathVariable("id") Long id,
-            @Valid @RequestBody UserPatchDTO patchDto) {
+    public void userPatch(@PathVariable("id") Long id, @Valid @RequestBody UserPatchDTO patchDto) {
         service.userPatch(id, patchDto);
     }
 
+    @Operation(summary = "Get a paginated list of users")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200",
+            description = "Retrieve a paginated list of users",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = UserPagedList.class))}), @ApiResponse(responseCode = "403",
+            description = "Invalid token or token expired | Accessing with invalid role",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDetails.class))})})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<UserPagedList> list(@RequestParam(value = "page", required = false) Integer page,
-                                              @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+            @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
         if (page == null || page < 0) {
             page = ControllerConstants.DEFAULT_PAGE_NUMBER;
@@ -84,16 +91,15 @@ public class UserController {
 
 
     @Operation(summary = "Delete user by its id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Delete the user",
-                    content = @Content),
-            @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class))}),
-            @ApiResponse(responseCode = "404", description = "User not found",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class)) })
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "204",
+            description = "Delete the user",
+            content = @Content), @ApiResponse(responseCode = "403",
+            description = "Invalid token or token expired | Accessing with invalid role",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDetails.class))}), @ApiResponse(responseCode = "404",
+            description = "User not found",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDetails.class))})})
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("id") long id) {
