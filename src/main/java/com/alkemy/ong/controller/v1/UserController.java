@@ -1,7 +1,6 @@
 package com.alkemy.ong.controller.v1;
 
 import com.alkemy.ong.controller.ControllerConstants;
-import com.alkemy.ong.dto.MemberPagedList;
 import com.alkemy.ong.dto.UserPagedList;
 import com.alkemy.ong.dto.UserPatchDTO;
 import com.alkemy.ong.exception.ErrorDetails;
