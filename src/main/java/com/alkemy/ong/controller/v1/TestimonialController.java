@@ -35,7 +35,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
-import static com.alkemy.ong.controller.ControllerConstants.V_1_MEMBERS;
 import static com.alkemy.ong.controller.ControllerConstants.V_1_TESTIMONIAL;
 
 @RestController
