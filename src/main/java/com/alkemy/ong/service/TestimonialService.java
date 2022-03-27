@@ -10,7 +10,7 @@ public interface TestimonialService {
 	TestimonialDto testimonialPut(Long id, TestimonialDto dto);
 
 	@Secured("ROLE_ADMIN")
-	void saveTestimonial(TestimonialDto dto);
+	long saveTestimonial(TestimonialDto dto);
 
 	void deleteTestimonial(Long id);
 

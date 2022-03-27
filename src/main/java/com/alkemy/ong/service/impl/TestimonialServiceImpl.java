@@ -25,9 +25,11 @@ public class TestimonialServiceImpl implements TestimonialService {
 
     @Transactional
     @Override
-    public void saveTestimonial(TestimonialDto dto) {
+    public long saveTestimonial(TestimonialDto dto) {
         Testimonial testimonial = testimonialMapper.toTestimonial(dto);
         testimonialsRepository.save(testimonial);
+        
+        return testimonial.getId();
     }
 
     @Transactional
