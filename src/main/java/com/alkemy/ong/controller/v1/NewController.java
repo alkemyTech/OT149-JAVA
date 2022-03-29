@@ -84,6 +84,9 @@ public class NewController {
                             schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Invalid token or token expired | Accessing with invalid role",
                     content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "404", description = "Category not found.",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetails.class))})
     })
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})

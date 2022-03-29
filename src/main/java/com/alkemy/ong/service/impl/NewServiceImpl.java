@@ -7,6 +7,7 @@ import com.alkemy.ong.exception.CategoryNotFoundException;
 import com.alkemy.ong.exception.NewNotFoundException;
 import com.alkemy.ong.mapper.NewMapper;
 import com.alkemy.ong.model.New;
+import com.alkemy.ong.repository.CategoriesRepository;
 import com.alkemy.ong.repository.NewsRepository;
 import com.alkemy.ong.service.NewService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class NewServiceImpl implements NewService {
 
     private final NewsRepository repository;
+    private final CategoriesRepository categoriesRepository;
     private final NewMapper mapper;
 
     @Transactional(readOnly = true)
@@ -56,10 +58,21 @@ public class NewServiceImpl implements NewService {
     @Transactional
     @Override
     public long createNew(NewDto dto) {
-        New news = mapper.toNew(dto);
-        repository.save(news);
-        long newId = news.getId();
-        return newId;
+        if (dto.getCategoryId() != null) {
+            return categoriesRepository.findById(dto.getCategoryId().getId()).map((category -> {
+                New news = mapper.toNew(dto);
+                repository.save(news);
+                long newId = news.getId();
+                return newId;
+            })).orElseThrow(() ->
+                    new NotFoundException("Category not found."));
+        } else {
+            New news = mapper.toNew(dto);
+            repository.save(news);
+            long newId = news.getId();
+            return newId;
+        }
+
     }
 
     @Transactional(readOnly = true)
